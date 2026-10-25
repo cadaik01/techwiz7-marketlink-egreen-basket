@@ -36,6 +36,9 @@ import './AdminModerationPage.css';
 
 const REASON_MIN_LENGTH = 5;
 
+// Matches AI_HIDE_PREFIX in backend/reviews/services/review_moderation_service.py.
+const AI_HIDE_PREFIX = 'Auto-hidden by AI:';
+
 function reviewTarget(review) {
   return review.product
     ? review.product.name
@@ -330,7 +333,9 @@ export default function AdminModerationPage() {
                       <p className="admin-moderation-page__comment">{r.comment}</p>
                       {r.is_hidden_by_admin ? (
                         <Badge variant="danger" className="admin-moderation-page__badge">
-                          Hidden: {r.hidden_reason}
+                          {r.hidden_by_ai
+                            ? `Hidden by AI: ${(r.hidden_reason ?? '').replace(AI_HIDE_PREFIX, '').trim()}`
+                            : `Hidden: ${r.hidden_reason}`}
                         </Badge>
                       ) : null}
                     </div>

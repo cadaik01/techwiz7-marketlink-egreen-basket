@@ -14,9 +14,10 @@ from reviews.models import FarmerReview, ProductReview
 from reviews.selectors import TYPE_PRODUCT
 from reviews.services.farmer_reply_service import reply_to_review
 from reviews.services.review_service import create_farmer_review, create_product_review
+from reviews.services.review_moderation_service import AI_HIDE_PREFIX, restore_review
 from system.auto_flags import gemini
 from system.auto_flags import AUTO_PREFIX, check_customer_no_shows, scan_existing
-from system.models import FlagTarget, ModerationFlag
+from system.models import AuditAction, AuditLog, FlagTarget, ModerationFlag
 
 
 @pytest.fixture
@@ -63,8 +64,14 @@ def make_order(customer_user, farmer, market, product):
     return _make
 
 
-OFFENSIVE = ["offensive language (The review insults the stall owner)"]
-CONTACT = ["contact details to trade off MarketLink (It asks shoppers to call a phone number)"]
+Verdict = gemini.ReviewVerdict
+CLEAN = Verdict(problems=[])
+OFFENSIVE = Verdict(problems=["offensive language (The review insults the stall owner)"], certain=True)
+OFFENSIVE_UNSURE = Verdict(problems=["offensive language (It may be a disguised insult)"], certain=False)
+CONTACT = Verdict(
+    problems=["contact details to trade off MarketLink (It asks shoppers to call a phone number)"],
+    certain=True,
+)
 
 
 @pytest.fixture
@@ -73,7 +80,7 @@ def ai(settings):
     settings.AI_MODERATION_ENABLED = True
     settings.GEMINI_API_KEY = "test-key"
     settings.AI_MODERATION_RUN_INLINE = True
-    with mock.patch("system.auto_flags.gemini.ask_about_review", return_value=[]) as ask:
+    with mock.patch("system.auto_flags.gemini.assess_review", return_value=CLEAN) as ask:
         yield ask
 
 
@@ -82,7 +89,7 @@ def open_flags(target_type):
 
 
 @pytest.mark.django_db
-def test_an_offensive_review_goes_to_the_queue(customer_user, make_order, ai, django_capture_on_commit_callbacks):
+def test_a_certainly_offensive_review_is_hidden_and_queued(customer_user, make_order, ai, django_capture_on_commit_callbacks):
     order = make_order()
     ai.return_value = OFFENSIVE
 
@@ -95,9 +102,80 @@ def test_an_offensive_review_goes_to_the_queue(customer_user, make_order, ai, dj
     assert flag.target_id == review.pk
     assert flag.note.startswith(AUTO_PREFIX)
     assert "offensive language" in flag.note
+    assert "Hidden automatically" in flag.note
     assert flag.raised_by is None
     review.refresh_from_db()
+    assert review.is_hidden_by_admin is True
+    assert review.hidden_by is None
+    assert review.hidden_at is not None
+    assert review.hidden_reason.startswith(AI_HIDE_PREFIX)
+    assert "offensive language" in review.hidden_reason
+    entry = AuditLog.objects.get(action=AuditAction.REVIEW_HIDDEN)
+    assert entry.user is None
+    assert entry.details["review_id"] == review.pk
+    assert entry.details["hidden_by"] == "AI"
+
+
+@pytest.mark.django_db
+def test_a_suspected_review_stays_visible_and_is_queued(customer_user, make_order, ai, django_capture_on_commit_callbacks):
+    order = make_order()
+    ai.return_value = OFFENSIVE_UNSURE
+
+    with django_capture_on_commit_callbacks(execute=True):
+        review = create_farmer_review(
+            customer=customer_user, order_id=order.pk, rating=2, comment="What a d.u.m.b price."
+        )
+
+    flag = open_flags(FlagTarget.FARMER_REVIEW).get()
+    assert "offensive language" in flag.note
+    assert "Hidden automatically" not in flag.note
+    review.refresh_from_db()
     assert review.is_hidden_by_admin is False
+    assert not AuditLog.objects.filter(action=AuditAction.REVIEW_HIDDEN).exists()
+
+
+@pytest.mark.django_db
+def test_an_honest_complaint_is_neither_hidden_nor_queued(customer_user, make_order, ai, django_capture_on_commit_callbacks):
+    order = make_order()
+
+    with django_capture_on_commit_callbacks(execute=True):
+        review = create_farmer_review(
+            customer=customer_user, order_id=order.pk, rating=1, comment="The greens were wilted and half missing."
+        )
+
+    review.refresh_from_db()
+    assert review.is_hidden_by_admin is False
+    assert not ModerationFlag.objects.exists()
+
+
+@pytest.mark.django_db
+def test_a_review_an_admin_restored_stays_visible(customer_user, make_order, ai, django_capture_on_commit_callbacks):
+    order = make_order()
+    ai.return_value = OFFENSIVE
+    with django_capture_on_commit_callbacks(execute=True):
+        review = create_farmer_review(
+            customer=customer_user, order_id=order.pk, rating=1, comment="Terrible stall, never again."
+        )
+
+    restore_review(review_type="FARMER", review_id=review.pk)
+
+    review.refresh_from_db()
+    assert review.is_hidden_by_admin is False
+    assert review.hidden_reason is None
+
+
+@pytest.mark.django_db
+def test_an_admin_sees_which_reviews_the_ai_hid(admin_client, customer_user, make_order, ai, django_capture_on_commit_callbacks):
+    order = make_order()
+    ai.return_value = OFFENSIVE
+    with django_capture_on_commit_callbacks(execute=True):
+        create_farmer_review(customer=customer_user, order_id=order.pk, rating=1, comment="Terrible stall.")
+
+    row = admin_client.get("/api/admin/reviews/", {"type": "FARMER"}).data["data"]["results"][0]
+
+    assert row["is_hidden_by_admin"] is True
+    assert row["hidden_by_ai"] is True
+    assert row["hidden_reason"].startswith(AI_HIDE_PREFIX)
 
 
 @pytest.mark.django_db
@@ -115,6 +193,7 @@ def test_a_phone_number_in_a_review_goes_to_the_queue(customer_user, make_order,
     ai.assert_called_once_with("Great! Call me on 0909 123 456 for a cheaper price.")
 
     assert "contact details" in open_flags(FlagTarget.PRODUCT_REVIEW).get().note
+    assert ProductReview.objects.get().is_hidden_by_admin is True
 
 
 @pytest.mark.django_db
@@ -133,7 +212,7 @@ def test_without_an_api_key_the_model_is_not_asked(customer_user, make_order, se
     settings.GEMINI_API_KEY = ""
     order = make_order()
 
-    with mock.patch("system.auto_flags.gemini.ask_about_review") as ask:
+    with mock.patch("system.auto_flags.gemini.assess_review") as ask:
         with django_capture_on_commit_callbacks(execute=True):
             create_farmer_review(customer=customer_user, order_id=order.pk, rating=1, comment="Rude seller.")
 
@@ -160,7 +239,7 @@ def test_an_abusive_reply_from_the_stall_goes_to_the_queue(customer_user, farmer
     review = create_product_review(
         customer=customer_user, order_id=order.pk, item_id=item.pk, rating=2, comment="Too small."
     )
-    ai.side_effect = lambda text: OFFENSIVE if text == "Then buy elsewhere." else []
+    ai.side_effect = lambda text: OFFENSIVE if text == "Then buy elsewhere." else CLEAN
 
     with django_capture_on_commit_callbacks(execute=True):
         reply_to_review(
@@ -169,6 +248,8 @@ def test_an_abusive_reply_from_the_stall_goes_to_the_queue(customer_user, farmer
 
     flag = open_flags(FlagTarget.PRODUCT_REVIEW).get()
     assert "stall's reply" in flag.note
+    review.refresh_from_db()
+    assert review.is_hidden_by_admin is False
 
 
 @pytest.mark.django_db
@@ -244,6 +325,8 @@ def test_a_broken_queue_never_breaks_the_review(customer_user, make_order, ai, d
             )
 
     assert FarmerReview.objects.filter(pk=review.pk).exists()
+    review.refresh_from_db()
+    assert review.is_hidden_by_admin is False
 
 
 @pytest.mark.django_db
@@ -273,3 +356,25 @@ def test_a_locked_shopper_gets_no_at_risk_flag(customer_user, make_order, farmer
     customer_user.refresh_from_db()
     assert customer_user.is_active is False
     assert not open_flags(FlagTarget.CUSTOMER).exists()
+
+
+@pytest.mark.parametrize(
+    ("raw", "problems", "certain"),
+    [
+        ('{"offensive": true, "off_platform_contact": false, "certain": true, "reason": "Insults the seller."}', 1, True),
+        ('{"offensive": true, "off_platform_contact": false, "certain": false, "reason": "Maybe an insult."}', 1, False),
+        ('{"offensive": true, "off_platform_contact": true, "reason": "No certainty given."}', 2, False),
+        ('{"offensive": false, "off_platform_contact": false, "certain": true, "reason": ""}', 0, False),
+        ('{"offensive": true, "off_platform_contact": false, "certain": "yes", "reason": "Odd answer."}', 1, False),
+    ],
+)
+def test_the_model_answer_is_read_safely(raw, problems, certain):
+    verdict = gemini._parse_review(raw)
+
+    assert len(verdict.problems) == problems
+    assert verdict.certain is certain
+
+
+def test_ask_about_review_still_returns_the_problems():
+    with mock.patch("catalog.ai_review.gemini.assess_review", return_value=OFFENSIVE):
+        assert gemini.ask_about_review("text") == OFFENSIVE.problems

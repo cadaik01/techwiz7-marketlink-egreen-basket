@@ -3,6 +3,7 @@ from rest_framework import serializers
 from reviews.display import short_customer_name
 from reviews.models import FarmerReview
 from reviews.selectors import ReviewType
+from reviews.services.review_moderation_service import hidden_by_ai
 
 REASON_MIN_LENGTH = 5
 REASON_MAX_LENGTH = 500
@@ -24,6 +25,7 @@ class ReviewAdminSerializer(serializers.Serializer):
     replied_at = serializers.DateTimeField(read_only=True, allow_null=True)
     is_hidden_by_admin = serializers.BooleanField(read_only=True)
     hidden_reason = serializers.CharField(read_only=True, allow_null=True)
+    hidden_by_ai = serializers.BooleanField(read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
 
 
@@ -47,5 +49,6 @@ def serialize_review(review_type: str, review) -> dict:
         "replied_at": review.replied_at,
         "is_hidden_by_admin": review.is_hidden_by_admin,
         "hidden_reason": review.hidden_reason,
+        "hidden_by_ai": hidden_by_ai(review),
         "created_at": review.created_at,
     }

@@ -1,16 +1,24 @@
 """Flags the system raises by itself, so the follow-up queue is not only what an admin noticed.
 
-Each rule only asks for a decision: nothing is hidden, locked or refused here, the admin
-decides from the queue (the same stance as the AI listing review). One open flag per thing,
-as with flags an admin raises; a second hit on something already queued adds nothing.
+Each rule only asks for a decision: nothing is locked or refused here, the admin decides from
+the queue. One open flag per thing, as with flags an admin raises; a second hit on something
+already queued adds nothing.
+
+The one exception is a shopper's review the AI is certain breaks the rules (plainly offensive
+words, or contact details to trade outside MarketLink): it is hidden at once, the same way the
+AI holds back a listing it thinks breaks the rules, and the flag tells the admin, who restores
+it if the AI was wrong. A review the AI only suspects stays visible and is flagged. Honest
+complaints are not a problem at all. The stall's reply is only flagged: it lives on the same
+row as the shopper's review, and hiding the row would hide the shopper's words too.
 
 The hooks call these after the triggering change has been saved, and a failure here is
 logged and swallowed: a review or a no-show must never fail because the queue could not be
 written.
 
 Reviews and replies are read by the AI, which judges the meaning of the text (offensive language,
-contact details to trade elsewhere; gemini.ask_about_review). It runs in the background once the
-save has committed, so a shopper never waits for it.
+contact details to trade elsewhere; gemini.assess_review). There is no keyword list: the decision
+is the model's reading of the text. It runs in the background once the save has committed, so a
+shopper never waits for it.
 """
 
 import logging
@@ -22,7 +30,7 @@ from django.db.models import Count
 from django.utils import timezone
 
 from catalog.ai_review import gemini
-from system.models import FlagTarget, ModerationFlag
+from system.models import AuditAction, FlagTarget, ModerationFlag
 
 logger = logging.getLogger("marketlink")
 
@@ -64,15 +72,56 @@ def _review_target(review) -> str:
     return FlagTarget.FARMER_REVIEW if isinstance(review, FarmerReview) else FlagTarget.PRODUCT_REVIEW
 
 
-def _ai_text_check(target_type: str, target_id: int, text: str, who: str) -> ModerationFlag | None:
+def _hide_review_for_ai(target_type: str, target_id: int, problems: str) -> bool:
+    """Hide a shopper's review the AI is certain about. False when it is gone or already hidden
+    (an admin hid it first, or restored it and the decision stands with them)."""
+    from reviews.models import FarmerReview, ProductReview
+    from reviews.selectors import ReviewType
+    from reviews.services.review_moderation_service import AI_HIDE_PREFIX, hide_review
+    from system.services import log_security_event
+
+    is_farmer = target_type == FlagTarget.FARMER_REVIEW
+    model = FarmerReview if is_farmer else ProductReview
+    review_type = ReviewType.FARMER if is_farmer else ReviewType.PRODUCT
+
+    review = model.objects.select_for_update().filter(pk=target_id).first()
+    if review is None or review.is_hidden_by_admin:
+        return False
+    reason = f"{AI_HIDE_PREFIX} {problems}"[:NOTE_MAX_LENGTH]
+    hide_review(review_type=review_type, review_id=target_id, reason=reason, actor=None)
+    log_security_event(
+        action=AuditAction.REVIEW_HIDDEN,
+        user=None,
+        endpoint=None,
+        method=None,
+        ip_address=None,
+        user_agent=None,
+        status_code=None,
+        request_id=None,
+        details={"review_type": review_type, "review_id": target_id, "reason": reason, "hidden_by": "AI"},
+    )
+    return True
+
+
+def _ai_text_check(
+    target_type: str, target_id: int, text: str, who: str, hide_when_certain: bool = False
+) -> ModerationFlag | None:
     try:
-        problems = gemini.ask_about_review(text)
+        verdict = gemini.assess_review(text)
     except gemini.AIUnavailable as exc:
         logger.info("AI check of %s %s skipped: %s", target_type, target_id, exc)
         return None
-    if not problems:
+    if not verdict.problems:
         return None
-    return _raise_once(target_type, target_id, f"{who} contains {'; '.join(problems)}.")
+    note = f"{who} contains {'; '.join(verdict.problems)}."
+    if not (hide_when_certain and verdict.certain):
+        return _raise_once(target_type, target_id, note)
+    # Hide and queue together: if the flag cannot be written the review stays visible, so a
+    # hidden review always has an entry in the admin's queue.
+    with transaction.atomic():
+        if _hide_review_for_ai(target_type, target_id, "; ".join(verdict.problems)):
+            note = f"{note[:-1]}. Hidden automatically until an admin checks it."
+        return _raise_once(target_type, target_id, note)
 
 
 def _run_ai_text_check(*args) -> None:
@@ -83,11 +132,13 @@ def _run_ai_text_check(*args) -> None:
         close_old_connections()
 
 
-def schedule_ai_text_check(target_type: str, target_id: int, text: str | None, who: str) -> None:
+def schedule_ai_text_check(
+    target_type: str, target_id: int, text: str | None, who: str, hide_when_certain: bool = False
+) -> None:
     """Ask the AI about the text once the save has committed, off the request."""
     if not text or not gemini.is_configured():
         return
-    args = (target_type, target_id, text, who)
+    args = (target_type, target_id, text, who, hide_when_certain)
     if settings.AI_MODERATION_RUN_INLINE:
         transaction.on_commit(lambda: safely(_ai_text_check, *args))
     else:
@@ -97,12 +148,16 @@ def schedule_ai_text_check(target_type: str, target_id: int, text: str | None, w
 
 
 def check_review_text(review) -> None:
-    """A shopper's review goes to the AI; a flag follows only if it finds a problem."""
-    schedule_ai_text_check(_review_target(review), review.pk, review.comment, "the review")
+    """A shopper's review goes to the AI: a certain problem hides it and flags it, a suspected
+    one only flags it, a clean review is left alone."""
+    schedule_ai_text_check(
+        _review_target(review), review.pk, review.comment, "the review", hide_when_certain=True
+    )
 
 
 def check_reply_text(review) -> None:
-    """The stall's public reply to a review, held to the same check as the review."""
+    """The stall's public reply to a review, held to the same check as the review. Flagged only:
+    hiding the row would also hide the shopper's review the reply sits on."""
     schedule_ai_text_check(_review_target(review), review.pk, review.reply, "the stall's reply")
 
 
