@@ -1,0 +1,1183 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hành trình dùng chung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Lexend:wght@500;600;700&display=swap">
+<style>
+/* Layout: same system as "Sổ tay MarketLink" — sticky journey index on the left, one reading column; stacks on phones. */
+:root {
+  --bg: #f4f6f1; --surface: #ffffff; --sunken: #eaeee6; --ink: #1b231e; --muted: #59645d; --line: #d8ded4;
+  --accent: #2e6a3e; --accent-soft: #e1ede3;
+  --fe: #2c5a87; --fe-soft: #e0ebf6; --be: #2e6a3e; --be-soft: #e1ede3;
+  --db: #9a5a0e; --db-soft: #f6e9d6; --ext: #6b4a8f; --ext-soft: #ece4f5;
+  --warn: #a3401f; --warn-soft: #f7e3da; --why: #7a5a00; --why-soft: #faf1d2;
+  --font-display: "Lexend", "Be Vietnam Pro", system-ui, sans-serif;
+  --font-body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111613; --surface: #181f1b; --sunken: #1f2722; --ink: #e3e9e4; --muted: #98a39c; --line: #2c3631;
+    --accent: #7fc492; --accent-soft: #1d3324; --fe: #8db9e6; --fe-soft: #1a2a3b; --be: #7fc492; --be-soft: #1d3324;
+    --db: #e2a55d; --db-soft: #3a2a17; --ext: #c3a5e6; --ext-soft: #2b2238; --warn: #ef9a7a; --warn-soft: #3b231b;
+    --why: #e8c766; --why-soft: #332b12; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111613; --surface: #181f1b; --sunken: #1f2722; --ink: #e3e9e4; --muted: #98a39c; --line: #2c3631;
+  --accent: #7fc492; --accent-soft: #1d3324; --fe: #8db9e6; --fe-soft: #1a2a3b; --be: #7fc492; --be-soft: #1d3324;
+  --db: #e2a55d; --db-soft: #3a2a17; --ext: #c3a5e6; --ext-soft: #2b2238; --warn: #ef9a7a; --warn-soft: #3b231b;
+  --why: #e8c766; --why-soft: #332b12; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.65; }
+.wrap { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 44px; max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px; }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 20px); align-self: start; max-height: calc(100vh - 40px); overflow-y: auto; font-size: 14px; }
+.toc-title { font-family: var(--font-display); font-weight: 600; font-size: 15px; margin: 0 0 10px; }
+.toc-group { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 14px 0 4px 10px; }
+.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
+.toc a { display: flex; gap: 8px; color: var(--muted); text-decoration: none; padding: 4px 10px; border-radius: 6px; border-left: 2px solid transparent; }
+.toc a:hover, .toc a:focus-visible { color: var(--ink); background: var(--sunken); outline: none; }
+.toc a.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-soft); }
+.toc .num { font-family: var(--font-mono); font-size: 12px; flex: none; padding-top: 1px; }
+.toc a.dim { opacity: .35; }
+main { min-width: 0; max-width: 840px; }
+header.hero { padding-block: 4px 24px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 4.4vw, 42px); line-height: 1.15; margin: 0 0 14px; text-wrap: balance; }
+.lede { font-size: 18px; color: var(--muted); max-width: 66ch; margin: 0 0 12px; }
+section.group { padding-block: 36px 4px; scroll-margin-top: 12px; }
+h2 { font-family: var(--font-display); font-weight: 600; font-size: 26px; line-height: 1.25; margin: 0 0 8px; text-wrap: balance; display: flex; gap: 12px; align-items: baseline; }
+h2 .sn { font-family: var(--font-mono); font-size: 15px; color: var(--accent); font-weight: 500; }
+h3 { font-family: var(--font-display); font-weight: 600; font-size: 17px; margin: 22px 0 8px; }
+h4 { font-weight: 600; font-size: 15px; margin: 18px 0 6px; }
+p { margin: 0 0 12px; max-width: 70ch; }
+.sub { color: var(--muted); }
+code { font-family: var(--font-mono); font-size: .85em; }
+p code, li code, td code, dd code, .path code { background: var(--sunken); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+a { color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 0 0 12px; }
+li { margin-bottom: 4px; }
+pre.code { background: var(--sunken); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; overflow-x: auto; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.55; margin: 6px 0 12px; }
+.diagram { background: var(--sunken); border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin: 6px 0 16px; overflow-x: auto; }
+.diagram pre.mermaid { margin: 0; background: transparent; text-align: center; }
+
+.chip { display: inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .04em; padding: 2px 7px; border-radius: 4px; vertical-align: 2px; white-space: nowrap; }
+.chip.fe { color: var(--fe); background: var(--fe-soft); }
+.chip.be { color: var(--be); background: var(--be-soft); }
+.chip.db { color: var(--db); background: var(--db-soft); }
+.chip.ext { color: var(--ext); background: var(--ext-soft); }
+.chip.read { color: var(--fe); background: var(--fe-soft); }
+.chip.write { color: var(--db); background: var(--db-soft); }
+.chip.local { color: var(--muted); background: var(--sunken); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 18px 0 0; }
+.tools input { font: inherit; font-size: 14px; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); flex: 1 1 220px; min-width: 0; }
+.tools button { font: inherit; font-size: 14px; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.tools button:hover { background: var(--sunken); }
+.tools :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.count { font-size: 13px; color: var(--muted); }
+
+/* concepts */
+.concept { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; margin: 0 0 12px; }
+.concept h3 { margin-top: 0; }
+
+/* journey card */
+details.j { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; margin: 0 0 14px; scroll-margin-top: 12px; }
+details.j > summary { cursor: pointer; list-style: none; padding: 16px 20px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; align-items: baseline; }
+details.j > summary::-webkit-details-marker { display: none; }
+details.j > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 12px; }
+.jid { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--accent); }
+.jt { font-family: var(--font-display); font-weight: 600; font-size: 19px; line-height: 1.3; text-wrap: balance; }
+.jk { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.jtoggle { grid-column: 1 / -1; font-size: 13px; color: var(--muted); }
+details.j[open] .jtoggle .open-t, details.j:not([open]) .jtoggle .close-t { display: none; }
+.jb { padding: 0 20px 18px; border-top: 1px solid var(--line); }
+.meta { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 4px 14px; margin: 14px 0 4px; font-size: 15px; }
+.meta dt { color: var(--muted); font-size: 13px; padding-top: 2px; }
+.meta dd { margin: 0; min-width: 0; }
+
+ol.steps { list-style: none; padding: 0; margin: 6px 0 12px; counter-reset: step; }
+ol.steps > li { counter-increment: step; position: relative; padding: 0 0 14px 42px; margin: 0; }
+ol.steps > li::before { content: counter(step); position: absolute; left: 0; top: 1px; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-mono); font-size: 12px; font-weight: 500; background: var(--surface); border: 1.5px solid var(--line); color: var(--ink); }
+ol.steps > li::after { content: ""; position: absolute; left: 14px; top: 31px; bottom: 2px; width: 1.5px; background: var(--line); }
+ol.steps > li:last-child::after { display: none; }
+.st { font-weight: 600; display: block; margin-bottom: 3px; }
+.st .chip { margin-right: 6px; }
+ol.sub-steps { padding-left: 20px; margin: 6px 0 6px; }
+ol.sub-steps li { margin-bottom: 6px; }
+
+.why { background: var(--why-soft); border-radius: 8px; padding: 10px 14px; margin: 8px 0 10px; font-size: 15px; }
+.why::before { content: "Vì sao"; display: inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--why); margin-right: 8px; }
+.why p:last-child { margin-bottom: 0; }
+.note { border-radius: 8px; padding: 12px 14px; margin: 8px 0 12px; background: var(--accent-soft); font-size: 15px; }
+.note.warn { background: var(--warn-soft); }
+.note strong:first-child { display: block; margin-bottom: 2px; }
+.note p:last-child { margin-bottom: 0; }
+
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); margin: 6px 0 14px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); background: var(--sunken); }
+tr:last-child td { border-bottom: 0; }
+.files { font-size: 14px; color: var(--muted); }
+.files code { color: var(--ink); }
+.files p { margin-bottom: 6px; }
+
+ol.findings { padding-left: 24px; }
+ol.findings li { margin-bottom: 10px; }
+
+@media (max-width: 1000px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 20px 16px 64px; }
+  nav.toc { position: static; max-height: none; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin-bottom: 8px; }
+  .toc .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+}
+@media (max-width: 620px) {
+  .toc .cols { grid-template-columns: 1fr; }
+  details.j > summary { grid-template-columns: auto minmax(0, 1fr); }
+  .jk { grid-column: 1 / -1; justify-content: flex-start; }
+  .meta { grid-template-columns: 1fr; }
+  .meta dt { padding-top: 8px; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Danh sách hành trình">
+  <p class="toc-title">Hành trình dùng chung</p>
+  <div class="cols">
+    <div>
+      <p class="toc-group">Nền tảng</p>
+      <ol><li><a href="#khai-niem"><span class="num">··</span>Hai khái niệm chung</a></li></ol>
+      <p class="toc-group">Phiên đăng nhập</p>
+      <ol>
+        <li><a href="#x-01"><span class="num">X-01</span>Đăng nhập cổng chợ</a></li>
+        <li><a href="#x-02"><span class="num">X-02</span>Tự làm mới token</a></li>
+        <li><a href="#x-03"><span class="num">X-03</span>Tải tài khoản, chặn trang</a></li>
+        <li><a href="#x-04"><span class="num">X-04</span>Đăng xuất</a></li>
+        <li><a href="#x-05"><span class="num">X-05</span>Đổi mật khẩu</a></li>
+      </ol>
+    </div>
+    <div>
+      <p class="toc-group">Thông báo</p>
+      <ol>
+        <li><a href="#x-06"><span class="num">X-06</span>Chuông thông báo</a></li>
+        <li><a href="#x-07"><span class="num">X-07</span>Đánh dấu một tin đã đọc</a></li>
+        <li><a href="#x-08"><span class="num">X-08</span>Đánh dấu tất cả đã đọc</a></li>
+        <li><a href="#x-09"><span class="num">X-09</span>Trang danh sách thông báo</a></li>
+      </ol>
+      <p class="toc-group">Trợ lý, cấu hình, banner</p>
+      <ol>
+        <li><a href="#x-10"><span class="num">X-10</span>Hỏi trợ lý AI</a></li>
+        <li><a href="#x-11"><span class="num">X-11</span>Cấu hình công khai</a></li>
+        <li><a href="#x-12"><span class="num">X-12</span>Banner thông báo chung</a></li>
+      </ol>
+      <p class="toc-group">Kết luận</p>
+      <ol><li><a href="#luu-y"><span class="num">!!</span>Điểm cần lưu ý</a></li></ol>
+    </div>
+  </div>
+</nav>
+
+<main>
+<header class="hero">
+  <p class="eyebrow"><a href="https://claude.ai/artifact/HCcrWguA4ztxDyTtp7UbSE#luong">← Sổ tay MarketLink</a> · Hành trình dữ liệu · File 00</p>
+  <h1>Hành trình dùng chung cho mọi vai trò</h1>
+  <p class="lede">Đăng nhập, giữ phiên, đăng xuất, đổi mật khẩu, thông báo, trợ lý AI, cấu hình công khai và banner. Các file của từng vai trò sẽ dẫn chiếu về đây thay vì viết lại. Mọi chi tiết được đọc từ code thật; đường dẫn file ghi ở cuối mỗi hành trình.</p>
+  <div class="legend">
+    <span><span class="chip fe">FE</span> trình duyệt (React)</span>
+    <span><span class="chip be">BE</span> server (Django)</span>
+    <span><span class="chip db">DB</span> MySQL</span>
+    <span><span class="chip ext">REDIS / AI</span> dịch vụ ngoài</span>
+    <span><span class="chip read">ĐỌC</span> <span class="chip write">GHI</span> <span class="chip local">TRÌNH DUYỆT</span> loại hành trình</span>
+  </div>
+  <div class="tools">
+    <input id="q" type="search" placeholder="Tìm trong các hành trình: refresh, Redis, pwv, polling…" aria-label="Tìm trong các hành trình">
+    <button type="button" id="open-all">Mở tất cả</button>
+    <button type="button" id="close-all">Thu gọn tất cả</button>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+
+<!-- ============ KHÁI NIỆM ============ -->
+<section class="group" id="khai-niem">
+  <h2><span class="sn">··</span>Hai khái niệm dùng ở mọi hành trình</h2>
+  <p class="sub">Mỗi hành trình đi theo cùng thứ tự: người dùng làm gì → frontend kiểm tra gì → request → backend (view, quyền, serializer, service) → bảng MySQL và khoá Redis → frontend hiển thị lại → lỗi có thể gặp. Các ô màu vàng ghi <strong>lý do thiết kế</strong>, phần quan trọng nhất khi bảo vệ.</p>
+
+  <div class="concept">
+    <h3>Envelope: khuôn phản hồi chung</h3>
+    <p>Mọi API trả cùng một khuôn JSON <code>{ success, message, request_id, data, errors, code? }</code> (<code>backend/marketlink_core/responses.py → api_response()</code>). Khi lỗi, hàm <code>custom_exception_handler</code> trong cùng file chuyển mọi exception thành khuôn này. <code>axiosClient</code> ở frontend bóc lớp vỏ: thành công thì component nhận thẳng <code>data</code>; lỗi thì nhận một <code>ApiError</code> có <code>code</code> và <code>fieldErrors</code>.</p>
+    <div class="why"><p>Frontend chỉ cần một chỗ xử lý phản hồi. <code>code</code> (ví dụ <code>INVALID_CREDENTIALS</code>) ổn định hơn câu chữ <code>message</code>, nên frontend dựa vào <code>code</code> để chọn câu thông báo (<code>utils/errorMap.js</code>). <code>request_id</code> giúp lần ra đúng dòng log khi người dùng báo lỗi.</p></div>
+  </div>
+
+  <div class="concept">
+    <h3>Hai cổng đăng nhập, hai kho token</h3>
+    <p>Frontend có hai kho token riêng trong localStorage: <code>useMarketAuthStore</code> cho cổng chợ (khách, nông dân) và <code>useAdminAuthStore</code> cho cổng admin (<code>stores/auth.store.js</code>). Kho nào được dùng phụ thuộc vào URL hiện tại: đường dẫn bắt đầu bằng <code>/admin</code> dùng kho admin, còn lại dùng kho chợ (<code>portalForPath</code>).</p>
+    <div class="why"><p>Một người có thể vừa mở trang admin vừa mở trang nông dân trên cùng trình duyệt (rất hay gặp khi demo). Nếu dùng chung một kho, đăng nhập bên này sẽ đá văng bên kia. Tách kho cũng đảm bảo token admin không bao giờ bị gửi kèm từ các trang của chợ.</p></div>
+  </div>
+</section>
+
+<!-- ============ NHÓM 1 ============ -->
+<section class="group" id="nhom-1">
+  <h2><span class="sn">01</span>Phiên đăng nhập</h2>
+
+  <!-- X-01 -->
+  <details class="j" id="x-01" open>
+    <summary>
+      <span class="jid">X-01</span><span class="jt">Đăng nhập cổng chợ (khách hàng, nông dân)</span><span class="jk"><span class="chip write">GHI</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Vào <code>/login</code>, nhập email và mật khẩu, bấm <strong>Sign in</strong>.</dd>
+        <dt>Component</dt><dd><code>pages/auth/LoginPage.jsx</code> → <code>pages/auth/LoginForm.jsx</code>. Route được bọc bởi guard <code>GuestOnly</code>: người đã đăng nhập mà vào <code>/login</code> sẽ bị chuyển về trang chủ của vai trò mình.</dd>
+      </dl>
+
+      <div class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  actor U as Người dùng
+  participant F as LoginForm
+  participant H as useLogin
+  participant AX as axiosClient
+  participant V as LoginView
+  participant S as auth_service
+  participant DB as MySQL
+  participant R as Redis
+  U->>F: nhập email, mật khẩu, bấm Sign in
+  F->>F: zod kiểm tra, email về chữ thường
+  F->>H: mutate(values)
+  H->>AX: authApi.login
+  AX->>V: POST /api/auth/login/ JSON email, password
+  V->>R: throttle: 5 lần mỗi phút theo IP, 20 lần sai mỗi giờ theo email
+  V->>V: LoginWriteSerializer kiểm tra dữ liệu
+  V->>S: authenticate_user()
+  S->>DB: SELECT users JOIN roles theo email
+  alt sai email, sai mật khẩu, hoặc sai cổng
+    S-->>V: INVALID_CREDENTIALS
+    V->>R: đếm thêm 1 lần sai cho email
+    V->>DB: INSERT audit_logs LOGIN_FAILED
+    V-->>AX: 401
+    AX-->>H: ApiError, toast lỗi
+  else tài khoản bị khoá
+    S-->>V: ACCOUNT_LOCKED, không đếm lần sai
+    V->>DB: INSERT audit_logs LOGIN_FAILED
+    V-->>AX: 403 kèm lý do khoá
+    AX-->>H: ApiError, toast và lý do trên form
+  else hợp lệ
+    S-->>V: user
+    V->>DB: INSERT audit_logs LOGIN, UPDATE last_login
+    V->>V: issue_tokens, đọc hồ sơ để tạo user
+    V-->>AX: 200 access, refresh, user
+    AX-->>H: data đã bóc envelope
+    H->>H: setTokens vào localStorage, setQueryData(me), chuyển trang theo vai trò
+  end
+</pre>
+      </div>
+
+      <h3>Các bước</h3>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Kiểm tra form trên trình duyệt</span>
+          <code>LoginForm</code> dùng <code>react-hook-form</code> với <code>zodResolver(loginSchema)</code> (<code>schemas/common/auth.schema.js</code>):
+          <ul>
+            <li><code>email</code>: cắt khoảng trắng, không rỗng, tối đa 100 ký tự, đúng định dạng, rồi <strong>chuyển sang chữ thường</strong>.</li>
+            <li><code>password</code>: chỉ cần không rỗng.</li>
+          </ul>
+          Sai thì báo lỗi ngay dưới ô nhập, không gửi request.
+          <div class="why"><p>Ở bước đăng nhập, quy tắc độ mạnh mật khẩu không có ý nghĩa: nếu quy tắc đổi về sau, người có mật khẩu cũ vẫn phải đăng nhập được. Quy tắc độ mạnh chỉ áp dụng khi tạo hoặc đổi mật khẩu. Email chuyển chữ thường vì <code>An@Gmail.com</code> và <code>an@gmail.com</code> phải là một tài khoản; backend làm lại việc này (bước 5) vì API có thể bị gọi thẳng mà không qua form.</p></div>
+        </li>
+        <li><span class="st"><span class="chip fe">FE</span>Gọi mutation</span>
+          <code>login.mutate(values)</code> với <code>useLogin()</code> (<code>hooks/authentication/useAuth.js</code>), hook này gọi <code>authApi.login</code> (<code>api/common/authApi.js</code>). Trong lúc chờ, nút hiện trạng thái loading (<code>login.isPending</code>) để người dùng không bấm nhiều lần.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Request</span>
+<pre class="code">POST /api/auth/login/
+Content-Type: application/json
+
+{ "email": "an@gmail.com", "password": "matkhau123" }</pre>
+          Interceptor của <code>axiosClient</code> vẫn chạy, nhưng kho token đang trống nên không có header <code>Authorization</code>.</li>
+        <li><span class="st"><span class="chip be">BE</span>Định tuyến và cấu hình view</span>
+          <code>marketlink_core/urls.py</code> → <code>accounts/auth/urls.py</code> → <code>LoginView</code> (<code>accounts/auth/views_common.py</code>). View khai báo:
+          <ul>
+            <li><code>permission_classes = [AllowAny]</code>: chưa đăng nhập thì mới cần gọi API này.</li>
+            <li><code>authentication_classes = []</code>: <strong>bỏ qua hoàn toàn</strong> việc đọc token cũ.</li>
+            <li>Hai lớp giới hạn tốc độ (throttle): <code>ScopedRateThrottle</code> scope <code>login</code> = <strong>5 lần mỗi phút trên một IP</strong>; <code>LoginEmailThrottle</code> (<code>accounts/auth/throttles.py</code>) = <strong>20 lần sai mỗi giờ trên một email</strong>, bất kể IP.</li>
+          </ul>
+          <div class="why"><p><strong>Bỏ đọc token cũ:</strong> nếu trình duyệt còn giữ một token hỏng và vô tình gửi kèm, lớp xác thực sẽ trả 401 trước khi view kịp chạy, người dùng không bao giờ đăng nhập lại được.</p>
+          <p><strong>Hai lớp throttle:</strong> giới hạn theo IP chặn một máy dò mật khẩu nhiều tài khoản; giới hạn theo email chặn kẻ đổi IP liên tục để dò một tài khoản. <code>LoginEmailThrottle</code> là loại "chỉ kiểm tra": chỉ đếm khi view gọi <code>record_throttle</code> sau một lần <strong>sai mật khẩu</strong>, nên người đăng nhập đúng nhiều lần không bị khoá oan. Email được băm SHA-256 trước khi làm khoá cache để không nằm dạng thô trong Redis.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span>Kiểm tra dữ liệu</span>
+          <code>LoginWriteSerializer</code> (<code>accounts/auth/serializers_common.py</code>): email đúng định dạng, tối đa 100 ký tự, cắt khoảng trắng, chuyển chữ thường. Mật khẩu để nguyên (<code>trim_whitespace=False</code>).
+          <div class="why"><p>Khoảng trắng ở đầu hoặc cuối có thể là một phần của mật khẩu thật.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Xác thực</span>
+          <code>authenticate_user(email, password, roles=MARKET_PORTAL_ROLES)</code> (<code>accounts/services/auth_service.py</code>) làm lần lượt:
+          <ol class="sub-steps">
+            <li><code>SELECT</code> bảng <code>users</code> JOIN <code>roles</code> theo email.</li>
+            <li>Không tìm thấy email: <strong>vẫn băm mật khẩu một lần</strong> (<code>CustomUser().set_password(password)</code>) rồi báo <code>INVALID_CREDENTIALS</code>.
+              <div class="why"><p>Băm mật khẩu tốn vài trăm mili giây. Nếu email không tồn tại mà trả lời ngay, kẻ tấn công đo thời gian phản hồi là biết email nào có tài khoản. Băm "giả" làm thời gian hai trường hợp như nhau.</p></div></li>
+            <li>Sai mật khẩu (<code>check_password</code> so với bản băm trong DB): <code>INVALID_CREDENTIALS</code>.</li>
+            <li>Vai trò không thuộc cổng này (ví dụ admin đăng nhập ở <code>/login</code>): <strong>cũng</strong> <code>INVALID_CREDENTIALS</code>.
+              <div class="why"><p>Câu báo "sai cổng" sẽ xác nhận với người lạ rằng email này là tài khoản admin.</p></div></li>
+            <li>Tài khoản bị khoá (<code>is_active = False</code>): <code>ACCOUNT_LOCKED</code> (HTTP 403). Khách bị khoá có ghi lý do (<code>customer_profiles.deactivation_reason</code>) thì lý do được gửi kèm trong <code>errors.reason</code>.
+              <div class="why"><p>Kiểm tra khoá <strong>sau</strong> mật khẩu: chỉ người biết đúng mật khẩu mới được biết tài khoản bị khoá và lý do.</p></div></li>
+          </ol></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Ghi nhật ký</span>
+          <ul>
+            <li>Thất bại: nếu là lỗi sai thông tin thì <code>record_throttle</code> đếm thêm một lần sai cho email đó. Dù là sai thông tin hay tài khoản bị khoá, đều ghi <code>audit_logs</code> với <code>action = LOGIN_FAILED</code>, kèm email và mã lỗi, rồi ném lỗi tiếp.</li>
+            <li>Thành công: ghi <code>audit_logs</code> với <code>action = LOGIN</code>, cập nhật <code>users.last_login</code>.</li>
+          </ul>
+          Hàm ghi là <code>log_request_event</code> (<code>system/services.py</code>): tự lưu IP, user agent, endpoint, <code>request_id</code>, và <strong>tự che</strong> mọi khoá có chữ <code>password</code>, <code>token</code>, <code>secret</code>, <code>credential</code>, <code>authorization</code>, <code>api_key</code> trong <code>details</code> thành <code>[REDACTED]</code>.
+          <div class="why"><p>Dòng <code>LOGIN_FAILED</code> không bị mất khi view ném lỗi vì dự án tắt <code>ATOMIC_REQUESTS</code> (<code>settings.py</code>): mỗi lệnh ghi tự commit, nên dòng nhật ký được giữ lại dù sau đó view ném lỗi.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span>Cấp token</span>
+          <code>build_auth_payload(user)</code> → <code>issue_tokens(user)</code> (<code>accounts/auth/tokens.py</code>) tạo refresh token rồi gắn thêm ba "claim" (trường dữ liệu bên trong token):
+          <ul>
+            <li><code>role</code>: mã vai trò.</li>
+            <li><code>sid</code>: mã phiên, UUID mới cho mỗi lần đăng nhập. Mỗi thiết bị là một phiên riêng.</li>
+            <li><code>pwv</code>: "phiên bản mật khẩu", 16 ký tự đầu của HMAC tính trên <strong>bản băm</strong> mật khẩu hiện tại.</li>
+          </ul>
+          Access token sinh từ refresh token nên mang đủ <code>user_id</code>, <code>role</code>, <code>sid</code>, <code>pwv</code>. Thời hạn: access <strong>15 phút</strong>, refresh <strong>7 ngày</strong> (<code>SIMPLE_JWT</code>).
+          <div class="why">
+            <p><strong><code>sid</code>:</strong> JWT bình thường không thu hồi được. Có <code>sid</code> thì đăng xuất chỉ cần đánh dấu "phiên này đã chết" trong Redis, mọi token của phiên lập tức vô hiệu (X-04).</p>
+            <p><strong><code>pwv</code>:</strong> đổi mật khẩu thì bản băm đổi nên <code>pwv</code> đổi. Mọi token cũ mang <code>pwv</code> cũ bị từ chối mà không phải lưu danh sách token nào (X-05).</p>
+            <p><strong>Access ngắn, refresh dài:</strong> access được gửi kèm <strong>mọi</strong> request nên dễ bị lộ hơn; cho nó sống ngắn để nếu lộ thì thiệt hại nhỏ. Refresh chỉ dùng ở một endpoint nên được sống lâu, người dùng không phải đăng nhập lại mỗi 15 phút.</p>
+          </div></li>
+        <li><span class="st"><span class="chip be">BE</span>Response</span>
+<pre class="code">{
+  "success": true,
+  "message": "Login successful",
+  "request_id": "3f2c…",
+  "data": {
+    "access": "eyJhbGciOi…",
+    "refresh": "eyJhbGciOi…",
+    "user": { "id": 12, "email": "an@gmail.com", "role": "CUSTOMER",
+              "display_name": "Nguyễn An", "farmer_status": null, "avatar": null }
+  },
+  "errors": {}
+}</pre>
+          <code>user</code> do <code>MeReadSerializer</code> tạo: <code>display_name</code> là <code>full_name</code> của khách, hoặc <code>stall_name</code> của nông dân, hoặc chữ "Administrator"; <code>farmer_status</code> chỉ có với nông dân (PENDING, APPROVED, SUSPENDED, REJECTED); <code>avatar</code> là ảnh hồ sơ.
+          <div class="why"><p>Trả luôn <code>user</code> thay vì để frontend gọi thêm <code>/auth/me/</code>: tiết kiệm một vòng request, frontend chuyển trang ngay theo vai trò.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Bắt đầu phiên</span>
+          <code>useStartSession(PORTALS.MARKET)</code> trong <code>useAuth.js</code>:
+          <ol class="sub-steps">
+            <li><code>setTokens({ access, refresh })</code> lưu vào kho Zustand; middleware <code>persist</code> ghi xuống localStorage. Kho tự giải mã payload của access token để lấy <code>user_id</code>.</li>
+            <li><code>queryClient.setQueryData(authKeys.me('market'), user)</code>: ghi sẵn thông tin tài khoản vào cache. Các guard (X-03) đọc từ đây nên không phải gọi lại <code>/auth/me/</code>.</li>
+            <li>Chuyển trang theo <code>redirectAfterSignIn</code>: nếu trước đó người dùng bị chặn ở một trang (guard lưu vào <code>location.state.from</code>) <strong>và</strong> trang đó hợp vai trò thì quay lại đúng trang đó; nếu không thì về trang chủ của vai trò: khách về <code>/</code>, nông dân về <code>/farmer</code>.
+              <div class="why"><p>Nếu một nông dân bị chặn ở <code>/customer/cart</code> rồi đăng nhập, đưa họ quay lại trang khách sẽ chỉ dẫn tới trang 403.</p></div></li>
+            <li>Toast "Welcome back, &lt;tên&gt;".</li>
+          </ol></li>
+      </ol>
+
+      <h3>Lưu trữ</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Nơi</th><th>Đọc / ghi</th></tr></thead>
+        <tbody>
+          <tr><td>MySQL <code>users</code>, <code>roles</code></td><td>Đọc tài khoản và vai trò; ghi <code>last_login</code></td></tr>
+          <tr><td>MySQL <code>customer_profiles</code> / <code>farmer_profiles</code></td><td>Đọc tên hiển thị, ảnh, trạng thái nông dân, lý do khoá</td></tr>
+          <tr><td>MySQL <code>audit_logs</code></td><td>Ghi <code>LOGIN</code> hoặc <code>LOGIN_FAILED</code></td></tr>
+          <tr><td>Redis (cache <code>default</code>)</td><td>Bộ đếm throttle theo IP và theo email đã băm</td></tr>
+          <tr><td>localStorage</td><td><code>access</code>, <code>refresh</code>, <code>userId</code> của cổng chợ</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Lỗi và cách hiển thị</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Tình huống</th><th>Mã / HTTP</th><th>Hiển thị</th></tr></thead>
+        <tbody>
+          <tr><td>Sai email hoặc mật khẩu, hoặc sai cổng</td><td><code>INVALID_CREDENTIALS</code> / 401</td><td>Toast "Incorrect email or password"</td></tr>
+          <tr><td>Tài khoản bị khoá</td><td><code>ACCOUNT_LOCKED</code> / 403</td><td>Toast "This account is locked". Có lý do thì <code>mapServerErrorsToForm</code> thấy trường <code>reason</code> không thuộc form nên gom vào lỗi chung, hiện ngay trên nút Sign in</td></tr>
+          <tr><td>Thử quá nhiều lần</td><td><code>THROTTLED</code> / 429</td><td>Toast "Too many attempts – Please wait a few minutes before trying again" (câu lấy từ <code>utils/errorMap.js</code>); response có header <code>Retry-After</code></td></tr>
+          <tr><td>Email sai định dạng (gọi thẳng API)</td><td><code>VALIDATION_ERROR</code> / 400</td><td>Lỗi gắn đúng dưới ô Email nhờ <code>mapServerErrorsToForm</code></td></tr>
+        </tbody>
+      </table></div>
+      <div class="note"><p><strong>Toast từ đâu ra:</strong> <code>queryClient</code> có một <code>MutationCache.onError</code> chung, tự hiện toast cho mọi mutation lỗi, trừ mutation đánh dấu <code>meta.silent</code>. <code>useLogin</code> không "silent" nên lỗi luôn có toast.</p>
+      <p><strong>401 ở đây không kích hoạt làm mới token:</strong> interceptor bỏ qua <code>/auth/login/</code> (danh sách <code>NO_REFRESH_PATHS</code> trong <code>axiosClient.js</code>), vì 401 ở đây nghĩa là sai mật khẩu, không phải token hết hạn. Thử làm mới là vô nghĩa và sẽ che mất lỗi thật.</p></div>
+
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/auth/LoginForm.jsx</code>, <code>schemas/common/auth.schema.js</code>, <code>hooks/authentication/useAuth.js</code>, <code>api/common/authApi.js</code>, <code>stores/auth.store.js</code>, <code>lib/axiosClient.js</code>, <code>utils/mapServerErrors.js</code>, <code>utils/errorMap.js</code>, <code>lib/queryClient.js</code></p>
+        <p><strong>Backend:</strong> <code>accounts/auth/urls.py</code>, <code>accounts/auth/views_common.py → LoginView</code>, <code>accounts/auth/serializers_common.py</code>, <code>accounts/auth/throttles.py</code>, <code>accounts/auth/tokens.py</code>, <code>accounts/services/auth_service.py → authenticate_user</code>, <code>system/services.py → log_request_event</code></p>
+      </div>
+    </div>
+  </details>
+
+  <!-- X-02 -->
+  <details class="j" id="x-02" open>
+    <summary>
+      <span class="jid">X-02</span><span class="jt">Tự làm mới token khi access token hết hạn</span><span class="jk"><span class="chip write">GHI</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Không làm gì cả. Hành trình chạy ngầm khi một request bất kỳ bị 401 vì access token (sống 15 phút) đã hết hạn.</dd>
+        <dt>Nơi xử lý</dt><dd>Interceptor response trong <code>lib/axiosClient.js</code></dd>
+      </dl>
+
+      <div class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant P as Trang bất kỳ
+  participant AX as axiosClient
+  participant V as RefreshView
+  participant R as Redis
+  P->>AX: GET /api/customer/orders/
+  AX-->>AX: 401, access hết hạn
+  Note over AX: nhiều request 401 cùng lúc dùng chung một lần làm mới
+  AX->>V: POST /api/auth/refresh/ bằng axios gốc
+  V->>R: phiên bị thu hồi chưa, giấy miễn trừ đổi mật khẩu
+  V->>V: so pwv
+  V->>R: SET NX jti, chỉ lần đầu thành công
+  alt token đã từng được dùng
+    V->>R: thu hồi cả phiên
+    V-->>AX: 401 TOKEN_INVALID
+    AX-->>P: xoá phiên, toast hết phiên
+  else hợp lệ
+    V-->>AX: cặp token mới, giữ nguyên sid
+    AX->>AX: lưu token, gửi lại request ban đầu
+    AX-->>P: dữ liệu như bình thường
+  end
+</pre>
+      </div>
+
+      <h3>Các bước</h3>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Một request bị 401</span>
+          Ví dụ khách mở trang đơn hàng sau 20 phút không thao tác. <code>GET /api/customer/orders/</code> mang access token đã hết hạn → <code>SessionJWTAuthentication</code> từ chối → 401.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Interceptor quyết định có làm mới không</span>
+          Chỉ làm mới khi <strong>tất cả</strong> điều kiện đúng: mã lỗi 401; request chưa từng được thử lại (<code>config._retried</code> chưa có); không phải <code>/auth/login/</code>, <code>/auth/admin/login/</code>, <code>/auth/refresh/</code>; kho token có <code>refreshToken</code>.
+          <div class="why"><p>Cờ <code>_retried</code>: nếu token mới vẫn bị 401 (ví dụ tài khoản vừa bị khoá), không có cờ này thì request sẽ lặp "401 → làm mới → 401" vô hạn.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Gộp các lần làm mới chạy song song</span>
+          <code>refreshAccessToken(store)</code> giữ một <code>Map</code> các promise đang chạy, mỗi kho một promise. Nếu năm request cùng bị 401 (một trang thường gọi 3–5 API cùng lúc), chỉ <strong>một</strong> request làm mới được gửi; bốn request kia chờ chung promise đó.
+          <div class="why"><p>Bắt buộc phải gộp: refresh token ở dự án này <strong>chỉ dùng được một lần</strong> (bước 6.5). Nếu năm request cùng gửi một refresh token, request thứ hai trở đi bị backend coi là "token bị dùng lại" và <strong>thu hồi cả phiên</strong>; người dùng bị đăng xuất vô cớ.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Request làm mới</span>
+<pre class="code">POST /api/auth/refresh/
+{ "refresh": "eyJhbGciOi…" }</pre>
+          Gửi bằng <code>axios</code> gốc, không qua <code>axiosClient</code>.
+          <div class="why"><p>Nếu đi qua <code>axiosClient</code>, khi chính request làm mới bị 401 thì interceptor lại đi làm mới tiếp, thành vòng lặp.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span>RefreshView</span>
+          <code>AllowAny</code>, <code>authentication_classes = []</code> (không cần access token, vì access đã hết hạn). <code>RefreshTokenWriteSerializer</code> chỉ kiểm tra có trường <code>refresh</code>.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip ext">REDIS</span>rotate_refresh_token()</span>
+          (<code>accounts/services/auth_service.py</code>) kiểm tra lần lượt:
+          <ol class="sub-steps">
+            <li>Chữ ký và hạn của refresh token. Hỏng hoặc hết hạn: <code>TOKEN_INVALID</code>.</li>
+            <li>Token có <code>sid</code> và <code>user_id</code> trỏ tới người dùng còn tồn tại.</li>
+            <li><code>session_state()</code>: <strong>một</strong> lần gọi Redis lấy hai thứ: phiên đã bị thu hồi chưa (khoá <code>auth:revoked_sid:&lt;sid&gt;</code>), và "giấy miễn trừ đổi mật khẩu" (khoá <code>auth:password_keeper:&lt;user_id&gt;</code>, xem X-05). Phiên đã thu hồi: <code>TOKEN_INVALID</code>.</li>
+            <li>So <code>pwv</code> trong token với <code>pwv</code> của mật khẩu hiện tại. Khác (mật khẩu đã đổi) và không có giấy miễn trừ hợp lệ: <code>TOKEN_INVALID</code>.</li>
+            <li><code>claim_refresh_token(jti)</code>: lệnh <code>SET NX</code> với khoá <code>auth:used_jti:&lt;jti&gt;</code> (<code>jti</code> là mã riêng của từng token). Chỉ request <strong>đầu tiên</strong> đặt được khoá. Khoá đã có nghĩa là token này đã được dùng rồi mà vẫn có người gửi lại: backend coi là token bị đánh cắp, <strong>thu hồi cả phiên</strong> (<code>revoke_session(sid)</code>) rồi báo <code>TOKEN_INVALID</code>.
+              <div class="why"><p>Với refresh token dùng một lần, người dùng thật và kẻ trộm không thể cùng dùng một token. Thấy token bị dùng hai lần, backend không biết ai là ai nên khoá cả hai; người dùng thật chỉ cần đăng nhập lại.</p></div></li>
+            <li>Tài khoản bị khoá trong lúc đó: <code>ACCOUNT_LOCKED</code>.</li>
+            <li>Hợp lệ: <code>issue_tokens(user, session_id=sid)</code> cấp <strong>cặp token mới, giữ nguyên <code>sid</code></strong>.
+              <div class="why"><p>Vẫn là cùng thiết bị, cùng phiên; đăng xuất về sau vẫn thu hồi được cả chuỗi token.</p></div></li>
+          </ol></li>
+        <li><span class="st"><span class="chip be">BE</span>Response</span>
+          <code>{ "data": { "access": "…", "refresh": "…" } }</code>. Refresh mới thay refresh cũ (xoay vòng). Việc xoay vòng do chính <code>rotate_refresh_token</code> làm (gọi <code>issue_tokens</code> cấp cặp mới), không phải do cờ <code>ROTATE_REFRESH_TOKENS</code> trong <code>SIMPLE_JWT</code>: cờ đó chỉ có tác dụng với view làm mới có sẵn của SimpleJWT, mà dự án không dùng view đó.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Gửi lại request ban đầu</span>
+          <code>store.setTokens(...)</code> lưu cặp mới. Interceptor đặt header <code>Authorization</code> mới rồi gửi lại qua <code>axiosClient(config)</code>. Trang nhận dữ liệu bình thường, người dùng không nhận ra gì.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Nếu làm mới thất bại</span>
+          <code>expireSession(store)</code> xoá phiên khỏi kho và hiện toast <code>SESSION_EXPIRED</code> ("Your session has expired"). Request ban đầu ném lỗi <code>SESSION_EXPIRED</code>. Kho trống làm guard <code>RequireAuth</code> (X-03) chuyển người dùng về trang đăng nhập.</li>
+      </ol>
+
+      <h3>Lưu trữ</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Nơi</th><th>Đọc / ghi</th></tr></thead>
+        <tbody>
+          <tr><td>MySQL <code>users</code></td><td>Đọc người dùng, bản băm mật khẩu (để tính <code>pwv</code>), <code>is_active</code></td></tr>
+          <tr><td>Redis (cache <code>blacklist</code>)</td><td>Đọc <code>auth:revoked_sid:&lt;sid&gt;</code>, <code>auth:password_keeper:&lt;user_id&gt;</code>; ghi <code>auth:used_jti:&lt;jti&gt;</code> (sống đến khi token hết hạn); có thể ghi <code>auth:revoked_sid:&lt;sid&gt;</code></td></tr>
+          <tr><td>localStorage</td><td>Thay cặp token</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Redis lỗi thì sao</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Đường đi</th><th>Khi Redis lỗi</th><th>Lý do</th></tr></thead>
+        <tbody>
+          <tr><td>Làm mới token (<code>session_state</code>, <code>claim_refresh_token</code>)</td><td><strong>Báo lỗi</strong>, không cấp token mới</td><td>Không đọc được trạng thái thu hồi thì không biết phiên còn hợp lệ không. Cấp token khi không chắc là mở cửa cho phiên đã bị đăng xuất</td></tr>
+          <tr><td>Mọi request thường (<code>is_session_revoked</code>)</td><td><strong>Cho qua</strong>, ghi cảnh báo vào log</td><td>Nếu chặn, cả website ngừng chạy chỉ vì Redis trục trặc. Rủi ro chấp nhận được vì access token tối đa 15 phút là hết hạn</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>lib/axiosClient.js</code> (<code>refreshAccessToken</code>, <code>expireSession</code>, interceptor response), <code>stores/auth.store.js</code></p>
+        <p><strong>Backend:</strong> <code>accounts/auth/views_common.py → RefreshView</code>, <code>accounts/services/auth_service.py → rotate_refresh_token</code>, <code>accounts/auth/sessions.py</code>, <code>accounts/auth/tokens.py</code>, <code>marketlink_core/settings.py → SIMPLE_JWT, CACHES["blacklist"]</code></p>
+      </div>
+    </div>
+  </details>
+
+  <!-- X-03 -->
+  <details class="j" id="x-03" open>
+    <summary>
+      <span class="jid">X-03</span><span class="jt">Tải tài khoản khi mở trang và chặn trang sai quyền</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Mở bất kỳ trang nào, hoặc tải lại trang (F5).</dd>
+        <dt>Thành phần</dt><dd>Guards trong <code>router/guards.jsx</code>; <code>useAuth()</code> / <code>useCurrentUser()</code> trong <code>hooks/authentication/useAuth.js</code>; component <code>SessionSync</code> trong <code>App.jsx</code>.</dd>
+      </dl>
+
+      <h3>Các bước</h3>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Đọc token từ localStorage</span>
+          Khi ứng dụng khởi động, Zustand <code>persist</code> nạp lại token. <code>useIsAuthenticated()</code> trả <code>true</code> khi kho của cổng hiện tại có <strong>cả</strong> access và refresh (<code>selectIsAuthenticated</code>).
+          <div class="why"><p>"Có token" chưa đủ để coi là đăng nhập thật: token có thể đã hết hạn, phiên có thể đã bị thu hồi, tài khoản có thể đã bị khoá. Chỉ server biết chắc, nên bước 2 phải hỏi server.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Hỏi server "tôi là ai"</span>
+          <code>useCurrentUser()</code> chạy <code>useQuery</code> với khoá <code>['auth','me', portal]</code>, chỉ khi đã có token (<code>enabled: isAuthenticated</code>):
+<pre class="code">GET /api/auth/me/
+Authorization: Bearer &lt;access&gt;</pre>
+          <code>staleTime: Infinity</code>: có kết quả rồi thì không tự gọi lại trong suốt phiên. Nếu vừa đăng nhập xong, cache đã được ghi sẵn ở X-01 bước 10, nên bước này không gửi request nào.
+          <div class="why"><p>Vai trò và tên hiển thị gần như không đổi trong một phiên; gọi <code>/auth/me/</code> mỗi lần chuyển trang là lãng phí. Khi thật sự có thay đổi (ví dụ admin duyệt nông dân), thông báo <code>ACCOUNT_STATUS_CHANGED</code> đến qua WebSocket sẽ đánh dấu cache này là cũ (<code>constants/notificationEvents.js</code>). Việc này chỉ xảy ra với nông dân, vì chỉ nông dân có WebSocket. Với khách và admin, cache <code>/me</code> chỉ làm mới khi tải lại trang hoặc đăng nhập lại.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip ext">REDIS</span>Xác thực request</span>
+          Mọi API (trừ view tự tắt) dùng <code>SessionJWTAuthentication</code> (<code>accounts/auth/authentication.py</code>), mở rộng lớp JWT của SimpleJWT:
+          <ol class="sub-steps">
+            <li>Kiểm tra chữ ký và hạn của access token.</li>
+            <li>Token phải có <code>sid</code>, và <code>sid</code> không nằm trong danh sách thu hồi trên Redis.</li>
+            <li>Tải người dùng theo <code>user_id</code>; SimpleJWT tự từ chối nếu <code>is_active = False</code> (<code>CHECK_USER_IS_ACTIVE</code>).</li>
+            <li><code>pwv</code> trong token phải khớp mật khẩu hiện tại.</li>
+          </ol>
+          Mọi lỗi ở đây được <code>custom_exception_handler</code> đổi thành 401 <code>NOT_AUTHENTICATED</code>, và frontend chạy X-02.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>MeView</span>
+          (<code>IsAuthenticated</code>) trả <code>MeReadSerializer(request.user)</code>: <code>id</code>, <code>email</code>, <code>role</code>, <code>display_name</code>, <code>farmer_status</code>, <code>avatar</code>.
+          <div class="why"><p>Frontend không tự giải mã JWT để lấy thông tin này vì token chỉ chứa <code>user_id</code> và <code>role</code>. Tên, ảnh, trạng thái nông dân nằm trong DB và có thể đổi bất cứ lúc nào. Server là nguồn sự thật.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Guards quyết định trang nào được hiện</span>
+          Mọi route được bọc trong guard, chạy trước khi trang được tải:
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>Guard</th><th>Dùng cho</th><th>Hành vi</th></tr></thead>
+            <tbody>
+              <tr><td><code>RequireAuth</code></td><td>Mọi trang <code>/customer/*</code>, <code>/farmer/*</code>, <code>/admin/*</code></td><td>Không có token: chuyển tới trang đăng nhập <strong>của đúng cổng</strong> và ghi trang đang muốn vào vào <code>state.from</code>. Đang tải <code>/me</code>: hiện khung xương. Tải lỗi: "We couldn't load your account" kèm nút thử lại</td></tr>
+              <tr><td><code>RequireRole</code></td><td>Bên trong <code>RequireAuth</code></td><td>Vai trò không nằm trong danh sách cho phép: chuyển tới <code>/403</code></td></tr>
+              <tr><td><code>GuestOnly</code></td><td><code>/login</code>, <code>/register</code>, <code>/register/farmer</code>, <code>/admin/login</code></td><td>Đã đăng nhập: chuyển về trang chủ của vai trò</td></tr>
+              <tr><td><code>NotForFarmers</code></td><td>Mọi trang công khai và trang khách</td><td>Nông dân đã đăng nhập: chuyển về <code>/farmer</code></td></tr>
+            </tbody>
+          </table></div>
+          <div class="why">
+            <p><strong><code>NotForFarmers</code>:</strong> nông dân không mua hàng; để họ lạc vào trang sản phẩm công khai dễ gây nhầm (bấm "thêm giỏ" rồi bị từ chối). Đưa họ về khu vực quản lý sạp.</p>
+            <p><strong>Guard chỉ là lớp giao diện:</strong> guard chạy trên trình duyệt nên người dùng có thể vượt qua (sửa JS, gọi thẳng API). Lớp bảo vệ thật là <code>permission_classes</code> ở từng view backend (<code>IsCustomer</code>, <code>IsFarmer</code>, <code>IsAdmin</code> trong <code>marketlink_core/permissions.py</code>). Guard chỉ giúp người dùng không thấy trang họ không dùng được.</p>
+          </div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Dọn cache khi đổi người dùng</span>
+          <code>useAuthSessionSync()</code> (gọi trong <code>SessionSync</code> của <code>App.jsx</code>) theo dõi <code>userId</code> trong hai kho token. <code>userId</code> đổi ở <strong>cổng đang mở</strong> (đăng xuất, hoặc người khác đăng nhập) thì <code>queryClient.clear()</code> xoá toàn bộ cache; đổi ở cổng kia thì chỉ xoá cache <code>/me</code> của cổng đó.
+          <div class="why"><p>Cache React Query đang giữ đơn hàng, hồ sơ, thông báo của người cũ. Không xoá thì người sau có thể thấy dữ liệu người trước trong tích tắc, trước khi request mới trả về.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Đồng bộ giữa các tab</span>
+          <code>auth.store.js</code> lắng nghe sự kiện <code>storage</code> của trình duyệt. Tab A đăng xuất làm localStorage đổi; tab B nhận sự kiện, nạp lại kho và cũng thành đăng xuất.</li>
+      </ol>
+
+      <h3>Lưu trữ</h3>
+      <p>MySQL <code>users</code>, <code>roles</code>, <code>customer_profiles</code> / <code>farmer_profiles</code> (đọc). Redis <code>auth:revoked_sid:&lt;sid&gt;</code> (đọc ở mọi request). localStorage (đọc token).</p>
+
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>router/guards.jsx</code>, <code>router/routes/*.routes.jsx</code>, <code>hooks/authentication/useAuth.js</code> (<code>useIsAuthenticated</code>, <code>useCurrentUser</code>, <code>useAuth</code>, <code>useAuthSessionSync</code>, <code>usePortal</code>), <code>stores/auth.store.js</code>, <code>App.jsx</code>, <code>constants/routes.js</code></p>
+        <p><strong>Backend:</strong> <code>accounts/auth/authentication.py</code>, <code>accounts/auth/views_common.py → MeView</code>, <code>accounts/auth/serializers_common.py → MeReadSerializer</code>, <code>marketlink_core/permissions.py</code></p>
+      </div>
+    </div>
+  </details>
+
+  <!-- X-04 -->
+  <details class="j" id="x-04" open>
+    <summary>
+      <span class="jid">X-04</span><span class="jt">Đăng xuất</span><span class="jk"><span class="chip write">GHI</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Bấm ảnh đại diện ở góc phải → <strong>Sign out</strong>.</dd>
+        <dt>Component</dt><dd><code>components/common/layout/UserMenu.jsx</code>, dùng chung cho <code>PublicLayout</code>, <code>FarmerLayout</code>, <code>AdminLayout</code>.</dd>
+      </dl>
+
+      <h3>Các bước</h3>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Gọi mutation</span>
+          <code>useLogout()</code> xác định cổng hiện tại (<code>usePortal()</code>), lấy <code>refreshToken</code> từ đúng kho. Có refresh thì gọi <code>authApi.logout(refreshToken)</code>; không có thì bỏ qua bước gọi API. Mutation đánh dấu <code>meta: { silent: true }</code> nên lỗi <strong>không</strong> hiện toast.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Request</span>
+<pre class="code">POST /api/auth/logout/
+Authorization: Bearer &lt;access&gt;
+{ "refresh": "eyJhbGciOi…" }</pre>
+          Access hết hạn thì X-02 tự làm mới trước rồi gửi lại.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip ext">REDIS</span>LogoutView → logout()</span>
+          <code>IsAuthenticated</code>; <code>RefreshTokenWriteSerializer</code> kiểm tra có <code>refresh</code>; gọi <code>logout(user, session_id=&lt;sid của access token&gt;, refresh)</code>:
+          <ol class="sub-steps">
+            <li><code>_decode_refresh_payload(refresh)</code>: kiểm tra chữ ký, hạn, đúng loại refresh, <strong>chấp nhận cả refresh đã xoay vòng</strong>.
+              <div class="why"><p>Có thể trình duyệt vừa làm mới token ở tab khác; đăng xuất không nên thất bại vì lý do đó.</p></div></li>
+            <li><code>user_id</code> và <code>sid</code> trong refresh phải <strong>trùng</strong> người dùng và phiên của access token.
+              <div class="why"><p>Để không ai dùng một refresh token nhặt được mà đăng xuất phiên của người khác.</p></div></li>
+            <li><code>revoke_session(sid)</code>: ghi <code>auth:revoked_sid:&lt;sid&gt;</code> vào Redis, sống <strong>7 ngày</strong>. Lưu Redis lỗi thì hàm <strong>ném lỗi chứ không im lặng</strong>.
+              <div class="why"><p>7 ngày bằng thời hạn refresh token: sau đó mọi token của phiên tự hết hạn, không cần nhớ thêm. Ném lỗi vì đăng xuất không được báo thành công nếu phiên thật ra vẫn sống.</p></div></li>
+            <li><code>disconnect_realtime(session_id=sid)</code>: sau commit, gửi lệnh đóng kết nối WebSocket của <strong>phiên này</strong> (nhóm <code>session_&lt;sid&gt;</code>). Hiện chỉ nông dân có WebSocket.</li>
+            <li>Ghi <code>audit_logs</code> với <code>action = LOGOUT</code>.</li>
+          </ol>
+          Trả <strong>204 No Content</strong>.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Dọn dẹp trong onSettled</span>
+          Chạy <strong>dù API thành công hay thất bại</strong>: <code>clearSession()</code> xoá token khỏi kho và localStorage → chuyển về trang đăng nhập của cổng → toast "You have signed out". Kho đổi nên <code>useAuthSessionSync</code> (X-03 bước 6) xoá toàn bộ cache; các tab khác đăng xuất theo.
+          <div class="why"><p>Người dùng đã chọn rời đi; mạng chập chờn không được giữ họ ở trạng thái đăng nhập. Phía server, token cũ tự hết hạn (access 15 phút).</p></div></li>
+      </ol>
+
+      <h3>Lưu trữ</h3>
+      <p>Redis <code>auth:revoked_sid:&lt;sid&gt;</code> (ghi). MySQL <code>audit_logs</code> (ghi). localStorage (xoá token).</p>
+      <div class="note warn"><p><strong>Giỏ hàng không bị xoá khi đăng xuất.</strong> Giỏ lưu ở localStorage khoá <code>marketlink-cart</code> (<code>stores/cart.store.js</code>), không gắn với tài khoản, và <code>useLogout</code> không xoá nó. Hai khách dùng chung một trình duyệt thì khách sau thấy giỏ của khách trước. Chi tiết ở file khách hàng (C-01).</p></div>
+
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>components/common/layout/UserMenu.jsx</code>, <code>hooks/authentication/useAuth.js → useLogout</code>, <code>api/common/authApi.js</code>, <code>stores/auth.store.js</code></p>
+        <p><strong>Backend:</strong> <code>accounts/auth/views_common.py → LogoutView</code>, <code>accounts/services/auth_service.py → logout</code>, <code>accounts/auth/sessions.py → revoke_session</code>, <code>notifications/services.py → disconnect_realtime</code></p>
+      </div>
+    </div>
+  </details>
+
+  <!-- X-05 -->
+  <details class="j" id="x-05" open>
+    <summary>
+      <span class="jid">X-05</span><span class="jt">Đổi mật khẩu</span><span class="jk"><span class="chip write">GHI</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Menu tài khoản → <strong>Change password</strong> → nhập mật khẩu hiện tại, mật khẩu mới, nhập lại → <strong>Change password</strong>.</dd>
+      </dl>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Vai trò</th><th>Route</th><th>Trang</th><th>Form</th></tr></thead>
+        <tbody>
+          <tr><td>Khách</td><td><code>/customer/password</code></td><td><code>pages/customer/ChangePasswordPage.jsx</code></td><td><code>components/common/forms/ChangePasswordForm.jsx</code></td></tr>
+          <tr><td>Admin</td><td><code>/admin/password</code>, <code>/admin/settings</code></td><td><code>pages/customer/ChangePasswordPage.jsx</code> (dùng lại)</td><td><code>components/common/forms/ChangePasswordForm.jsx</code></td></tr>
+          <tr><td>Nông dân</td><td><code>/farmer/settings</code></td><td><code>pages/auth/ChangePasswordPage.jsx</code></td><td><code>pages/auth/ChangePasswordForm.jsx</code></td></tr>
+        </tbody>
+      </table></div>
+      <p>Có <strong>hai bản form khác nhau</strong> cùng làm một việc: cùng schema, cùng hook, cùng API, chỉ khác cách hiện lỗi.</p>
+
+      <div class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant A as Thiết bị A, đổi mật khẩu
+  participant B as Thiết bị B, đăng nhập từ trước
+  participant S as Backend
+  participant R as Redis
+  A->>S: POST /api/auth/change-password/
+  S->>S: khoá dòng users, đặt mật khẩu mới, pwv đổi
+  S->>R: giấy miễn trừ sid của A, pwv cũ, pwv mới
+  S-->>A: 200
+  A->>S: request kế tiếp, token mang pwv cũ
+  S-->>A: 401
+  A->>S: refresh, sid khớp giấy miễn trừ
+  S-->>A: token mới, A dùng tiếp bình thường
+  B->>S: request bất kỳ, token mang pwv cũ
+  S-->>B: 401
+  B->>S: refresh, sid không khớp giấy miễn trừ
+  S-->>B: TOKEN_INVALID, B bị đăng xuất
+</pre>
+      </div>
+
+      <h3>Các bước</h3>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Kiểm tra form</span>
+          <code>changePasswordSchema</code> (<code>schemas/common/auth.schema.js</code>): <code>current_password</code> không rỗng; <code>new_password</code> (<code>newPasswordField</code>) 8–128 ký tự, có ít nhất một chữ cái và một chữ số; <code>confirm_password</code> phải trùng, nếu không thì lỗi "Passwords do not match" gắn vào ô xác nhận.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Gọi mutation</span>
+          <code>useChangePassword()</code> → <code>authApi.changePassword</code>:
+<pre class="code">POST /api/auth/change-password/
+Authorization: Bearer &lt;access&gt;
+{ "current_password": "…", "new_password": "…", "confirm_password": "…" }</pre></li>
+        <li><span class="st"><span class="chip be">BE</span>ChangePasswordView</span>
+          <code>IsAuthenticated</code>, throttle scope <code>login</code> (<strong>5 lần mỗi phút</strong>).
+          <div class="why"><p>Form này nhận "mật khẩu hiện tại", nên kẻ cầm được một máy đang đăng nhập có thể dùng nó để dò mật khẩu. Vì vậy dùng chung giới hạn với đăng nhập.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span>Serializer</span>
+          <code>ChangePasswordWriteSerializer</code>: <code>new_password</code> qua <code>check_password_strength</code>, lặp lại quy tắc frontend (8 ký tự, có chữ và số), <strong>cộng thêm</strong> bộ kiểm tra của Django (<code>validate_password</code> với các validator trong <code>AUTH_PASSWORD_VALIDATORS</code>: không nằm trong danh sách mật khẩu phổ biến, không toàn số, đủ độ dài). Validator "giống thông tin tài khoản" có khai báo nhưng <strong>không có tác dụng ở đây</strong>, vì hàm gọi <code>validate_password(value)</code> mà không truyền người dùng vào. <code>confirm_password</code> phải trùng rồi bị loại khỏi dữ liệu.
+          <div class="why"><p>Quy tắc frontend có thể bị vượt qua bằng cách gọi thẳng API. Danh sách mật khẩu phổ biến của Django quá lớn để đưa xuống trình duyệt.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span><span class="chip ext">REDIS</span>change_password()</span>
+          Trong một transaction:
+          <ol class="sub-steps">
+            <li><code>_lock_user</code>: <code>SELECT … FOR UPDATE</code> dòng <code>users</code>.
+              <div class="why"><p>Hai lần đổi mật khẩu gần như cùng lúc (bấm hai lần, hai tab) có thể ghi đè nhau và để lại giấy miễn trừ sai.</p></div></li>
+            <li><code>check_password(current_password)</code>. Sai thì lỗi validation gắn vào trường <code>current_password</code>.</li>
+            <li>Tính <code>pwv</code> cũ, đặt mật khẩu mới (<code>set_password</code> băm lại), tính <code>pwv</code> mới.</li>
+            <li><code>keep_session_on_password_change(...)</code>: ghi Redis khoá <code>auth:password_keeper:&lt;user_id&gt;</code> = <code>{ sid: &lt;phiên hiện tại&gt;, from: &lt;pwv cũ&gt;, to: &lt;pwv mới&gt; }</code>, sống 7 ngày.</li>
+            <li><code>UPDATE users SET password = …</code>.</li>
+          </ol>
+          Ghi <code>audit_logs</code> với <code>action = PASSWORD_CHANGED</code>. Trả 200.</li>
+        <li><span class="st"><span class="chip be">BE</span>Hệ quả: thiết bị khác bị đăng xuất, thiết bị hiện tại thì không</span>
+          <ul>
+            <li>Mọi access token cũ mang <code>pwv</code> cũ; ở request tiếp theo <code>SessionJWTAuthentication.get_user</code> thấy không khớp → 401.</li>
+            <li><strong>Thiết bị khác</strong> chạy X-02: <code>pwv</code> không khớp, giấy miễn trừ ghi <code>sid</code> của thiết bị kia → <code>TOKEN_INVALID</code> → bị đăng xuất.</li>
+            <li><strong>Thiết bị vừa đổi mật khẩu</strong> cũng bị 401, cũng chạy X-02, nhưng giấy miễn trừ khớp đúng <code>sid</code>, đúng <code>from</code>, đúng <code>to</code> → được cấp token mới mang <code>pwv</code> mới → dùng tiếp bình thường.</li>
+          </ul>
+          <div class="why"><p>Đổi mật khẩu thường là vì nghi bị lộ, nên mọi thiết bị khác phải bị đá ra ngay, không chờ token hết hạn. Nhưng người vừa đổi mật khẩu không nên bị bắt đăng nhập lại. Cách dùng <code>pwv</code> không cần lưu danh sách token nào: chỉ cần mật khẩu đổi là mọi token cũ tự hỏng.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Sau khi thành công</span>
+          Toast "Password changed – Other devices have been signed out", form được xoá trắng (<code>reset</code>).</li>
+      </ol>
+
+      <h3>Lỗi và cách hiển thị</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Tình huống</th><th>Mã</th><th>Form khách / admin</th><th>Form nông dân</th></tr></thead>
+        <tbody>
+          <tr><td>Sai mật khẩu hiện tại</td><td><code>VALIDATION_ERROR</code>, <code>errors.current_password</code></td><td>Chỉ lỗi dưới ô, không toast (<code>silent: true</code>). Hộp <code>FormAlert</code> chỉ hiện khi lỗi không gắn được vào ô nào (<code>useServerErrors</code>)</td><td>Lỗi dưới ô + toast chung</td></tr>
+          <tr><td>Mật khẩu mới yếu (bộ kiểm tra Django)</td><td><code>VALIDATION_ERROR</code>, <code>errors.new_password</code></td><td>Lỗi dưới ô "New password"</td><td>Lỗi dưới ô + toast</td></tr>
+          <tr><td>Thử quá nhanh</td><td><code>THROTTLED</code> / 429</td><td>Hộp lỗi trong form</td><td>Toast "Too many attempts – Please wait a minute…" (khai báo ở <code>meta.errorMessages</code> của hook)</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Lưu trữ</h3>
+      <p>MySQL <code>users.password</code> (ghi, đã băm), <code>audit_logs</code> (ghi). Redis <code>auth:password_keeper:&lt;user_id&gt;</code> (ghi).</p>
+
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>components/common/forms/ChangePasswordForm.jsx</code>, <code>pages/auth/ChangePasswordForm.jsx</code>, <code>pages/customer/ChangePasswordPage.jsx</code>, <code>pages/auth/ChangePasswordPage.jsx</code>, <code>schemas/common/auth.schema.js</code>, <code>hooks/authentication/useAuth.js → useChangePassword</code></p>
+        <p><strong>Backend:</strong> <code>accounts/auth/views_common.py → ChangePasswordView</code>, <code>accounts/auth/serializers_common.py → ChangePasswordWriteSerializer, check_password_strength</code>, <code>accounts/services/auth_service.py → change_password, rotate_refresh_token</code>, <code>accounts/auth/sessions.py → keep_session_on_password_change</code>, <code>accounts/auth/authentication.py</code></p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============ NHÓM 2 ============ -->
+<section class="group" id="nhom-2">
+  <h2><span class="sn">02</span>Thông báo</h2>
+
+  <div class="concept">
+    <h3>Thông báo được tạo ra từ đâu</h3>
+    <p>Thông báo cá nhân lưu trong bảng <code>notifications</code> (<code>notifications/models.py</code>): người nhận, loại (<code>type</code>, 25 loại như <code>ORDER_PLACED</code>, <code>ORDER_ACCEPTED</code>, <code>RESTOCK</code>, <code>AI_LISTING_FLAGGED</code>…), tiêu đề, nội dung, <code>target_url</code> (trang mở khi bấm), <code>is_read</code>, <code>read_at</code>, <code>created_at</code>.</p>
+    <p>Các hành trình nhóm này chỉ <strong>đọc</strong> và <strong>đánh dấu đã đọc</strong>. Việc <strong>tạo</strong> thông báo diễn ra bên trong các hành trình nghiệp vụ khác (đặt hàng, nhận đơn, duyệt sản phẩm…), qua một hàm duy nhất <code>notify(recipient, event_type, context)</code> (<code>notifications/services.py</code>):</p>
+    <ol>
+      <li><code>render_notification()</code> (<code>notifications/messages.py</code>) lấy mẫu của loại thông báo trong <code>NOTIFICATION_SPECS</code>, kiểm tra <code>context</code> đủ khoá bắt buộc, điền vào tiêu đề, nội dung, link. Ví dụ <code>ORDER_PLACED</code>: tiêu đề "New order #{order_id}", link <code>/farmer/orders/{order_id}</code>.</li>
+      <li><code>INSERT</code> một dòng vào <code>notifications</code>.</li>
+      <li>Sau khi transaction commit: đẩy qua WebSocket (chỉ có tác dụng với ai đang kết nối) và gửi email nếu loại đó có mẫu email.</li>
+    </ol>
+    <div class="why"><p>Nội dung thông báo được quản lý tập trung ở một file mẫu; thiếu dữ liệu thì báo lỗi ngay khi lập trình, không để lọt ra người dùng một câu "{order_id}". Việc đẩy và gửi email đặt <strong>sau commit</strong> để nếu đơn hàng bị rollback thì không ai nhận thông báo về một đơn không tồn tại.</p></div>
+  </div>
+
+  <div class="concept">
+    <h3>Ai nhận thông báo thời gian thực, ai không</h3>
+    <p>Chỉ <code>FarmerLayout</code> gọi <code>useNotificationSocket()</code>. Khách hàng và admin <strong>không có kết nối WebSocket</strong>; họ nhận thông báo mới vì frontend tự hỏi lại server mỗi <strong>30 giây</strong> (polling).</p>
+    <p>Cơ chế: <code>usePollInterval()</code> trong <code>hooks/queries/common/useNotifications.js</code> đọc cờ <code>realtimeConnected</code> trong <code>ui.store.js</code>. Có WebSocket thì tắt polling; không có thì hỏi lại mỗi 30 giây (<code>NOTIFICATION_POLL_INTERVAL</code>). Nông dân mất WebSocket cũng tự rơi về polling.</p>
+  </div>
+
+  <!-- X-06 -->
+  <details class="j" id="x-06" open>
+    <summary>
+      <span class="jid">X-06</span><span class="jt">Chuông thông báo: số chưa đọc và 5 tin mới nhất</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Thấy biểu tượng chuông ở thanh trên cùng; có tin chưa đọc thì chuông có chấm đỏ. Bấm chuông để mở danh sách thả xuống.</dd>
+        <dt>Component</dt><dd><code>components/common/layout/NotificationBell.jsx</code>, xuất hiện ở: <code>PublicLayout</code> (<strong>chỉ khi người đăng nhập là khách hàng</strong>, có "View all" tới <code>/customer/notifications</code>); <code>FarmerLayout</code> (có "View all" tới <code>/farmer/notifications</code>); <code>AdminLayout</code> (<strong>không có</strong> "View all").</dd>
+      </dl>
+
+      <h3>Các bước</h3>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Hai query song song khi layout hiện ra</span>
+          <code>useUnreadNotificationCount()</code>, khoá <code>['notifications','unread-count']</code> → <code>GET /api/notifications/unread-count/</code>.<br>
+          <code>useLatestNotifications(5)</code>, khoá <code>['notifications','latest',5]</code> → <code>GET /api/notifications/?limit=5</code>.<br>
+          Cả hai có <code>staleTime</code> 30 giây và <code>refetchInterval</code> như mô tả ở trên. React Query cũng tự hỏi lại khi người dùng quay lại tab (<code>refetchOnWindowFocus</code>).</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Backend (notifications/views.py)</span>
+          Mọi view thông báo dùng <code>IsAnyRole</code> (khách, nông dân, admin đều được).
+          <ul>
+            <li><code>NotificationUnreadCountView</code>: <code>SELECT COUNT(*) FROM notifications WHERE recipient_id = &lt;tôi&gt; AND is_read = 0</code>. Trả <code>{ "unread_count": 3 }</code>.</li>
+            <li><code>NotificationListView</code> với <code>limit</code>: <code>limit</code> phải là số nguyên 1–10; truy vấn <strong>luôn lọc theo <code>recipient = request.user</code></strong>, mới nhất trước; có <code>limit</code> thì trả <strong>mảng thường</strong> tối đa <code>limit</code> phần tử, không phân trang.</li>
+            <li>Mỗi thông báo định dạng bởi <code>serialize_notification()</code>, cũng là định dạng dùng khi đẩy qua WebSocket.</li>
+          </ul>
+          <div class="why">
+            <p><strong>Chế độ <code>limit</code> không phân trang:</strong> chuông chỉ cần vài tin mới nhất. Bỏ phân trang thì không phải đếm tổng số dòng (<code>COUNT</code>), nhẹ hơn cho một query chạy 30 giây một lần.</p>
+            <p><strong>Dùng chung định dạng với WebSocket:</strong> frontend chỉ cần hiểu một định dạng dù thông báo đến từ API hay từ WebSocket.</p>
+            <p><strong>Luôn lọc theo người nhận ở backend:</strong> đây là chỗ duy nhất ngăn người A đọc thông báo của người B. Frontend không gửi "của ai", server tự lấy từ token.</p>
+          </div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Hiển thị</span>
+          Chấm đỏ khi <code>unread &gt; 0</code>. Danh sách hiện tiêu đề, nội dung, thời gian tương đối ("5 minutes ago"), chấm xanh cho tin chưa đọc, chữ "View details" nếu có <code>target_url</code>.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Bấm một tin</span>
+          Chạy X-07 (nếu tin chưa đọc), rồi <code>navigate(target_url)</code> để mở đúng trang liên quan, ví dụ <code>/farmer/orders/123</code>.</li>
+      </ol>
+
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>components/common/layout/NotificationBell.jsx</code>, <code>hooks/queries/common/useNotifications.js</code>, <code>api/common/notificationsApi.js</code>, <code>constants/queryKeys.js → notificationKeys</code>, <code>constants/staleTimes.js</code>, <code>stores/ui.store.js</code></p>
+        <p><strong>Backend:</strong> <code>notifications/urls.py</code>, <code>notifications/views.py</code>, <code>notifications/services.py → serialize_notification</code>, <code>notifications/models.py</code></p>
+      </div>
+    </div>
+  </details>
+
+  <!-- X-07 -->
+  <details class="j" id="x-07" open>
+    <summary>
+      <span class="jid">X-07</span><span class="jt">Đánh dấu một thông báo đã đọc</span><span class="jk"><span class="chip write">GHI</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Bấm vào một tin chưa đọc trong chuông, trong trang thông báo của nông dân, hoặc bấm "Mark as read" ở trang thông báo của khách.</dd>
+        <dt>Lưu ý</dt><dd>Có <strong>hai cách cài đặt</strong> tuỳ nơi bấm.</dd>
+      </dl>
+
+      <h3>Cách A: chuông (mọi vai trò) và trang thông báo nông dân, cập nhật lạc quan</h3>
+      <div class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant UI as Chuông
+  participant C as Cache React Query
+  participant API as Backend
+  UI->>C: chụp snapshot, đánh dấu tin đã đọc, giảm số chưa đọc
+  Note over UI: giao diện đổi ngay, chưa chờ server
+  UI->>API: POST /api/notifications/123/read/
+  alt thành công
+    API-->>UI: 200
+  else lỗi
+    API-->>UI: lỗi
+    UI->>C: trả cache về snapshot
+  end
+  UI->>C: đánh dấu cũ mọi khoá notifications, tải lại
+</pre>
+      </div>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>onMutate, trước khi gửi request</span>
+          <code>useMarkNotificationRead()</code> xây trên <code>useOptimisticRead</code>: huỷ các query thông báo đang chạy (<code>cancelQueries</code>) để một kết quả cũ về muộn không đè lên thay đổi; chụp toàn bộ dữ liệu thông báo trong cache (snapshot); sửa ngay trong cache: tin đó thành <code>is_read: true</code>, số chưa đọc giảm 1 (chỉ giảm nếu tin thật sự chưa đọc). Giao diện đổi <strong>ngay lập tức</strong>.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Request</span><code>POST /api/notifications/123/read/</code></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>NotificationMarkReadView</span>
+<pre class="code">UPDATE notifications SET is_read = 1, read_at = NOW()
+WHERE id = 123 AND recipient_id = &lt;tôi&gt; AND is_read = 0</pre>
+          Sau đó đọc lại tin (vẫn lọc theo người nhận). Không thấy thì 404: tin không tồn tại hoặc không phải của mình.
+          <div class="why"><p>Điều kiện <code>is_read = 0</code> làm thao tác an toàn khi gọi hai lần (idempotent), và <code>read_at</code> giữ nguyên thời điểm đọc <strong>lần đầu</strong>.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>onError</span>Trả cache về snapshot, giao diện quay lại như cũ.</li>
+        <li><span class="st"><span class="chip fe">FE</span>onSettled</span>Đánh dấu cũ mọi query có khoá bắt đầu bằng <code>['notifications']</code> để tải lại từ server cho chắc khớp.</li>
+      </ol>
+      <div class="why"><p>Cập nhật lạc quan vì đánh dấu đã đọc gần như không bao giờ thất bại, và người dùng bấm vào một tin để <strong>chuyển sang trang khác</strong>; nếu phải chờ server thì chấm đỏ còn nháy lại. Lỡ thất bại thì đã có snapshot để khôi phục.</p></div>
+
+      <h3>Cách B: trang <code>/customer/notifications</code>, cập nhật sau khi có kết quả</h3>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Hook khác, file API khác</span>
+          <code>useNotificationFeed()</code> (<code>hooks/queries/common/useNotificationFeed.js</code>) gọi <code>notificationsApi</code> ở <code>services/common/notificationsApi.js</code> (không phải <code>api/common/…</code>). Gửi cùng request <code>POST /api/notifications/{id}/read/</code>.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Sau khi có kết quả</span>
+          Thành công thì đánh dấu cũ <code>['notifications-page']</code> và <code>['notifications-list']</code> để trang tải lại. Lỗi thì toast.</li>
+      </ol>
+      <div class="note warn"><p><strong>Hệ quả:</strong> hai khoá này <strong>khác</strong> khoá <code>['notifications', …]</code> của chuông, nên chuông không được báo cập nhật. Khách đánh dấu đã đọc ở trang danh sách, chấm đỏ trên chuông vẫn còn tới lần polling tiếp theo (tối đa 30 giây) hoặc khi chuyển tab.</p></div>
+
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>hooks/queries/common/useNotifications.js → useOptimisticRead, useMarkNotificationRead</code>, <code>hooks/queries/common/useNotificationFeed.js</code>, <code>api/common/notificationsApi.js</code>, <code>services/common/notificationsApi.js</code></p>
+        <p><strong>Backend:</strong> <code>notifications/views.py → NotificationMarkReadView</code></p>
+      </div>
+    </div>
+  </details>
+
+  <!-- X-08 -->
+  <details class="j" id="x-08" open>
+    <summary>
+      <span class="jid">X-08</span><span class="jt">Đánh dấu tất cả đã đọc</span><span class="jk"><span class="chip write">GHI</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Bấm <strong>Mark all as read</strong> trong chuông (chỉ hiện khi có tin chưa đọc), trong trang thông báo nông dân (nút mờ khi không còn tin chưa đọc), hoặc trong trang thông báo khách.</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Request</span><code>POST /api/notifications/read-all/</code></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>NotificationMarkAllReadView</span>
+<pre class="code">UPDATE notifications SET is_read = 1, read_at = NOW()
+WHERE recipient_id = &lt;tôi&gt; AND is_read = 0</pre>
+          Trả <code>{ "updated_count": 7 }</code>.
+          <div class="why"><p>Một câu <code>UPDATE</code> thay vì vòng lặp từng tin: chạy trong một lần, nhanh, và không bị "đọc được một nửa" nếu có tin mới chen vào giữa chừng.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Cập nhật giao diện</span>
+          Chuông và trang nông dân: cách A của X-07, mọi tin trong cache thành đã đọc, số chưa đọc về 0, rồi tải lại. Trang khách: cách B của X-07, kèm toast "All notifications marked as read".</li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>hooks/queries/common/useNotifications.js → useMarkAllNotificationsRead</code>, <code>hooks/queries/common/useNotificationFeed.js</code></p>
+        <p><strong>Backend:</strong> <code>notifications/views.py → NotificationMarkAllReadView</code></p>
+      </div>
+    </div>
+  </details>
+
+  <!-- X-09 -->
+  <details class="j" id="x-09" open>
+    <summary>
+      <span class="jid">X-09</span><span class="jt">Trang danh sách thông báo</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <p style="margin-top:14px">Có hai trang, cài đặt khác nhau. Admin không có trang này.</p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th></th><th>Khách <code>/customer/notifications</code></th><th>Nông dân <code>/farmer/notifications</code></th></tr></thead>
+        <tbody>
+          <tr><td>File</td><td><code>pages/customer/NotificationsPage.jsx</code></td><td><code>pages/farmer/FarmerNotificationsPage.jsx</code></td></tr>
+          <tr><td>Hook</td><td><code>useNotificationFeed</code></td><td><code>useNotificationList</code> + <code>useUnreadNotificationCount</code></td></tr>
+          <tr><td>Bộ lọc, số trang lưu ở</td><td>State trong component (mất khi tải lại trang)</td><td>URL, ví dụ <code>?show=unread&amp;page=2</code> (<code>useUrlFilters</code>)</td></tr>
+          <tr><td>Polling 30 giây</td><td>Không</td><td>Có (khi WebSocket không kết nối)</td></tr>
+          <tr><td>Dòng mô tả dưới tiêu đề</td><td>Cố định</td><td>"N unread updates" hoặc "You are all caught up"</td></tr>
+        </tbody>
+      </table></div>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Chọn bộ lọc</span>"All" hoặc "Unread". Đổi bộ lọc thì quay về trang 1.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Request</span><code>GET /api/notifications/?page=2&amp;is_read=false</code>. <code>is_read</code> chỉ gửi khi lọc "Unread".</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>NotificationListView (không có limit)</span>
+          <code>is_read</code> chỉ nhận <code>true</code> hoặc <code>false</code>; lọc theo người nhận (và <code>is_read</code> nếu có), mới nhất trước; phân trang bằng <code>StandardPagination</code> (<code>marketlink_core/pagination.py</code>), mặc định 20 tin một trang:
+<pre class="code">{ "count": 45, "page": 2, "page_size": 20, "total_pages": 3,
+  "next": 3, "previous": 1, "results": [ … ] }</pre>
+          <div class="why"><p><code>next</code> và <code>previous</code> là <strong>số trang</strong> thay vì URL như mặc định của DRF: frontend chỉ cần số để gắn vào nút chuyển trang hoặc URL của chính nó; URL đầy đủ của backend không dùng được trên frontend.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Hiển thị</span>
+          Nông dân: <code>useNotificationList</code> dùng <code>select: toPage</code> đổi tên trường cho component (<code>notifications</code>, <code>total</code>, <code>totalPages</code>…) và <code>placeholderData: keepPreviousData</code> giữ danh sách cũ trên màn hình trong lúc tải trang mới, tránh nhấp nháy trắng. Khách: dùng thẳng dữ liệu trả về. Bấm một tin: đánh dấu đã đọc (X-07) rồi mở <code>target_url</code>.</li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/customer/NotificationsPage.jsx</code>, <code>pages/farmer/FarmerNotificationsPage.jsx</code>, <code>hooks/queries/common/useNotificationFeed.js</code>, <code>hooks/queries/common/useNotifications.js → useNotificationList</code>, <code>hooks/common/useUrlFilters.js</code>, <code>hooks/common/usePageParam.js</code>, <code>lib/adapters/pagination.adapter.js</code></p>
+        <p><strong>Backend:</strong> <code>notifications/views.py → NotificationListView</code>, <code>marketlink_core/pagination.py</code></p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============ NHÓM 3 ============ -->
+<section class="group" id="nhom-3">
+  <h2><span class="sn">03</span>Trợ lý AI, cấu hình, banner</h2>
+
+  <!-- X-10 -->
+  <details class="j" id="x-10" open>
+    <summary>
+      <span class="jid">X-10</span><span class="jt">Hỏi trợ lý AI qua khung chat</span><span class="jk"><span class="chip read">ĐỌC</span><span class="chip ext">AI</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Bấm nút tròn biểu tượng tin nhắn ở góc dưới phải. Gõ câu hỏi rồi Enter, hoặc bấm một câu gợi ý. Ở trang công khai còn có nút "Ask the assistant" dưới chân trang.</dd>
+        <dt>Component</dt><dd><code>components/common/chat/AIChatWidget.jsx</code>, có trong <code>PublicLayout</code>, <code>FarmerLayout</code>, <code>AdminLayout</code>.</dd>
+      </dl>
+
+      <div class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant W as AIChatWidget
+  participant V as ChatMessagesView
+  participant R as Redis
+  participant G as Gemini
+  participant T as Công cụ chỉ đọc
+  W->>V: POST /api/chat/messages/ với 10 tin gần nhất
+  V->>R: còn lượt trong phút và trong ngày không
+  V->>G: câu hỏi, chỉ dẫn theo vai trò, danh sách công cụ
+  loop tối đa 3 vòng có công cụ
+    G-->>V: muốn gọi công cụ
+    V->>T: run_tool, kiểm tra quyền vai trò
+    T-->>V: tối đa 5 dòng kết quả
+    V->>G: gửi kết quả
+  end
+  G-->>V: câu trả lời
+  V->>R: tăng bộ đếm ngày
+  V-->>W: reply, tools_used
+</pre>
+      </div>
+
+      <h3>Các bước</h3>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Khung chat có hiện không</span>
+          Widget đọc cấu hình công khai (X-11). <code>ai_chat_enabled = false</code> thì widget không hiện gì.
+          <div class="why"><p>Có thể tắt trợ lý (hết quota Gemini, bảo trì) bằng biến môi trường mà không phải build lại frontend.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Lời chào và gợi ý theo vai trò</span>
+          <code>ROLE_COPY</code> có 4 bộ: khách vãng lai, khách hàng, nông dân, admin. Ví dụ nông dân thấy gợi ý "What needs my attention today?".</li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Lịch sử chỉ nằm trong bộ nhớ</span>
+          <code>stores/chat.store.js</code> <strong>không</strong> có <code>persist</code>: tải lại trang là mất lịch sử. Mỗi lần người dùng hoặc cổng thay đổi, <code>claim(owner)</code> (với <code>owner = "&lt;cổng&gt;:&lt;user id hoặc guest&gt;"</code>) xoá sạch lịch sử.
+          <div class="why"><p>Người dùng sau trên cùng máy không được thấy câu hỏi của người trước (ví dụ câu hỏi về đơn hàng riêng tư). Server không lưu hội thoại để không phải bảo vệ thêm một kho dữ liệu nhạy cảm.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Gửi câu hỏi</span>
+          <code>useAIChat().send</code>: cắt khoảng trắng, tối đa 1000 ký tự (ô nhập đã chặn sẵn, có bộ đếm khi gần giới hạn); rỗng hoặc đang chờ câu trả lời trước thì bỏ qua; thêm tin của người dùng vào khung chat ngay; lấy <strong>10 tin gần nhất</strong> có vai trò <code>user</code> hoặc <code>assistant</code> (bỏ các dòng thông báo lỗi); gửi:
+<pre class="code">POST /api/chat/messages/
+{ "messages": [
+    { "role": "user", "content": "Ai bán dâu tây?" },
+    { "role": "assistant", "content": "…" },
+    { "role": "user", "content": "Chợ nào mở Chủ nhật?" }
+] }</pre>
+          <div class="why"><p>Server không lưu hội thoại, nên mô hình chỉ hiểu ngữ cảnh ("còn chợ đó thì sao?") nếu được gửi kèm các tin trước. Giới hạn 10 tin để request không phình to và chi phí gọi AI không tăng mãi.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip ext">REDIS</span>ChatMessagesView</span>
+          <ul>
+            <li><code>AllowAny</code>: khách vãng lai cũng hỏi được; request có token hợp lệ thì vẫn biết người hỏi là ai.</li>
+            <li>Throttle scope <code>chat</code>: <strong>20 tin mỗi phút</strong>.</li>
+            <li><code>ChatRequestSerializer</code>: 1–10 tin; <code>role</code> là <code>user</code> hoặc <code>assistant</code>; nội dung tối đa 1000 ký tự; <strong>tin cuối phải là của người dùng</strong>.</li>
+            <li><code>Asker.from_request()</code> xác định vai trò: <code>GUEST</code>, <code>CUSTOMER</code>, <code>FARMER</code>, <code>ADMIN</code>.</li>
+            <li><strong>Giới hạn mỗi ngày</strong> (<code>chat_bot/limits.py</code>): khách vãng lai 30 câu trả lời/ngày đếm theo IP; người đã đăng nhập 100 câu trả lời/ngày đếm theo tài khoản. Bộ đếm ở Redis, khoá <code>chat:daily:&lt;ngày&gt;:&lt;user:id hoặc ip:…&gt;</code>, hết hạn lúc nửa đêm. <code>used_up()</code> kiểm tra trước khi hỏi AI; <code>record_answer()</code> chỉ tăng bộ đếm <strong>sau khi AI trả lời thành công</strong>.</li>
+          </ul>
+          <div class="why"><p>Chỉ đếm câu trả lời thành công: AI gặp sự cố thì người dùng không bị mất lượt oan.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip ext">AI</span>Vòng hỏi AI (chat_bot/services.py → answer)</span>
+          <ol class="sub-steps">
+            <li>Tạo "chỉ dẫn hệ thống" theo vai trò (<code>chat_bot/prompts.py → system_instruction</code>): luật chung, thông tin nền tảng, phạm vi của vai trò, gợi ý trả lời theo ngôn ngữ của câu hỏi.</li>
+            <li>Chọn danh sách <strong>công cụ</strong> theo vai trò (<code>chat_bot/ai_chatbot.py → TOOLS_BY_ROLE</code>). Công cụ là các hàm Python <strong>chỉ đọc</strong> mà AI được phép yêu cầu gọi:
+              <div class="tbl-wrap"><table>
+                <thead><tr><th>Vai trò</th><th>Công cụ</th></tr></thead>
+                <tbody>
+                  <tr><td>Mọi người</td><td><code>search_products</code>, <code>get_market_info</code>, <code>get_farmer_availability</code></td></tr>
+                  <tr><td>Khách vãng lai, khách hàng</td><td>thêm <code>get_my_orders</code> (khách vãng lai gọi thì chỉ nhận lời nhắc đăng nhập)</td></tr>
+                  <tr><td>Nông dân</td><td>thêm <code>get_my_stall_overview</code>, <code>get_my_products</code></td></tr>
+                  <tr><td>Admin</td><td>thêm <code>get_admin_overview</code></td></tr>
+                </tbody>
+              </table></div></li>
+            <li>Gọi Gemini (model chính <code>GEMINI_CHAT_MODEL</code>, có danh sách model dự phòng) với <code>temperature 0.3</code>. <code>call_with_fallback</code> (<code>marketlink_core/gemini.py</code>) thử lại khi lỗi tạm thời, chuyển model dự phòng khi hết quota, dừng khi vượt hạn chót 15 giây (<code>AI_CHAT_DEADLINE_S</code>).</li>
+            <li>Gemini yêu cầu gọi công cụ thì <code>run_tool()</code> chạy tối đa 4 công cụ mỗi vòng rồi gửi kết quả lại. Cho phép tối đa <strong>3 vòng có công cụ</strong>; nếu tới đó Gemini vẫn đòi gọi công cụ, hệ thống gọi thêm <strong>một lần cuối không kèm công cụ</strong> để buộc nó trả lời bằng chữ.
+              <ul>
+                <li><code>run_tool</code> kiểm tra lại công cụ có thuộc vai trò không; không thuộc thì trả <code>not_available_for_this_account</code> mà không chạy.</li>
+                <li>Công cụ dùng lại selector có sẵn: <code>search_products</code> gọi <code>public_products()</code> (cùng hàm của trang sản phẩm công khai) nên chỉ thấy sản phẩm đang bán; <code>get_my_orders</code> gọi <code>customer_orders_queryset(asker.user)</code> nên chỉ thấy đơn của chính người hỏi.</li>
+                <li>Mỗi kết quả tối đa 5 dòng (<code>MAX_ROWS</code>). Công cụ lỗi trả <code>lookup_failed</code>, không làm hỏng cả câu trả lời.</li>
+              </ul></li>
+            <li>Câu trả lời cắt tối đa 2000 ký tự.</li>
+          </ol>
+          <div class="why">
+            <p><strong>Công cụ thay vì cho AI tự viết SQL:</strong> AI chỉ được chọn trong vài hàm đọc viết sẵn, mỗi hàm đã áp đúng quy tắc hiển thị và quyền sở hữu. AI không thể sửa dữ liệu, không thể đọc đơn của người khác, kể cả khi bị người dùng lừa bằng câu lệnh.</p>
+            <p><strong>Giới hạn số vòng:</strong> không để AI gọi công cụ lặp vô tận, tốn quota và làm người dùng chờ.</p>
+          </div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Response thành công</span>
+<pre class="code">{ "data": { "reply": "Chợ Bến Thành mở Chủ nhật từ 6:00…",
+            "tools_used": ["get_market_info"] } }</pre>
+          Frontend thêm câu trả lời vào khung chat và hiện dòng nhỏ "Looked up: markets" (dịch tên công cụ qua <code>TOOL_LABEL</code>).
+          <div class="why"><p>Người dùng biết câu trả lời dựa trên dữ liệu thật của nền tảng, không phải AI tự đoán.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span>Mọi trường hợp từ chối trả cùng một câu</span>
+          Vượt 20 tin/phút, hết lượt trong ngày, AI không trả lời kịp, hết quota: tất cả trả <strong>503 <code>AI_UNAVAILABLE</code></strong> với cùng câu "Trợ lý đang bận…" (tiếng Việt nếu câu hỏi có dấu tiếng Việt, ngược lại tiếng Anh, <code>prompts.py → busy_reply</code>). Lý do thật chỉ ghi trong log server. Frontend: mutation <code>silent</code> nên không có toast; câu từ chối được thêm vào khung chat dạng dòng "notice" (<code>refusalText</code>).
+          <div class="why"><p>Không cho người lạm dụng biết chính xác giới hạn để canh lách. Với người dùng bình thường, "đang bận, thử lại sau" là đủ.</p></div></li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Nút "New conversation"</span>
+          <code>reset()</code> xoá lịch sử trong bộ nhớ. Không gọi server, vì server không lưu gì.</li>
+      </ol>
+
+      <h3>Lưu trữ</h3>
+      <p>Không ghi MySQL. Redis: bộ đếm throttle mỗi phút và bộ đếm câu trả lời mỗi ngày. Các công cụ <strong>đọc</strong> MySQL (<code>products</code>, <code>markets</code>, <code>farmer_profiles</code>, <code>orders</code>…).</p>
+
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>components/common/chat/AIChatWidget.jsx</code>, <code>hooks/queries/common/useAIChat.js</code>, <code>api/common/chatApi.js</code>, <code>stores/chat.store.js</code></p>
+        <p><strong>Backend:</strong> <code>chat_bot/urls.py</code>, <code>chat_bot/views.py</code>, <code>chat_bot/serializers.py</code>, <code>chat_bot/limits.py</code>, <code>chat_bot/services.py</code>, <code>chat_bot/ai_chatbot.py</code>, <code>chat_bot/prompts.py</code>, <code>marketlink_core/gemini.py</code>, <code>marketlink_core/settings.py → AI_CHAT_*, GEMINI_CHAT_*</code></p>
+      </div>
+    </div>
+  </details>
+
+  <!-- X-11 -->
+  <details class="j" id="x-11" open>
+    <summary>
+      <span class="jid">X-11</span><span class="jt">Tải cấu hình công khai</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Không thấy trực tiếp; frontend tự tải khi một component cần.</dd>
+        <dt>Nơi dùng</dt><dd><code>AIChatWidget</code> (mọi layout), <code>AboutPage</code>, <code>FarmerOrdersPage</code>, <code>FarmerProductFormPage</code>, <code>FarmerProfilePage</code>.</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Query dùng chung</span>
+          <code>usePublicConfig()</code> (<code>hooks/queries/guest/usePublicCatalog.js</code>), <code>staleTime</code> 30 phút → <code>GET /api/public/config/</code>. Cùng một query key nên dù năm component cùng gọi cũng chỉ có <strong>một</strong> request; các component còn lại đọc từ cache.</li>
+        <li><span class="st"><span class="chip be">BE</span>PublicConfigView</span>
+          (<code>system/views.py</code>), <code>AllowAny</code>. Không truy vấn DB, chỉ đọc cấu hình:
+<pre class="code">{ "ai_chat_enabled": true, "booking_horizon_days": 7,
+  "max_placed_orders_per_customer": 10, "max_upload_mb": 2 }</pre></li>
+        <li><span class="st"><span class="chip fe">FE</span>Dùng các giá trị</span>
+          <ul>
+            <li><code>ai_chat_enabled</code>: ẩn hoặc hiện widget chat (X-10).</li>
+            <li><code>booking_horizon_days</code>: số ngày tới có thể đặt hàng. Trang About dùng để viết hướng dẫn; trang đơn của nông dân dùng để vẽ dải ngày.</li>
+            <li><code>max_upload_mb</code>: giới hạn dung lượng ảnh trong schema form sản phẩm và hồ sơ nông dân (<code>makeProductSchema({ maxUploadMb })</code>).</li>
+            <li><code>max_placed_orders_per_customer</code>: không trang nào trong số trên đọc giá trị này; trang giới hạn của admin (<code>AdminSettingsPage</code>) đọc nó qua API riêng <code>/admin/settings/</code>.</li>
+          </ul>
+          Mọi nơi dùng đều có giá trị mặc định (ví dụ <code>DEFAULT_MAX_UPLOAD_MB</code>) phòng khi API chưa trả về.</li>
+      </ol>
+      <div class="why"><p>Ý đồ thiết kế: các con số này là <strong>luật của backend</strong>. Nếu viết cứng trên frontend, đổi luật ở backend mà quên sửa frontend thì form cho tải ảnh 5 MB nhưng server lại từ chối. Lấy từ một API chung thì frontend luôn theo backend.</p></div>
+      <div class="note warn"><p><strong>Thực tế chưa hoàn toàn như vậy.</strong> <code>PublicConfigView</code> đọc các số từ <code>marketlink_core/constants.py</code>, nơi chúng lấy từ biến môi trường. Nhưng chỗ <strong>thật sự chặn</strong> lại dùng hằng số viết cứng: số ngày đặt trước là <code>7</code> trong <code>orders/constants.py</code> và <code>markets/services/validation.py</code>; dung lượng ảnh là <code>2 * 1024 * 1024</code> trong <code>catalog/services/farmer_product.py</code>. Nếu đổi <code>BOOKING_HORIZON_DAYS</code> hoặc <code>MAX_UPLOAD_MB</code> trong môi trường, frontend sẽ hiện số mới nhưng backend vẫn chặn theo số cũ. Riêng <code>max_placed_orders_per_customer</code> thì khớp: checkout đọc <code>settings.MAX_PLACED_ORDERS_PER_CUSTOMER</code>, cùng biến môi trường. Với giá trị mặc định (7 ngày, 2 MB) thì hai bên vẫn trùng nhau.</p></div>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>hooks/queries/guest/usePublicCatalog.js → usePublicConfig</code>, <code>api/guest/catalogApi.js → getConfig</code></p>
+        <p><strong>Backend:</strong> <code>system/urls.py</code>, <code>system/views.py → PublicConfigView</code>, <code>marketlink_core/constants.py</code>, <code>marketlink_core/settings.py</code></p>
+      </div>
+    </div>
+  </details>
+
+  <!-- X-12 -->
+  <details class="j" id="x-12" open>
+    <summary>
+      <span class="jid">X-12</span><span class="jt">Banner thông báo chung, và đóng banner</span><span class="jk"><span class="chip read">ĐỌC</span><span class="chip local">TRÌNH DUYỆT</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Thấy dải thông báo có biểu tượng loa ở đầu nội dung trang (ví dụ "Chợ nghỉ Tết từ 28/1 đến 3/2"). Bấm dấu X để ẩn.</dd>
+        <dt>Component</dt><dd><code>components/common/announcements/AnnouncementBanner.jsx</code>, đặt trong <code>PublicLayout</code> <strong>và</strong> <code>CustomerLayout</code>. Không có trong <code>FarmerLayout</code> và <code>AdminLayout</code>. Nội dung do admin tạo ở <code>/admin/announcements</code> (A-47, file admin).</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Tải danh sách</span>
+          <code>useAnnouncements()</code>, <code>staleTime</code> 5 phút, <code>retry: false</code> → <code>GET /api/public/announcements/</code>.
+          <div class="why"><p>Banner không quan trọng; lỗi thì thôi không hiện, không đáng thử lại nhiều lần làm chậm trang.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>PublicAnnouncementListView</span>
+          (<code>notifications/public_portal/views_public.py</code>), <code>AllowAny</code>, không phân trang:
+          <ul>
+            <li>Xác định vai trò người xem từ token (nếu có).</li>
+            <li><code>active_announcements(role_code)</code> (<code>notifications/selectors.py</code>) lấy các dòng <code>announcements</code> thoả <strong>tất cả</strong>: <code>is_active = 1</code>, <code>starts_at &lt;= bây giờ</code>, <code>ends_at</code> trống hoặc ở tương lai.</li>
+            <li>Lọc theo đối tượng (<code>audience</code>): khách hàng thấy <code>ALL</code> và <code>CUSTOMER</code>; nông dân thấy <code>ALL</code> và <code>FARMER</code>; còn lại (khách vãng lai, admin) chỉ thấy <code>ALL</code>.</li>
+            <li>Sắp theo thời điểm bắt đầu (<code>starts_at</code>), mới nhất trước. <strong>Cache 5 phút</strong> phía server (<code>cache_page(60 * 5)</code>), tách riêng theo header <code>Authorization</code> (<code>vary_on_headers</code>).</li>
+          </ul>
+          <div class="why">
+            <p><strong>Cache phía server:</strong> API được gọi bởi <strong>mọi</strong> khách mở <strong>mọi</strong> trang công khai, trong khi nội dung gần như không đổi; cache 5 phút giảm mạnh số truy vấn DB.</p>
+            <p><strong>Tách cache theo <code>Authorization</code>:</strong> nội dung khác nhau theo vai trò. Không tách thì có thể trả nhầm thông báo dành cho nông dân cho một khách vãng lai, chỉ vì nông dân vừa gọi trước đó.</p>
+          </div>
+          Hệ quả: admin bật hoặc tắt một thông báo, có thể mất tới 5 phút (cache server) cộng 5 phút (<code>staleTime</code> frontend) người dùng mới thấy.</li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Lọc các thông báo đã đóng</span>
+          Component đọc danh sách id đã đóng từ localStorage khoá <code>marketlink-dismissed-announcements</code> (trong <code>try/catch</code>, lỗi thì coi như chưa đóng cái nào). Chỉ hiện thông báo chưa bị đóng; không còn gì thì không vẽ gì.</li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Bấm X để đóng</span>
+          Thêm id vào danh sách, lưu localStorage. <strong>Không gọi server.</strong> Đổi trình duyệt hoặc xoá dữ liệu trình duyệt thì banner hiện lại.
+          <div class="why"><p>Đóng banner là tuỳ chọn hiển thị của riêng trình duyệt đó, không phải dữ liệu nghiệp vụ. Khách vãng lai cũng đóng được mà không cần tài khoản.</p></div></li>
+      </ol>
+      <h3>Lưu trữ</h3>
+      <p>MySQL <code>announcements</code> (đọc). Cache server 5 phút. localStorage <code>marketlink-dismissed-announcements</code>.</p>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>components/common/announcements/AnnouncementBanner.jsx</code>, <code>hooks/queries/common/useAnnouncements.js</code>, <code>services/guest/announcementsApi.js</code>, <code>layouts/PublicLayout.jsx</code>, <code>layouts/CustomerLayout.jsx</code></p>
+        <p><strong>Backend:</strong> <code>notifications/public_portal/urls_public.py</code>, <code>notifications/public_portal/views_public.py</code>, <code>notifications/selectors.py → active_announcements</code>, <code>notifications/models.py → Announcement, AnnouncementAudience</code></p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============ LƯU Ý ============ -->
+<section class="group" id="luu-y">
+  <h2><span class="sn">!!</span>Điểm cần lưu ý (phát hiện khi đọc code)</h2>
+  <p class="sub">Những chỗ code hiện tại chạy khác với điều người đọc có thể nghĩ. Ghi lại để không trả lời sai khi bị hỏi, và để quyết định có sửa hay không.</p>
+  <ol class="findings">
+    <li><strong>Banner hiện hai lần ở các trang <code>/customer/*</code>.</strong> Route khách nằm bên trong <code>PublicLayout</code> (<code>public.routes.jsx</code> trải <code>...customerRoutes</code> vào danh sách con). <code>PublicLayout</code> có <code>&lt;AnnouncementBanner /&gt;</code>, <code>CustomerLayout</code> cũng có. Hai bản dùng chung một query nên chỉ có một request, nhưng nội dung vẽ hai lần; hai bản giữ state riêng nên đóng ở bản này thì bản kia vẫn còn tới khi trang vẽ lại.</li>
+    <li><strong>Nông dân không bao giờ thấy banner</strong>, vì <code>FarmerLayout</code> không đặt <code>AnnouncementBanner</code>. Thông báo với đối tượng <code>FARMER</code> hiện không hiển thị ở đâu.</li>
+    <li><strong>Khách hàng và admin không có thông báo thời gian thực.</strong> Chỉ <code>FarmerLayout</code> mở WebSocket; khách và admin dựa vào polling 30 giây.</li>
+    <li><strong>Trang thông báo của khách không làm mới chuông.</strong> <code>useNotificationFeed</code> đánh dấu cũ <code>['notifications-page']</code> và <code>['notifications-list']</code>, còn chuông dùng <code>['notifications', …]</code>; chấm đỏ còn tối đa 30 giây.</li>
+    <li><strong>Hai file API thông báo và hai bộ hook cho cùng một việc:</strong> <code>api/common/notificationsApi.js</code> + <code>useNotifications.js</code> (chuông, trang nông dân) và <code>services/common/notificationsApi.js</code> + <code>useNotificationFeed.js</code> (trang khách). Điểm 4 là hệ quả.</li>
+    <li><strong>Hai bản form đổi mật khẩu:</strong> <code>components/common/forms/ChangePasswordForm.jsx</code> (khách, admin) và <code>pages/auth/ChangePasswordForm.jsx</code> (nông dân), cách hiện lỗi khác nhau (X-05).</li>
+    <li><strong>Giỏ hàng không bị xoá khi đăng xuất</strong> (X-04).</li>
+    <li><strong>Chú thích code nói admin không có thông báo, nhưng code cho phép.</strong> Docstring của <code>NotificationBaseView</code> ghi "Admin has no personal notifications -&gt; 403", nhưng quyền là <code>IsAnyRole</code>, gồm cả admin. Thực tế admin <strong>có</strong> nhận thông báo: AI duyệt tin gửi <code>AI_LISTING_FLAGGED</code> và <code>AI_AUTO_APPROVED</code> cho admin (<code>catalog/ai_review/service.py</code>). Code đúng, chú thích đã cũ.</li>
+    <li><strong>Admin không có trang danh sách thông báo:</strong> chuông admin không có "View all", nên admin chỉ xem được 5 tin mới nhất.</li>
+    <li><strong>Validator "mật khẩu giống thông tin tài khoản" không có tác dụng khi đổi mật khẩu</strong>, vì <code>check_password_strength</code> không truyền người dùng vào <code>validate_password</code> (X-05 bước 4).</li>
+    <li><strong>Số ngày đặt trước và dung lượng ảnh tối đa bị khai báo ở nhiều nơi.</strong> API cấu hình (X-11) và trang giới hạn của admin đọc từ biến môi trường, còn chỗ chặn thật thì dùng hằng số viết cứng (7 ngày, 2 MB). Đổi biến môi trường sẽ làm giao diện và backend lệch nhau.</li>
+  </ol>
+</section>
+</main>
+</div>
+
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('details.j'));
+  var q = document.getElementById('q');
+  var count = document.getElementById('count');
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+
+  function applySearch() {
+    var term = (q.value || '').trim().toLowerCase();
+    var shown = 0;
+    cards.forEach(function (card) {
+      var hit = term === '' || card.textContent.toLowerCase().indexOf(term) !== -1;
+      card.hidden = !hit;
+      if (hit) { shown++; if (term) card.open = true; }
+      var link = document.querySelector('.toc a[href="#' + card.id + '"]');
+      if (link) link.classList.toggle('dim', !hit);
+    });
+    count.textContent = term ? shown + ' / ' + cards.length + ' hành trình khớp' : cards.length + ' hành trình';
+  }
+  q.addEventListener('input', applySearch);
+  document.getElementById('open-all').addEventListener('click', function () { cards.forEach(function (c) { c.open = true; }); });
+  document.getElementById('close-all').addEventListener('click', function () { cards.forEach(function (c) { c.open = false; }); });
+  tocLinks.forEach(function (a) {
+    a.addEventListener('click', function () {
+      var target = document.querySelector(a.getAttribute('href'));
+      if (target && target.tagName === 'DETAILS') target.open = true;
+    });
+  });
+  applySearch();
+
+  if ('IntersectionObserver' in window) {
+    var targets = tocLinks.map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        tocLinks.forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id); });
+      });
+    }, { rootMargin: '-15% 0px -75% 0px' });
+    targets.forEach(function (t) { io.observe(t); });
+  }
+
+  // Opened straight from disk (not on claude.ai): load Mermaid ourselves so the diagrams draw.
+  if (location.protocol === 'file:') {
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js';
+    s.onload = function () {
+      var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      window.mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+      window.mermaid.run({ querySelector: 'pre.mermaid' });
+    };
+    document.head.appendChild(s);
+  }
+})();
+</script>

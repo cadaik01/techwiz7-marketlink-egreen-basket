@@ -1,0 +1,1134 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sổ tay MarketLink</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Lexend:wght@500;600;700&display=swap">
+<style>
+/* Layout: sticky table of contents on the left, one reading column on the right; stacks on phones. */
+:root {
+  --bg: #f4f6f1;
+  --surface: #ffffff;
+  --sunken: #eaeee6;
+  --ink: #1b231e;
+  --muted: #59645d;
+  --line: #d8ded4;
+  --accent: #2e6a3e;
+  --accent-soft: #e1ede3;
+  --fe: #2c5a87;
+  --fe-soft: #e0ebf6;
+  --be: #2e6a3e;
+  --be-soft: #e1ede3;
+  --db: #9a5a0e;
+  --db-soft: #f6e9d6;
+  --ext: #6b4a8f;
+  --ext-soft: #ece4f5;
+  --warn: #a3401f;
+  --warn-soft: #f7e3da;
+  --font-display: "Lexend", "Be Vietnam Pro", system-ui, sans-serif;
+  --font-body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111613; --surface: #181f1b; --sunken: #1f2722; --ink: #e3e9e4; --muted: #98a39c; --line: #2c3631;
+    --accent: #7fc492; --accent-soft: #1d3324; --fe: #8db9e6; --fe-soft: #1a2a3b; --be: #7fc492; --be-soft: #1d3324;
+    --db: #e2a55d; --db-soft: #3a2a17; --ext: #c3a5e6; --ext-soft: #2b2238; --warn: #ef9a7a; --warn-soft: #3b231b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111613; --surface: #181f1b; --sunken: #1f2722; --ink: #e3e9e4; --muted: #98a39c; --line: #2c3631;
+  --accent: #7fc492; --accent-soft: #1d3324; --fe: #8db9e6; --fe-soft: #1a2a3b; --be: #7fc492; --be-soft: #1d3324;
+  --db: #e2a55d; --db-soft: #3a2a17; --ext: #c3a5e6; --ext-soft: #2b2238; --warn: #ef9a7a; --warn-soft: #3b231b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.65; }
+.wrap { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 48px; max-width: 1180px; margin: 0 auto; padding: 32px 24px 80px; }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; max-height: calc(100vh - 48px); overflow-y: auto; font-size: 14px; }
+.toc-title { font-family: var(--font-display); font-weight: 600; font-size: 15px; margin: 0 0 12px; }
+.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.toc a { display: block; color: var(--muted); text-decoration: none; padding: 5px 10px; border-radius: 6px; border-left: 2px solid transparent; }
+.toc a:hover, .toc a:focus-visible { color: var(--ink); background: var(--sunken); outline: none; }
+.toc a.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-soft); }
+.toc .num { font-family: var(--font-mono); font-size: 12px; margin-right: 6px; }
+main { min-width: 0; max-width: 820px; }
+header.hero { padding-block: 8px 28px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 4.4vw, 44px); line-height: 1.15; margin: 0 0 14px; text-wrap: balance; }
+.lede { font-size: 18px; color: var(--muted); max-width: 64ch; margin: 0; }
+section { padding-block: 40px 8px; scroll-margin-top: 16px; }
+h2 { font-family: var(--font-display); font-weight: 600; font-size: 27px; line-height: 1.25; margin: 0 0 6px; text-wrap: balance; display: flex; gap: 12px; align-items: baseline; }
+h2 .sn { font-family: var(--font-mono); font-size: 15px; color: var(--accent); font-weight: 500; }
+h3 { font-family: var(--font-display); font-weight: 600; font-size: 20px; margin: 32px 0 8px; text-wrap: balance; }
+h4 { font-weight: 600; font-size: 16px; margin: 20px 0 6px; }
+p { margin: 0 0 14px; max-width: 68ch; }
+.sub { color: var(--muted); margin-bottom: 20px; }
+code, .mono { font-family: var(--font-mono); font-size: .86em; }
+p code, li code, td code, dd code { background: var(--sunken); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+a { color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 0 0 14px; }
+li { margin-bottom: 4px; }
+pre.code { background: var(--sunken); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; font-family: var(--font-mono); font-size: 13px; line-height: 1.55; margin: 0 0 16px; }
+.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin: 8px 0 20px; overflow-x: auto; }
+.diagram pre.mermaid { margin: 0; background: transparent; text-align: center; }
+.cap { font-size: 13px; color: var(--muted); margin-top: -12px; margin-bottom: 20px; }
+
+/* layer chips */
+.chip { display: inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .04em; padding: 2px 7px; border-radius: 4px; vertical-align: 2px; white-space: nowrap; }
+.chip.fe { color: var(--fe); background: var(--fe-soft); }
+.chip.be { color: var(--be); background: var(--be-soft); }
+.chip.db { color: var(--db); background: var(--db-soft); }
+.chip.ext { color: var(--ext); background: var(--ext-soft); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 14px; color: var(--muted); margin: 0 0 18px; }
+
+/* numbered steps: real sequences only */
+ol.steps { list-style: none; padding: 0; margin: 0 0 20px; counter-reset: step; display: grid; gap: 0; }
+ol.steps > li { counter-increment: step; position: relative; padding: 0 0 18px 46px; margin: 0; }
+ol.steps > li::before { content: counter(step); position: absolute; left: 0; top: 1px; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-mono); font-size: 13px; font-weight: 500; background: var(--surface); border: 1.5px solid var(--line); color: var(--ink); }
+ol.steps > li::after { content: ""; position: absolute; left: 15px; top: 34px; bottom: 2px; width: 1.5px; background: var(--line); }
+ol.steps > li:last-child::after { display: none; }
+.st { font-weight: 600; display: block; margin-bottom: 2px; }
+.st .chip { margin-right: 6px; }
+.path { display: block; font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); margin-top: 3px; overflow-wrap: anywhere; }
+
+/* callouts */
+.note { border-radius: 8px; padding: 14px 16px; margin: 0 0 18px; background: var(--accent-soft); }
+.note.warn { background: var(--warn-soft); }
+.note.amber { background: var(--db-soft); }
+.note p:last-child, .note ul:last-child { margin-bottom: 0; }
+.note strong:first-child { display: block; margin-bottom: 4px; }
+
+/* app cards */
+.apps { display: grid; gap: 14px; }
+.app { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; }
+.app-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; margin-bottom: 6px; }
+.app-name { font-family: var(--font-mono); font-weight: 500; font-size: 17px; color: var(--accent); }
+.app-role { font-weight: 600; }
+.app-order { margin-left: auto; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.app dl { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 6px 14px; margin: 10px 0 0; font-size: 15px; }
+.app dt { color: var(--muted); font-size: 13px; padding-top: 2px; }
+.app dd { margin: 0; min-width: 0; }
+
+/* tables */
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); margin: 0 0 20px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); background: var(--sunken); position: sticky; top: 0; }
+tr:last-child td { border-bottom: 0; }
+td code { font-size: 12px; }
+td.route { font-family: var(--font-mono); font-size: 12.5px; white-space: nowrap; }
+.grp td { background: var(--sunken); font-weight: 600; font-family: var(--font-display); font-size: 14px; }
+
+/* journey catalogue */
+.chip.read { color: var(--fe); background: var(--fe-soft); }
+.chip.write { color: var(--db); background: var(--db-soft); }
+.chip.local { color: var(--muted); background: var(--sunken); }
+.jfile { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; margin: 0 0 16px; }
+.jfile-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.jfile-name { font-family: var(--font-display); font-weight: 600; font-size: 19px; }
+.jfile-count { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.jfile-status { margin-left: auto; font-size: 13px; font-weight: 500; padding: 3px 10px; border-radius: 999px; background: var(--sunken); color: var(--muted); }
+a.jfile-status.done { background: var(--accent); color: var(--surface); text-decoration: none; }
+a.jfile-status.done:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.jfile-desc { font-size: 14px; color: var(--muted); margin: 8px 0 0; }
+.jfile h4 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 16px 0 4px; }
+.jfile h4 code { text-transform: none; letter-spacing: 0; }
+ol.jlist { list-style: none; padding: 0; margin: 0; }
+ol.jlist li { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 10px; align-items: baseline; padding: 6px 0; border-bottom: 1px solid var(--line); margin: 0; font-size: 15px; }
+ol.jlist li:last-child { border-bottom: 0; }
+.jn { font-family: var(--font-mono); font-size: 12.5px; color: var(--accent); }
+
+/* app layers (section 05) */
+.layers { display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: 14px; margin: 8px 0 16px; }
+.stack { display: grid; gap: 8px; min-width: 0; }
+.layer { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
+.layer--base { background: var(--sunken); }
+.layer-tag { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin: 0; }
+.layer-apps { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; min-width: 0; }
+.appbox { display: inline-block; font-family: var(--font-mono); font-size: 14px; font-weight: 500; padding: 3px 10px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); }
+.uses { font-size: 14px; color: var(--muted); }
+.side { background: var(--sunken); border-radius: 10px; padding: 12px 14px; display: grid; gap: 10px; align-content: start; }
+.side p { margin: 0; }
+@media (max-width: 760px) { .layers { grid-template-columns: minmax(0, 1fr); } .layer { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
+
+/* page lookup filter */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 12px; }
+.filters button { font: inherit; font-size: 14px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.filters button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.filters button:focus-visible, .filters input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.filters input { font: inherit; font-size: 14px; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); flex: 1 1 200px; min-width: 0; }
+.count { font-size: 13px; color: var(--muted); }
+
+/* Q&A */
+details.qa { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin: 0 0 10px; }
+details.qa summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; gap: 10px; }
+details.qa summary::-webkit-details-marker { display: none; }
+details.qa summary::before { content: "+"; font-family: var(--font-mono); color: var(--accent); width: 14px; flex: none; }
+details.qa[open] summary::before { content: "–"; }
+details.qa summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 10px; }
+details.qa .ans { padding: 0 18px 14px 42px; }
+
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+.two > div { min-width: 0; }
+.two h4 { margin-top: 0; }
+
+@media (max-width: 1000px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 20px 16px 64px; }
+  nav.toc { position: static; max-height: none; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin-bottom: 8px; }
+  .toc ol { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 620px) {
+  .toc ol { grid-template-columns: 1fr; }
+  .two { grid-template-columns: 1fr; }
+  .app dl { grid-template-columns: 1fr; gap: 0 0; }
+  .app dt { padding-top: 8px; }
+  .app-order { margin-left: 0; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Mục lục">
+  <p class="toc-title">Mục lục</p>
+  <ol>
+    <li><a href="#cach-doc"><span class="num">00</span>Cách dùng sổ tay</a></li>
+    <li><a href="#tong-the"><span class="num">01</span>Bức tranh tổng thể</a></li>
+    <li><a href="#tu-vung"><span class="num">02</span>Từ vựng tối thiểu</a></li>
+    <li><a href="#hanh-trinh"><span class="num">03</span>Hành trình một request</a></li>
+    <li><a href="#cac-app"><span class="num">04</span>Từng app hình thành ra sao</a></li>
+    <li><a href="#tuong-tac"><span class="num">05</span>Các app gọi nhau thế nào</a></li>
+    <li><a href="#luong"><span class="num">06</span>Danh mục hành trình</a></li>
+    <li><a href="#tra-cuu"><span class="num">07</span>Tra cứu từng trang</a></li>
+    <li><a href="#bao-ve"><span class="num">08</span>Câu hỏi hội đồng hay hỏi</a></li>
+    <li><a href="#tu-kiem"><span class="num">09</span>Tự kiểm chứng trên máy</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="hero">
+  <p class="eyebrow">MarketLink · Techwiz 7 · ôn bảo vệ đồ án</p>
+  <h1>Sổ tay MarketLink: dữ liệu đi từ màn hình xuống MySQL và quay lại</h1>
+  <p class="lede">Viết cho người mới vào nghề. Sổ tay này là bản đồ tổng thể: kiến trúc, các app, khuôn chung của một request, và danh mục 137 hành trình. Chi tiết từng hành trình nằm ở các file hành trình riêng, mỗi bước đều chỉ ra file cụ thể trong <code>frontend/src</code> và <code>backend/</code>.</p>
+</header>
+
+<!-- 00 -->
+<section id="cach-doc">
+  <h2><span class="sn">00</span>Cách dùng sổ tay này</h2>
+  <p>Nên đọc theo thứ tự. Phần 01–03 là nền tảng, đọc chậm. Phần 04–05 giải thích vì sao backend chia thành 10 app. Phần 06 là danh mục 137 hành trình (mỗi hành động trên giao diện), chi tiết nằm ở các file hành trình riêng. Phần 07 là bảng tra cứu khi hội đồng chỉ vào một trang bất kỳ và hỏi "trang này lấy dữ liệu ở đâu".</p>
+  <div class="legend">
+    <span><span class="chip fe">FE</span> Frontend (React, chạy trên trình duyệt)</span>
+    <span><span class="chip be">BE</span> Backend (Django, chạy trên server)</span>
+    <span><span class="chip db">DB</span> MySQL</span>
+    <span><span class="chip ext">NGOÀI</span> Redis, Gemini AI, email</span>
+  </div>
+  <div class="note">
+    <strong>Một câu để nhớ cả dự án</strong>
+    <p>Trang React gọi một <em>hook</em>, hook gọi một hàm API, hàm API gửi HTTP tới Django. Django đi qua <em>view → serializer → service → model</em> rồi ghi vào MySQL, và trả về một gói JSON cố định gọi là <em>envelope</em>. React Query lưu kết quả vào bộ nhớ đệm, component tự vẽ lại.</p>
+  </div>
+</section>
+
+<!-- 01 -->
+<section id="tong-the">
+  <h2><span class="sn">01</span>Bức tranh tổng thể</h2>
+  <p class="sub">MarketLink là chợ nông sản trực tuyến. Khách đặt hàng trước, đến sạp của nông dân ở chợ để nhận. Có ba vai trò: khách hàng (CUSTOMER), nông dân (FARMER), quản trị (ADMIN), cộng thêm khách vãng lai chưa đăng nhập.</p>
+
+  <div class="diagram">
+<pre class="mermaid">
+flowchart LR
+  subgraph Browser["Trình duyệt"]
+    UI["Trang React<br/>pages/*.jsx"] --> HK["Hook<br/>TanStack Query"]
+    HK --> API["Hàm API<br/>api/*, services/*"]
+    API --> AX["axiosClient<br/>gắn token, bóc envelope"]
+    ZS["Zustand store<br/>token, giỏ hàng"] -.-> AX
+  end
+  AX -- "HTTP JSON /api/..." --> DJ
+  WS["useNotificationSocket<br/>chỉ trang nông dân"] -- "WebSocket /ws/notifications/" --> CH
+  subgraph Server["Server Django (ASGI, Daphne)"]
+    DJ["DRF View"] --> SR["Serializer"]
+    SR --> SV["Service"]
+    SV --> MD["Model / ORM"]
+    CH["Channels consumer"]
+  end
+  MD --> DB[("MySQL 8")]
+  SV -.-> RD[("Redis")]
+  RD -.-> CH
+  SV -.-> GM["Gemini AI"]
+  CH -. "đẩy thông báo" .-> WS
+</pre>
+  </div>
+  <p class="cap">Đường liền: dữ liệu chính. Đường đứt: dịch vụ phụ (cache, realtime, AI).</p>
+
+  <h3>Công nghệ và lý do chọn</h3>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Tầng</th><th>Công nghệ</th><th>Dùng để làm gì trong MarketLink</th></tr></thead>
+    <tbody>
+      <tr><td><span class="chip fe">FE</span></td><td>React 19 + Vite</td><td>Giao diện. Vite chạy dev server ở cổng 5173 và proxy <code>/api</code>, <code>/media</code>, <code>/ws</code> sang Django cổng 8000 (<code>vite.config.js</code>).</td></tr>
+      <tr><td><span class="chip fe">FE</span></td><td>React Router 7</td><td>Định tuyến và chặn quyền truy cập trang (<code>router/guards.jsx</code>).</td></tr>
+      <tr><td><span class="chip fe">FE</span></td><td>TanStack Query</td><td>Quản lý <em>server state</em>: gọi API, lưu cache, tự tải lại, retry.</td></tr>
+      <tr><td><span class="chip fe">FE</span></td><td>Zustand</td><td>Quản lý <em>client state</em>: token đăng nhập, giỏ hàng (lưu vào localStorage).</td></tr>
+      <tr><td><span class="chip fe">FE</span></td><td>react-hook-form + zod</td><td>Form và kiểm tra dữ liệu nhập trước khi gửi (<code>schemas/</code>).</td></tr>
+      <tr><td><span class="chip fe">FE</span></td><td>Leaflet, Recharts</td><td>Bản đồ chợ, biểu đồ thống kê.</td></tr>
+      <tr><td><span class="chip be">BE</span></td><td>Django + Django REST Framework</td><td>API REST, ORM, kiểm tra quyền, phân trang.</td></tr>
+      <tr><td><span class="chip be">BE</span></td><td>SimpleJWT</td><td>Đăng nhập bằng token: access sống 15 phút, refresh sống 7 ngày.</td></tr>
+      <tr><td><span class="chip be">BE</span></td><td>Channels + Daphne</td><td>WebSocket cho thông báo realtime. Hiện chỉ trang nông dân mở kết nối; khách và admin nhận thông báo bằng cách hỏi lại server mỗi 30 giây.</td></tr>
+      <tr><td><span class="chip be">BE</span></td><td>django-simple-history</td><td>Lưu lịch sử mỗi lần sửa sản phẩm, đơn hàng (ai sửa, vì sao).</td></tr>
+      <tr><td><span class="chip be">BE</span></td><td>drf-spectacular</td><td>Tự sinh tài liệu API ở <code>/api/docs/</code> (Swagger).</td></tr>
+      <tr><td><span class="chip db">DB</span></td><td>MySQL 8</td><td>Lưu toàn bộ dữ liệu nghiệp vụ.</td></tr>
+      <tr><td><span class="chip ext">NGOÀI</span></td><td>Redis</td><td>Cache, khoá chống đặt trùng (idempotency), danh sách phiên bị thu hồi, vé WebSocket, kênh đẩy realtime, đếm lượt chatbot.</td></tr>
+      <tr><td><span class="chip ext">NGOÀI</span></td><td>Google Gemini</td><td>AI duyệt tin đăng sản phẩm, đọc nội dung đánh giá, trợ lý chat.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 02 -->
+<section id="tu-vung">
+  <h2><span class="sn">02</span>Từ vựng tối thiểu</h2>
+  <p class="sub">Hội đồng thường hỏi định nghĩa. Mỗi khái niệm dưới đây đều có chỗ dùng thật trong code.</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Thuật ngữ</th><th>Nghĩa đơn giản</th><th>Ví dụ trong dự án</th></tr></thead>
+    <tbody>
+      <tr><td>Endpoint</td><td>Một địa chỉ URL + phương thức mà backend nhận.</td><td><code>POST /api/customer/orders/</code></td></tr>
+      <tr><td>GET / POST / PATCH / DELETE</td><td>Đọc / tạo hoặc hành động / sửa một phần / xoá.</td><td>PATCH hồ sơ, DELETE khung giờ nhận hàng</td></tr>
+      <tr><td>Status code</td><td>Mã kết quả: 2xx thành công, 4xx lỗi phía người gửi, 5xx lỗi server.</td><td>201 tạo đơn, 409 đơn đã bị người khác sửa, 429 gửi quá nhanh</td></tr>
+      <tr><td>Envelope</td><td>Khuôn JSON chung mọi API đều trả về.</td><td><code>marketlink_core/responses.py → api_response()</code></td></tr>
+      <tr><td>JWT access / refresh</td><td>Access là "vé vào cửa" ngắn hạn gửi kèm mỗi request. Refresh dùng để xin vé mới khi vé cũ hết hạn.</td><td>Header <code>Authorization: Bearer …</code></td></tr>
+      <tr><td>Model / ORM</td><td>Lớp Python ánh xạ tới một bảng. ORM tự sinh câu SQL.</td><td><code>orders/models.py → Order</code> = bảng <code>orders</code></td></tr>
+      <tr><td>Migration</td><td>File mô tả thay đổi cấu trúc bảng, chạy bằng <code>manage.py migrate</code>.</td><td><code>*/migrations/0001_…py</code></td></tr>
+      <tr><td>Serializer</td><td>Kiểm tra dữ liệu vào (JSON → Python) và định dạng dữ liệu ra (Model → JSON).</td><td><code>CheckoutWriteSerializer</code></td></tr>
+      <tr><td>View</td><td>Hàm nhận request: kiểm quyền, gọi serializer, gọi service, trả response.</td><td><code>CustomerOrdersView.post</code></td></tr>
+      <tr><td>Service</td><td>Nơi chứa quy tắc nghiệp vụ. Không phụ thuộc HTTP.</td><td><code>orders/services/checkout_service.py</code></td></tr>
+      <tr><td>Selector</td><td>Hàm chỉ đọc dữ liệu (truy vấn), dùng lại được ở nhiều nơi.</td><td><code>catalog/selectors.py → public_products()</code></td></tr>
+      <tr><td>Transaction</td><td>Nhóm lệnh ghi DB "tất cả hoặc không có gì".</td><td><code>with transaction.atomic():</code></td></tr>
+      <tr><td>Row lock</td><td>Khoá một dòng trong DB để hai request không sửa cùng lúc.</td><td><code>select_for_update()</code> khi đổi trạng thái đơn</td></tr>
+      <tr><td>Server state / client state</td><td>Dữ liệu thuộc về server (đơn hàng) và dữ liệu chỉ có ở trình duyệt (giỏ hàng, token).</td><td>React Query / Zustand</td></tr>
+      <tr><td>Query / Mutation</td><td>Query = đọc (GET). Mutation = ghi (POST, PATCH, DELETE).</td><td><code>useQuery</code>, <code>useMutation</code></td></tr>
+      <tr><td>Invalidate</td><td>Đánh dấu cache cũ để React Query tải lại.</td><td><code>queryClient.invalidateQueries()</code></td></tr>
+      <tr><td>WebSocket</td><td>Kết nối hai chiều luôn mở, server tự đẩy tin xuống.</td><td><code>ws/notifications/</code></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 03 -->
+<section id="hanh-trinh">
+  <h2><span class="sn">03</span>Hành trình của một request</h2>
+  <p class="sub">Mọi chức năng trong MarketLink đều đi qua cùng một khuôn. Phần này mô tả khuôn chung, không phải một chức năng cụ thể; từng chức năng cụ thể là một hành trình trong danh mục ở phần 06. Hiểu khuôn này rồi, bạn đọc được mọi hành trình.</p>
+
+  <h3>Chiều đi: từ cú bấm chuột tới MySQL</h3>
+  <ol class="steps">
+    <li><span class="st"><span class="chip fe">FE</span>Router chọn trang và kiểm quyền</span>
+      URL được khớp trong <code>router/routes/*.routes.jsx</code>. Trang được bọc bởi guard: <code>RequireAuth</code> (phải đăng nhập), <code>RequireRole</code> (đúng vai trò), <code>GuestOnly</code> (chưa đăng nhập), <code>NotForFarmers</code>. Sai quyền thì chuyển tới <code>/login</code> hoặc <code>/403</code>.
+      <span class="path">frontend/src/router/guards.jsx</span></li>
+    <li><span class="st"><span class="chip fe">FE</span>Trang nhận dữ liệu người dùng</span>
+      Ô tìm kiếm, bộ lọc, form. Form dùng <code>react-hook-form</code> và kiểm tra bằng schema <code>zod</code> ngay trên trình duyệt. Bộ lọc thường được ghi lên URL (<code>useUrlFilters</code>), ô tìm kiếm chờ 300 ms sau phím cuối mới gửi (<code>useDebouncedSearchParam</code>).
+      <span class="path">frontend/src/schemas/**, hooks/common/useUrlFilters.js</span></li>
+    <li><span class="st"><span class="chip fe">FE</span>Trang gọi một hook dữ liệu</span>
+      Đọc thì dùng <code>useQuery</code> với một <em>query key</em> (ví dụ <code>['public','products',{q:'cà chua'}]</code>). Ghi thì dùng <code>useMutation</code>.
+      <span class="path">frontend/src/hooks/queries/{guest,customer,farmer,admin,common}/*.js</span></li>
+    <li><span class="st"><span class="chip fe">FE</span>Hook gọi hàm API</span>
+      Mỗi hàm API chỉ biết một endpoint, ví dụ <code>ordersApi.checkout</code> gửi <code>POST /customer/orders/</code>. Một số hàm đi qua <em>adapter</em> để đổi tên trường cho dễ dùng.
+      <span class="path">frontend/src/api/**, services/**, lib/adapters/*</span></li>
+    <li><span class="st"><span class="chip fe">FE</span>axiosClient gắn thông tin trước khi gửi</span>
+      Interceptor request tự thêm: <code>Authorization: Bearer &lt;access&gt;</code>; <code>If-Match: "version"</code> khi sửa đơn (chống ghi đè); <code>Idempotency-Key</code> (UUID) khi đặt hàng (chống đặt trùng).
+      <span class="path">frontend/src/lib/axiosClient.js</span></li>
+    <li><span class="st"><span class="chip be">BE</span>Middleware nhận request</span>
+      CORS, gán mã <code>X-Request-ID</code> cho request (dùng để truy vết trong log), lịch sử thay đổi.
+      <span class="path">backend/marketlink_core/middleware.py, settings.py → MIDDLEWARE</span></li>
+    <li><span class="st"><span class="chip be">BE</span>urls.py chọn View</span>
+      <code>marketlink_core/urls.py</code> là bảng định tuyến gốc. Nó chuyển tiếp tới <code>urls</code> của từng app theo tiền tố: <code>api/auth/</code>, <code>api/customer/</code>, <code>api/farmer/</code>, <code>api/admin/…</code>, <code>api/public/…</code>.
+      <span class="path">backend/marketlink_core/urls.py</span></li>
+    <li><span class="st"><span class="chip be">BE</span>View xác thực, kiểm quyền, giới hạn tốc độ</span>
+      <code>SessionJWTAuthentication</code> giải mã token và kiểm tra phiên chưa bị thu hồi trong Redis. <code>permission_classes</code> như <code>IsCustomer</code>, <code>IsFarmer</code>, <code>IsAdmin</code> chặn sai vai trò. <code>throttle</code> chặn gửi quá nhiều.
+      <span class="path">backend/accounts/auth/authentication.py, marketlink_core/permissions.py</span></li>
+    <li><span class="st"><span class="chip be">BE</span>Serializer kiểm tra dữ liệu vào</span>
+      <code>serializer.is_valid(raise_exception=True)</code>: thiếu trường, sai kiểu, số âm… đều bị trả về 400 kèm lỗi theo từng trường.
+      <span class="path">backend/&lt;app&gt;/&lt;vai trò&gt;/serializers_*.py</span></li>
+    <li><span class="st"><span class="chip be">BE</span>Service áp quy tắc nghiệp vụ</span>
+      Đây là "bộ não". Mở transaction, khoá dòng cần sửa, kiểm tra quy tắc (còn hàng không, đúng chợ không, có quyền với đơn này không), rồi mới ghi. Vi phạm thì ném <code>DomainError</code> có mã lỗi riêng (ví dụ <code>INSUFFICIENT_STOCK</code>).
+      <span class="path">backend/&lt;app&gt;/services/*.py</span></li>
+    <li><span class="st"><span class="chip db">DB</span>Model ghi vào MySQL</span>
+      <code>Order.objects.create(...)</code> sinh lệnh <code>INSERT INTO orders …</code>. Khi transaction kết thúc thành công mới <em>commit</em>. Lỗi ở bất kỳ bước nào thì <em>rollback</em> toàn bộ.
+      <span class="path">backend/&lt;app&gt;/models.py</span></li>
+    <li><span class="st"><span class="chip ext">NGOÀI</span>Việc phụ chạy sau commit</span>
+      Thông báo realtime, email, AI duyệt tin chạy trong <code>transaction.on_commit(...)</code>. Nhờ vậy, nếu lưu DB thất bại thì không ai nhận thông báo "ảo".
+      <span class="path">backend/notifications/services.py → notify()</span></li>
+  </ol>
+
+  <h3>Chiều về: từ MySQL lên màn hình</h3>
+  <ol class="steps">
+    <li><span class="st"><span class="chip be">BE</span>Serializer đọc định dạng dữ liệu ra</span>
+      Model → dict JSON, chỉ gồm các trường được phép lộ ra (ví dụ không trả mật khẩu, không trả số điện thoại của người khác).</li>
+    <li><span class="st"><span class="chip be">BE</span>api_response() đóng gói envelope</span>
+      Mọi API trả cùng một khuôn. Lỗi cũng vậy, do <code>custom_exception_handler</code> chuyển exception thành envelope.
+      <span class="path">backend/marketlink_core/responses.py</span></li>
+    <li><span class="st"><span class="chip fe">FE</span>axiosClient bóc envelope</span>
+      Thành công: interceptor thay <code>response.data</code> bằng <code>envelope.data</code>, nên hook nhận thẳng dữ liệu. Lỗi: đổi thành <code>ApiError</code> có <code>code</code>, <code>fieldErrors</code>. Gặp 401 thì tự gọi <code>/auth/refresh/</code> lấy token mới rồi gửi lại request một lần.
+      <span class="path">frontend/src/lib/axiosClient.js, lib/ApiError.js</span></li>
+    <li><span class="st"><span class="chip fe">FE</span>React Query lưu cache</span>
+      Kết quả được lưu theo query key. Trang khác dùng cùng key sẽ lấy ngay từ cache, không gọi lại API. Sau một mutation, hook gọi <code>invalidateQueries</code> hoặc <code>setQueryData</code> để cache khớp với DB.
+      <span class="path">frontend/src/lib/queryClient.js, constants/queryKeys.js</span></li>
+    <li><span class="st"><span class="chip fe">FE</span>Component vẽ lại</span>
+      Hook trả <code>{ data, isLoading, isError }</code>. Trang hiện skeleton khi đang tải, thông báo lỗi bằng toast (<code>sonner</code>), hoặc gắn lỗi vào đúng ô form.</li>
+  </ol>
+
+  <div class="two">
+    <div>
+      <h4>Envelope khi thành công</h4>
+<pre class="code">{
+  "success": true,
+  "message": "Placed 1 order(s) successfully",
+  "request_id": "6f1c…",
+  "data": { "orders": [ … ] },
+  "errors": {}
+}</pre>
+    </div>
+    <div>
+      <h4>Envelope khi lỗi</h4>
+<pre class="code">{
+  "success": false,
+  "code": "INSUFFICIENT_STOCK",
+  "message": "Some products do not have enough stock",
+  "request_id": "6f1c…",
+  "data": { "available": { "12": 3 } },
+  "errors": {
+    "groups.0.items.1.quantity": ["Only 3 KG left"]
+  }
+}</pre>
+    </div>
+  </div>
+  <div class="note amber">
+    <strong>Vì sao cần envelope?</strong>
+    <p>Frontend chỉ cần một đoạn code xử lý mọi phản hồi. Trường <code>code</code> cho FE biết chính xác lỗi gì để hiện câu dễ hiểu (<code>utils/errorMap.js</code>). Trường <code>errors</code> có đường dẫn như <code>groups.0.items.1.quantity</code> để FE gắn lỗi vào đúng dòng sản phẩm.</p>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="cac-app">
+  <h2><span class="sn">04</span>Từng app được hình thành ra sao</h2>
+  <p class="sub">Django khuyên chia dự án thành các "app", mỗi app lo một mảng nghiệp vụ. MarketLink có 10 app. Cách dễ nhớ nhất là đi theo câu hỏi nghiệp vụ mà mỗi app trả lời, theo đúng thứ tự phụ thuộc: app sau dựa trên app trước.</p>
+
+  <h3>Khuôn chung của một app</h3>
+  <p>Mọi app nghiệp vụ dùng cùng một bố cục, nên khi đã đọc một app thì đọc được tất cả:</p>
+<pre class="code">orders/
+├── models.py            # bảng dữ liệu (Order, OrderItem, OrderStatusHistory)
+├── migrations/          # lịch sử thay đổi cấu trúc bảng
+├── services/            # quy tắc nghiệp vụ: checkout_service.py, fsm.py, expiry.py …
+├── selectors.py         # các truy vấn chỉ đọc
+├── customer/            # API cho khách:   urls_customer.py, views_customer.py, serializers_customer.py
+├── farmer/              # API cho nông dân: urls_farmer.py,  views_farmer.py,  serializers_farmer.py
+├── admin_portal/        # API cho admin
+├── public/              # API không cần đăng nhập
+├── management/commands/ # lệnh chạy định kỳ: expire_orders.py
+└── test_*.py            # kiểm thử</pre>
+  <p>Chia thư mục theo <strong>vai trò</strong> (customer, farmer, admin_portal, public_portal) giúp mỗi nhóm API có quyền riêng. Mọi vai trò dùng chung một tầng <strong>services</strong>, nên quy tắc nghiệp vụ chỉ viết một lần.</p>
+
+  <h3>Sơ đồ bảng dữ liệu chính</h3>
+  <div class="diagram">
+<pre class="mermaid">
+erDiagram
+  roles ||--o{ users : "phân vai"
+  users ||--o| customer_profiles : "hồ sơ khách"
+  users ||--o| farmer_profiles : "hồ sơ nông dân"
+  markets ||--o{ market_operating_days : "mở cửa ngày"
+  farmer_profiles ||--o{ farmer_markets : "sạp"
+  markets ||--o{ farmer_markets : "có sạp"
+  farmer_markets ||--o{ pickup_slots : "khung giờ nhận"
+  categories ||--o{ products : "phân loại"
+  farmer_profiles ||--o{ products : "đăng bán"
+  products ||--o{ product_markets : "bán tại"
+  farmer_markets ||--o{ product_markets : "bày bán"
+  users ||--o{ orders : "khách đặt"
+  farmer_profiles ||--o{ orders : "nhận đơn"
+  pickup_slots ||--o{ orders : "giờ nhận"
+  orders ||--|{ order_items : "gồm"
+  products ||--o{ order_items : "là hàng"
+  orders ||--o{ order_status_history : "lịch sử"
+  order_items ||--o| product_reviews : "đánh giá hàng"
+  orders ||--o| farmer_reviews : "đánh giá sạp"
+  users ||--o{ notifications : "nhận"
+</pre>
+  </div>
+  <p class="cap">Tên bảng là tên thật trong MySQL (khai báo bằng <code>db_table</code> trong mỗi model).</p>
+
+  <h3>10 app theo thứ tự phụ thuộc</h3>
+  <div class="apps">
+    <article class="app">
+      <div class="app-head"><span class="app-name">marketlink_core</span><span class="app-role">Nền móng dùng chung</span><span class="app-order">tầng 0</span></div>
+      <p>Không phải một mảng nghiệp vụ. App này chứa mọi thứ các app khác cần: cấu hình, route gốc, khuôn phản hồi, mã lỗi, phân quyền.</p>
+      <dl>
+        <dt>Bảng</dt><dd>Không có bảng riêng. Cung cấp lớp cha <code>BaseModel</code> (created_at, updated_at) và <code>CreatedAtModel</code> cho mọi model.</dd>
+        <dt>File chính</dt><dd><code>settings.py</code>, <code>urls.py</code>, <code>responses.py</code> (envelope), <code>exceptions.py</code> (ErrorCode), <code>permissions.py</code>, <code>pagination.py</code>, <code>middleware.py</code>, <code>history.py</code>, <code>gemini.py</code>, <code>routing.py</code> (WebSocket), <code>services/ws_ticket.py</code>, <code>services/db_retry.py</code></dd>
+        <dt>Được ai dùng</dt><dd>Tất cả các app.</dd>
+      </dl>
+    </article>
+    <article class="app">
+      <div class="app-head"><span class="app-name">accounts</span><span class="app-role">Ai là ai?</span><span class="app-order">tầng 1</span></div>
+      <p>Mọi việc khác cần biết người đang thao tác là ai và được làm gì, nên đây là app nghiệp vụ đầu tiên. Đăng ký, đăng nhập, hồ sơ, admin duyệt và khoá tài khoản.</p>
+      <dl>
+        <dt>Bảng</dt><dd><code>roles</code>, <code>users</code> (đăng nhập bằng email), <code>customer_profiles</code>, <code>farmer_profiles</code> (tên sạp, toạ độ, trạng thái PENDING / APPROVED / SUSPENDED / REJECTED, giờ chốt đơn)</dd>
+        <dt>File chính</dt><dd><code>auth/views_common.py</code> (login, refresh, logout, me), <code>auth/authentication.py</code>, <code>auth/sessions.py</code> (thu hồi phiên qua Redis), <code>services/auth_service.py</code>, <code>services/farmer_status_service.py</code>, <code>services/no_show_lock.py</code></dd>
+        <dt>Dùng app</dt><dd>core; gọi <code>orders</code> để huỷ đơn khi đình chỉ nông dân hoặc khoá khách; gọi <code>notifications</code>.</dd>
+        <dt>Được ai dùng</dt><dd>Mọi app (khoá ngoại tới <code>users</code> hoặc <code>farmer_profiles</code>).</dd>
+      </dl>
+    </article>
+    <article class="app">
+      <div class="app-head"><span class="app-name">markets</span><span class="app-role">Bán ở đâu, khi nào?</span><span class="app-order">tầng 2</span></div>
+      <p>Chợ, sạp của nông dân trong chợ, khung giờ nhận hàng, ngày nghỉ. Một nông dân có thể có sạp ở nhiều chợ, mỗi chợ một sạp. Sạp mới phải chờ admin duyệt.</p>
+      <dl>
+        <dt>Bảng</dt><dd><code>markets</code>, <code>market_operating_days</code>, <code>farmer_markets</code> (sạp: PENDING / APPROVED), <code>pickup_slots</code>, <code>market_closures</code>, <code>farmer_closures</code></dd>
+        <dt>File chính</dt><dd><code>services/market_service.py</code> (tạo, sửa, đóng chợ và xử lý đơn bị ảnh hưởng), <code>services/closure_service.py</code>, <code>services/farmer_schedule.py</code></dd>
+        <dt>Dùng app</dt><dd>accounts; gọi <code>orders</code> (đóng chợ thì từ chối các đơn đang mở; đổi lịch chợ thì yêu cầu khách chọn giờ mới) và <code>notifications</code>.</dd>
+      </dl>
+    </article>
+    <article class="app">
+      <div class="app-head"><span class="app-name">catalog</span><span class="app-role">Bán cái gì?</span><span class="app-order">tầng 3</span></div>
+      <p>Danh mục và sản phẩm. Sản phẩm phải được duyệt mới hiện cho khách. AI tự duyệt tin sạch, tin nghi ngờ thì chờ admin.</p>
+      <dl>
+        <dt>Bảng</dt><dd><code>categories</code>, <code>products</code> (giá, đơn vị, tồn kho, min/max mỗi đơn, review_status, cờ admin ẩn hoặc chặn), <code>product_markets</code> (sản phẩm bày ở sạp nào), <code>price_guidelines</code> (khung giá), <code>product_ai_reviews</code></dd>
+        <dt>File chính</dt><dd><code>farmer/views_farmer.py</code>, <code>public_portal/views_public.py</code>, <code>selectors.py → public_product_base()</code>, <code>services/stock.py</code>, <code>ai_review/rules.py</code> (luật cố định), <code>ai_review/gemini.py</code>, <code>ai_review/service.py</code></dd>
+        <dt>Dùng app</dt><dd>accounts (FarmerProfile), markets (FarmerMarket), <code>system</code> (tạo cờ cần xử lý), <code>notifications</code> (báo có hàng lại cho người yêu thích).</dd>
+      </dl>
+    </article>
+    <article class="app">
+      <div class="app-head"><span class="app-name">orders</span><span class="app-role">Mua bán diễn ra thế nào?</span><span class="app-order">tầng 4 · trung tâm</span></div>
+      <p>App quan trọng nhất. Đặt hàng, máy trạng thái đơn (FSM), trừ và hoàn kho, hết hạn đơn, yêu cầu sửa đơn, dashboard.</p>
+      <dl>
+        <dt>Bảng</dt><dd><code>orders</code> (lưu luôn ngày giờ nhận, giờ chốt, <code>version</code> chống ghi đè, <code>pending_change</code>), <code>order_items</code> (chụp lại tên và giá lúc đặt), <code>order_status_history</code></dd>
+        <dt>File chính</dt><dd><code>services/checkout_service.py</code>, <code>services/fsm.py</code> (bảng chuyển trạng thái T1–T14), <code>services/idempotency_service.py</code>, <code>services/expiry.py</code>, <code>services/modify.py</code>, <code>management/commands/expire_orders.py</code></dd>
+        <dt>Dùng app</dt><dd>accounts, markets, catalog (đọc sản phẩm, trừ kho), notifications, system.</dd>
+      </dl>
+    </article>
+    <article class="app">
+      <div class="app-head"><span class="app-name">reviews</span><span class="app-role">Mua xong thấy thế nào?</span><span class="app-order">tầng 5</span></div>
+      <p>Chỉ đơn đã <code>COMPLETED</code> mới được đánh giá, mỗi món một lần, mỗi đơn một lần cho sạp. Nông dân trả lời, admin ẩn đánh giá xấu.</p>
+      <dl>
+        <dt>Bảng</dt><dd><code>product_reviews</code> (gắn với 1 order_item), <code>farmer_reviews</code> (gắn với 1 order)</dd>
+        <dt>File chính</dt><dd><code>services/review_service.py</code>, <code>services/farmer_reply_service.py</code>, <code>services/review_moderation_service.py</code></dd>
+        <dt>Dùng app</dt><dd>orders; <code>system.auto_flags</code> (AI đọc nội dung đánh giá, gắn cờ nếu xúc phạm).</dd>
+      </dl>
+    </article>
+    <article class="app">
+      <div class="app-head"><span class="app-name">favorites</span><span class="app-role">Khách muốn theo dõi gì?</span><span class="app-order">tầng 5</span></div>
+      <p>Khách lưu nông dân, sản phẩm, chợ yêu thích. Dữ liệu này cũng dùng để báo "có hàng lại".</p>
+      <dl>
+        <dt>Bảng</dt><dd><code>favorite_farmers</code>, <code>favorite_products</code>, <code>favorite_markets</code></dd>
+        <dt>File chính</dt><dd><code>customer/views_customer.py</code>, <code>services/favorite_service.py</code></dd>
+        <dt>Dùng app</dt><dd>accounts, catalog, markets.</dd>
+      </dl>
+    </article>
+    <article class="app">
+      <div class="app-head"><span class="app-name">notifications</span><span class="app-role">Báo cho ai biết?</span><span class="app-order">dịch vụ ngang</span></div>
+      <p>Các app khác gọi một hàm duy nhất là <code>notify()</code>. Hàm này lưu thông báo vào DB, đẩy qua WebSocket (chỉ tới ai đang kết nối, hiện là nông dân) và gửi email nếu loại thông báo có mẫu email. Banner thông báo chung của admin cũng nằm ở app này.</p>
+      <dl>
+        <dt>Bảng</dt><dd><code>notifications</code> (thông báo cá nhân), <code>announcements</code> (thông báo chung của admin)</dd>
+        <dt>File chính</dt><dd><code>services.py → notify()</code>, <code>messages.py</code> (mẫu nội dung), <code>consumers.py</code> (WebSocket), mẫu email ở <code>backend/templates/emails/</code> (thư mục chung của dự án, không nằm trong app)</dd>
+        <dt>Được ai dùng</dt><dd>orders, accounts, markets, catalog.</dd>
+      </dl>
+    </article>
+    <article class="app">
+      <div class="app-head"><span class="app-name">system</span><span class="app-role">Admin giám sát toàn sàn</span><span class="app-order">dịch vụ ngang</span></div>
+      <p>Dashboard, báo cáo, xuất CSV/Excel, nhật ký bảo mật (audit log), hàng chờ cờ cần xử lý.</p>
+      <dl>
+        <dt>Bảng</dt><dd><code>audit_logs</code>, <code>moderation_flags</code></dd>
+        <dt>File chính</dt><dd><code>dashboard.py</code>, <code>reports.py</code>, <code>excel.py</code>, <code>flags.py</code>, <code>auto_flags.py</code>, <code>services.py → log_request_event()</code></dd>
+        <dt>Dùng app</dt><dd>Đọc orders, accounts, catalog. Nhận cờ từ catalog, reviews, orders.</dd>
+      </dl>
+    </article>
+    <article class="app">
+      <div class="app-head"><span class="app-name">chat_bot</span><span class="app-role">Trợ lý AI trả lời câu hỏi</span><span class="app-order">tầng ngoài cùng</span></div>
+      <p>Không có bảng. FE gửi các tin nhắn gần nhất, server gọi Gemini với những công cụ <em>chỉ đọc</em>, phạm vi tuỳ vai trò. Có giới hạn số câu trả lời mỗi ngày (đếm trên Redis).</p>
+      <dl>
+        <dt>File chính</dt><dd><code>views.py</code>, <code>services.py</code>, <code>ai_chatbot.py</code> (danh sách công cụ), <code>prompts.py</code>, <code>limits.py</code></dd>
+        <dt>Dùng app</dt><dd>Đọc selectors của catalog, markets, orders, accounts.</dd>
+      </dl>
+    </article>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="tuong-tac">
+  <h2><span class="sn">05</span>Các app gọi nhau thế nào</h2>
+  <p class="sub">Có hai kiểu liên kết. <strong>Liên kết dữ liệu:</strong> một bảng có khoá ngoại trỏ sang bảng của app khác. <strong>Liên kết hành động:</strong> service của app này gọi hàm của app kia. Mỗi hình dưới đây trả lời một câu hỏi.</p>
+
+  <h3>Hình 1. Dữ liệu dựa vào nhau thế nào</h3>
+  <p>Đọc từ dưới lên. Bảng của tầng trên có khoá ngoại trỏ xuống tầng dưới; <strong>không có khoá ngoại nào trỏ ngược lên</strong> (đã kiểm tra trong các file <code>models.py</code>).</p>
+  <div class="layers">
+    <div class="stack">
+      <div class="layer"><span class="layer-tag">Tầng 5 · Sau khi mua</span><div class="layer-apps"><span class="appbox">reviews</span><span class="uses">→ orders (đơn, dòng đơn), accounts (admin đã ẩn)</span><span class="appbox">favorites</span><span class="uses">→ accounts, catalog, markets</span></div></div>
+      <div class="layer"><span class="layer-tag">Tầng 4 · Mua bán</span><div class="layer-apps"><span class="appbox">orders</span><span class="uses">→ accounts (khách, nông dân), markets (chợ, khung giờ), catalog (sản phẩm)</span></div></div>
+      <div class="layer"><span class="layer-tag">Tầng 3 · Bán gì</span><div class="layer-apps"><span class="appbox">catalog</span><span class="uses">→ accounts (nông dân), markets (sạp bày bán)</span></div></div>
+      <div class="layer"><span class="layer-tag">Tầng 2 · Bán ở đâu</span><div class="layer-apps"><span class="appbox">markets</span><span class="uses">→ accounts (nông dân có sạp)</span></div></div>
+      <div class="layer"><span class="layer-tag">Tầng 1 · Ai là ai</span><div class="layer-apps"><span class="appbox">accounts</span><span class="uses">chỉ trỏ tới bảng <code>roles</code> của chính nó</span></div></div>
+      <div class="layer layer--base"><span class="layer-tag">Tầng 0 · Nền</span><div class="layer-apps"><span class="appbox">marketlink_core</span><span class="uses">không có bảng; mọi app dùng lớp cha, mã lỗi, phân quyền của nó</span></div></div>
+    </div>
+    <div class="side">
+      <p class="layer-tag">Dịch vụ ngang, dùng chung</p>
+      <p><span class="appbox">notifications</span><br><span class="uses">→ accounts (người nhận)</span></p>
+      <p><span class="appbox">system</span><br><span class="uses">→ accounts (người thao tác). Cờ trỏ tới đối tượng bằng <code>target_type</code> + <code>target_id</code>, không dùng khoá ngoại</span></p>
+      <p><span class="appbox">chat_bot</span><br><span class="uses">không có bảng</span></p>
+    </div>
+  </div>
+  <div class="note amber"><p><strong>Vì sao khoá ngoại chỉ trỏ xuống</strong></p>
+  <p>Bảng được tạo theo thứ tự từ dưới lên khi chạy <code>migrate</code>, không có vòng "A cần B, B cần A". Khi tầng dưới cần tác động lên tầng trên (ví dụ <code>accounts</code> đình chỉ nông dân thì phải huỷ đơn), việc đó đi bằng <strong>lời gọi hàm</strong>, không bằng khoá ngoại; xem hình 2. Bảng cờ của <code>system</code> dùng <code>target_type</code> + <code>target_id</code> vì một bảng phải trỏ được tới nhiều loại đối tượng (sản phẩm, đánh giá, khách hàng); dùng khoá ngoại thì cần một cột cho mỗi loại.</p></div>
+
+  <h3>Hình 2. Những gì xoay quanh đơn hàng</h3>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart LR
+  acc["accounts"] -- "đình chỉ nông dân, khoá khách:<br/>huỷ các đơn đang mở" --> ord
+  mk["markets"] -- "đóng chợ, đổi lịch chợ:<br/>huỷ hoặc đề nghị dời đơn" --> ord
+  ord(["orders<br/>transition_order()"]) -- "nhận đơn: trừ kho<br/>huỷ, từ chối, không đến: hoàn kho" --> cat["catalog"]
+  ord -- "khách bỏ đơn 3 lần trong 30 ngày:<br/>khoá tài khoản" --> acc
+</pre>
+  </div>
+  <p class="cap">Mọi thay đổi trạng thái đơn, dù ai gây ra, đều đi qua một hàm <code>transition_order()</code> của <code>orders</code>.</p>
+
+  <h3>Hình 3. Hai dịch vụ ngang: thông báo và cờ cho admin</h3>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart LR
+  acc["accounts"] --> noti
+  mk["markets"] --> noti
+  cat["catalog"] --> noti
+  ord["orders"] --> noti
+  cat -- "AI duyệt tin đăng" --> sys
+  rev["reviews"] -- "AI đọc đánh giá" --> sys
+  ord -- "khách chạm ngưỡng bỏ đơn" --> sys
+  noti(["notifications<br/>notify(): lưu DB, đẩy WebSocket, gửi email"])
+  sys(["system<br/>moderation_flags: hàng chờ admin xử lý"])
+</pre>
+  </div>
+  <p class="cap">Ví dụ thông báo: duyệt hoặc đình chỉ tài khoản (accounts), đóng chợ (markets), có hàng lại (catalog), đơn mới, đơn được nhận (orders). <code>chat_bot</code> không có trong hình vì nó chỉ <strong>đọc</strong> qua selectors của catalog, markets, orders, accounts, không gọi hàm ghi nào.</p>
+
+  <h3>Những lần gọi chéo quan trọng</h3>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Khi nào</th><th>App gọi</th><th>Gọi sang</th><th>Hàm cụ thể</th></tr></thead>
+    <tbody>
+      <tr><td>Khách đặt hàng</td><td>orders</td><td>accounts, markets, catalog, notifications</td><td><code>place_orders()</code> khoá hồ sơ khách và nông dân, tìm khung giờ (<code>PickupSlot</code>), kiểm tra sản phẩm và tồn kho (<code>get_held_quantities</code>), rồi <code>notify()</code> nông dân</td></tr>
+      <tr><td>Nông dân nhận đơn (T2)</td><td>orders</td><td>catalog</td><td><code>transition_order()</code> gọi <code>_deduct_stock</code>: trừ <code>products.stock_quantity</code> và ghi lịch sử</td></tr>
+      <tr><td>Huỷ, từ chối, no-show sau khi đã nhận</td><td>orders</td><td>catalog</td><td><code>_restore_stock</code>: hoàn lại kho</td></tr>
+      <tr><td>Khách bỏ đơn lần thứ 3 trong 30 ngày</td><td>orders</td><td>accounts, system</td><td><code>no_show_lock</code> khoá tài khoản; <code>auto_flags.check_customer_no_shows</code> tạo cờ</td></tr>
+      <tr><td>Admin đình chỉ nông dân</td><td>accounts</td><td>orders, notifications</td><td><code>suspend_farmer()</code> đổi mọi đơn đang mở sang DECLINED qua <code>transition_order</code>, báo cho từng khách</td></tr>
+      <tr><td>Admin khoá khách</td><td>accounts</td><td>orders</td><td><code>customer_status_service</code> huỷ các đơn đang mở</td></tr>
+      <tr><td>Admin đóng chợ hoặc đổi lịch chợ</td><td>markets</td><td>orders, notifications</td><td><code>market_service</code> xử lý các đơn bị ảnh hưởng, gửi MARKET_CLOSED (đóng chợ) hoặc MARKET_UPDATED (sửa lịch, tên, địa chỉ). Loại MARKET_SCHEDULE_CHANGED có khai báo nhưng không chỗ nào gửi</td></tr>
+      <tr><td>Nông dân lưu sản phẩm</td><td>catalog</td><td>Gemini, system</td><td><code>schedule_listing_review()</code> chạy AI sau commit; vi phạm thì tạo <code>ModerationFlag</code></td></tr>
+      <tr><td>Kho từ 0 lên &gt; 0</td><td>catalog</td><td>favorites, notifications</td><td><code>notify_restock_for_product()</code> báo cho khách đã thả tim sản phẩm</td></tr>
+      <tr><td>Khách viết đánh giá</td><td>reviews</td><td>orders, system</td><td>Kiểm tra đơn COMPLETED; AI đọc nội dung chạy nền, gắn cờ nếu cần</td></tr>
+      <tr><td>Đăng nhập, thao tác admin</td><td>accounts, các app admin</td><td>system</td><td><code>log_request_event()</code> ghi <code>audit_logs</code></td></tr>
+      <tr><td>Mở WebSocket</td><td>notifications</td><td>marketlink_core</td><td><code>verify_and_consume_ws_ticket()</code></td></tr>
+    </tbody>
+  </table></div>
+  <div class="note">
+    <strong>Ý tưởng thiết kế nên nói với hội đồng</strong>
+    <p>Mọi thay đổi trạng thái đơn, dù do khách, nông dân, admin hay hệ thống, đều đi qua đúng một hàm <code>transition_order()</code>. Vì vậy trừ và hoàn kho, ghi lịch sử, gửi thông báo luôn nhất quán, không có đường tắt nào bỏ sót.</p>
+  </div>
+
+  <h3>Vòng đời đơn hàng: nơi nhiều app gặp nhau</h3>
+  <p>Bảng chuyển trạng thái này nằm nguyên văn trong <code>orders/services/fsm.py → TRANSITIONS</code>. Mỗi cạnh ghi rõ ai được phép thực hiện. Chi tiết từng hành động nằm ở các hành trình C-05, C-09 (khách), F-09 → F-14 (nông dân), A-18, A-24 (admin).</p>
+  <div class="diagram">
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> PLACED: T1 khách đặt
+  PLACED --> ACCEPTED: T2 nông dân nhận, trừ kho
+  PLACED --> DECLINED: T3 từ chối
+  PLACED --> CANCELLED: T5 khách huỷ
+  PLACED --> EXPIRED: T8 hệ thống, quá giờ
+  ACCEPTED --> READY_FOR_PICKUP: T9 sẵn sàng
+  ACCEPTED --> DECLINED: T4 từ chối, hoàn kho
+  ACCEPTED --> CANCELLED: T6 khách huỷ, hoàn kho
+  ACCEPTED --> NO_SHOW: T14 khách không đến
+  READY_FOR_PICKUP --> COMPLETED: T10 giao xong
+  READY_FOR_PICKUP --> NO_SHOW: T11 khách không đến
+  READY_FOR_PICKUP --> DECLINED: T12 admin, đình chỉ / đóng chợ / chặn món
+  READY_FOR_PICKUP --> CANCELLED: T13 admin khoá khách
+  COMPLETED --> [*]
+</pre>
+  </div>
+  <p class="cap">Kho chỉ bị trừ ở T2 (nông dân nhận đơn). Các cạnh rời khỏi ACCEPTED hoặc READY_FOR_PICKUP mà không hoàn tất thì hoàn kho. Đơn PLACED chưa trừ kho nên huỷ, từ chối, hết hạn đều không phải hoàn.</p>
+</section>
+
+<!-- 06 -->
+<section id="luong">
+  <h2><span class="sn">06</span>Danh mục hành trình</h2>
+  <p class="sub">Mỗi hành động trên giao diện là một hành trình: người dùng bấm gì → frontend kiểm tra gì → request → backend → MySQL / Redis → hiển thị lại → lỗi → lý do thiết kế. Chi tiết từng hành trình nằm ở file riêng của nhóm; ở đây chỉ liệt kê tên. Tổng cộng 137 hành trình, chia thành 5 file.</p>
+  <div class="legend">
+    <span><span class="chip read">ĐỌC</span> chỉ lấy dữ liệu</span>
+    <span><span class="chip write">GHI</span> thay đổi database</span>
+    <span><span class="chip local">TRÌNH DUYỆT</span> không gọi backend</span>
+  </div>
+
+  <article class="jfile">
+    <div class="jfile-head">
+      <span class="jfile-name">00 · Dùng chung</span>
+      <span class="jfile-count">12 hành trình</span>
+      <a class="jfile-status done" href="https://claude.ai/artifact/1xMtZqRaKMwASP5kuYdSsS">Mở file →</a>
+    </div>
+    <p class="jfile-desc">Xuất hiện ở mọi vai trò. Các file vai trò dẫn chiếu về đây thay vì viết lại. Bản trên máy: <code>docs/hanh-trinh/00-dung-chung.html</code>.</p>
+    <h4>Phiên đăng nhập</h4>
+    <ol class="jlist">
+      <li><span class="jn">X-01</span><a href="https://claude.ai/artifact/1xMtZqRaKMwASP5kuYdSsS#x-01">Đăng nhập cổng chợ (khách hàng, nông dân)</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">X-02</span><a href="https://claude.ai/artifact/1xMtZqRaKMwASP5kuYdSsS#x-02">Tự làm mới token khi access token hết hạn</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">X-03</span><a href="https://claude.ai/artifact/1xMtZqRaKMwASP5kuYdSsS#x-03">Tải tài khoản khi mở trang và chặn trang sai quyền</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">X-04</span><a href="https://claude.ai/artifact/1xMtZqRaKMwASP5kuYdSsS#x-04">Đăng xuất</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">X-05</span><a href="https://claude.ai/artifact/1xMtZqRaKMwASP5kuYdSsS#x-05">Đổi mật khẩu</a><span class="chip write">GHI</span></li>
+    </ol>
+    <h4>Thông báo</h4>
+    <ol class="jlist">
+      <li><span class="jn">X-06</span><a href="https://claude.ai/artifact/1xMtZqRaKMwASP5kuYdSsS#x-06">Chuông thông báo: số chưa đọc và 5 tin mới nhất</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">X-07</span><a href="https://claude.ai/artifact/1xMtZqRaKMwASP5kuYdSsS#x-07">Đánh dấu một thông báo đã đọc</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">X-08</span><a href="https://claude.ai/artifact/1xMtZqRaKMwASP5kuYdSsS#x-08">Đánh dấu tất cả đã đọc</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">X-09</span><a href="https://claude.ai/artifact/1xMtZqRaKMwASP5kuYdSsS#x-09">Trang danh sách thông báo</a><span class="chip read">ĐỌC</span></li>
+    </ol>
+    <h4>Trợ lý AI, cấu hình, banner</h4>
+    <ol class="jlist">
+      <li><span class="jn">X-10</span><a href="https://claude.ai/artifact/1xMtZqRaKMwASP5kuYdSsS#x-10">Hỏi trợ lý AI qua khung chat</a><span class="chip read">ĐỌC</span><span class="chip ext">AI</span></li>
+      <li><span class="jn">X-11</span><a href="https://claude.ai/artifact/1xMtZqRaKMwASP5kuYdSsS#x-11">Tải cấu hình công khai</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">X-12</span><a href="https://claude.ai/artifact/1xMtZqRaKMwASP5kuYdSsS#x-12">Banner thông báo chung, và đóng banner</a><span class="chip read">ĐỌC</span><span class="chip local">TRÌNH DUYỆT</span></li>
+    </ol>
+  </article>
+
+  <article class="jfile">
+    <div class="jfile-head">
+      <span class="jfile-name">01 · Khách vãng lai</span>
+      <span class="jfile-count">16 hành trình</span>
+      <a class="jfile-status done" href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8">Mở file →</a>
+    </div>
+    <p class="jfile-desc">Bản trên máy: <code>docs/hanh-trinh/01-khach-vang-lai.html</code>.</p>
+    <h4>Trang chủ <code>/</code></h4>
+    <ol class="jlist">
+      <li><span class="jn">G-01</span><a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8#g-01">Tải trang chủ: danh mục, sản phẩm, chợ, nông dân</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">G-02</span><a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8#g-02">Lấy vị trí của tôi để xem gần nhất</a><span class="chip local">TRÌNH DUYỆT</span><span class="chip read">ĐỌC</span></li>
+    </ol>
+    <h4>Sản phẩm <code>/products</code>, <code>/products/:id</code></h4>
+    <ol class="jlist">
+      <li><span class="jn">G-03</span><a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8#g-03">Xem danh sách sản phẩm</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">G-04</span><a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8#g-04">Tìm sản phẩm theo từ khoá</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">G-05</span><a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8#g-05">Lọc theo danh mục, chợ, khoảng giá, còn hàng; sắp xếp; phân trang</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">G-06</span><a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8#g-06">Xem chi tiết sản phẩm</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">G-07</span><a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8#g-07">Xem đánh giá sản phẩm</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">G-08</span><a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8#g-08">Xem sản phẩm liên quan</a><span class="chip read">ĐỌC</span></li>
+    </ol>
+    <h4>Chợ <code>/markets</code>, <code>/markets/:id</code></h4>
+    <ol class="jlist">
+      <li><span class="jn">G-09</span><a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8#g-09">Xem danh sách chợ và bản đồ</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">G-10</span><a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8#g-10">Xem chi tiết chợ và các sạp trong chợ</a><span class="chip read">ĐỌC</span></li>
+    </ol>
+    <h4>Nông dân <code>/farmers</code>, <code>/farmers/:id</code></h4>
+    <ol class="jlist">
+      <li><span class="jn">G-11</span><a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8#g-11">Xem danh sách nông dân, sắp xếp gần nhất</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">G-12</span><a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8#g-12">Xem trang nông dân: thông tin, sản phẩm, đánh giá, lịch nhận hàng</a><span class="chip read">ĐỌC</span></li>
+    </ol>
+    <h4>Đăng ký và khác</h4>
+    <ol class="jlist">
+      <li><span class="jn">G-13</span><a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8#g-13">Đăng ký tài khoản khách</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">G-14</span><a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8#g-14">Đăng ký nông dân, có tra địa chỉ và chọn vị trí trên bản đồ</a><span class="chip write">GHI</span><span class="chip ext">NGOÀI</span></li>
+      <li><span class="jn">G-15</span><a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8#g-15">Bấm "Thêm giỏ" hoặc "Yêu thích" khi chưa đăng nhập</a><span class="chip local">TRÌNH DUYỆT</span></li>
+      <li><span class="jn">G-16</span><a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8#g-16">Sơ đồ trang (sitemap)</a><span class="chip read">ĐỌC</span></li>
+    </ol>
+    <p class="jfile-desc">Trang About, Contact, Privacy là trang tĩnh, không có hành trình.</p>
+  </article>
+
+  <article class="jfile">
+    <div class="jfile-head">
+      <span class="jfile-name">02 · Khách hàng</span>
+      <span class="jfile-count">19 hành trình</span>
+      <a class="jfile-status done" href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY">Mở file →</a>
+    </div>
+    <p class="jfile-desc">Bản trên máy: <code>docs/hanh-trinh/02-khach-hang.html</code>.</p>
+    <h4>Giỏ hàng và checkout</h4>
+    <ol class="jlist">
+      <li><span class="jn">C-01</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-01">Thêm sản phẩm vào giỏ</a><span class="chip local">TRÌNH DUYỆT</span></li>
+      <li><span class="jn">C-02</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-02">Đổi số lượng, xoá món, xoá giỏ</a><span class="chip local">TRÌNH DUYỆT</span></li>
+      <li><span class="jn">C-03</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-03">Mở trang giỏ: làm mới giá và tồn kho</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">C-04</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-04">Chọn ngày và khung giờ nhận cho từng nông dân</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">C-05</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-05">Đặt hàng</a><span class="chip write">GHI</span><span class="chip ext">REDIS</span></li>
+      <li><span class="jn">C-06</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-06">Trang đặt hàng thành công</a><span class="chip local">TRÌNH DUYỆT</span></li>
+    </ol>
+    <h4>Đơn hàng</h4>
+    <ol class="jlist">
+      <li><span class="jn">C-07</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-07">Danh sách đơn, lọc theo trạng thái</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">C-08</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-08">Chi tiết đơn: dòng thời gian, đếm ngược, yêu cầu sửa đang chờ</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">C-09</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-09">Huỷ đơn</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">C-10</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-10">Sửa đơn: món, số lượng, khung giờ, ghi chú</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">C-11</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-11">Đặt lại đơn cũ</a><span class="chip read">ĐỌC</span><span class="chip local">TRÌNH DUYỆT</span></li>
+    </ol>
+    <h4>Đánh giá, yêu thích, tài khoản</h4>
+    <ol class="jlist">
+      <li><span class="jn">C-12</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-12">Đánh giá từng món trong đơn</a><span class="chip write">GHI</span><span class="chip ext">AI</span></li>
+      <li><span class="jn">C-13</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-13">Đánh giá sạp</a><span class="chip write">GHI</span><span class="chip ext">AI</span></li>
+      <li><span class="jn">C-14</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-14">Tải danh sách đã thích để tô trái tim</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">C-15</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-15">Thả tim hoặc bỏ tim nông dân, sản phẩm, chợ</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">C-16</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-16">Trang yêu thích theo tab</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">C-17</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-17">Dashboard khách hàng</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">C-18</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-18">Xem hồ sơ</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">C-19</span><a href="https://claude.ai/artifact/DbgNkvJLqyTeX3aYvT5rEY#c-19">Sửa hồ sơ, có ảnh đại diện</a><span class="chip write">GHI</span></li>
+    </ol>
+  </article>
+
+  <article class="jfile">
+    <div class="jfile-head">
+      <span class="jfile-name">03 · Nông dân</span>
+      <span class="jfile-count">41 hành trình</span>
+      <a class="jfile-status done" href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod">Mở file →</a>
+    </div>
+    <p class="jfile-desc">Bản trên máy: <code>docs/hanh-trinh/03-nong-dan.html</code>.</p>
+    <h4>Tổng quan</h4>
+    <ol class="jlist">
+      <li><span class="jn">F-01</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-01">Dashboard nông dân</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">F-02</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-02">Thống kê doanh số</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">F-03</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-03">Kết nối realtime và nhận thông báo đơn mới qua WebSocket</a><span class="chip read">ĐỌC</span><span class="chip ext">REDIS</span></li>
+    </ol>
+    <h4>Đơn hàng: xem</h4>
+    <ol class="jlist">
+      <li><span class="jn">F-04</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-04">Danh sách đơn theo tab, lọc theo chợ</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">F-05</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-05">Đếm số đơn mỗi tab</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">F-06</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-06">Danh sách soạn hàng (picking list)</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">F-07</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-07">Xem đơn gom theo khách</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">F-08</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-08">Chi tiết đơn</a><span class="chip read">ĐỌC</span></li>
+    </ol>
+    <h4>Đơn hàng: xử lý (trang đơn, chi tiết đơn, trang kho theo tuần)</h4>
+    <ol class="jlist">
+      <li><span class="jn">F-09</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-09">Nhận đơn (T2)</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-10</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-10">Từ chối đơn, kèm lý do và đánh dấu món hết hàng (T3 / T4)</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-11</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-11">Bỏ một món hết hàng khỏi đơn</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-12</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-12">Báo sẵn sàng nhận hàng (T9)</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-13</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-13">Hoàn tất giao hàng (T10)</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-14</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-14">Đánh dấu khách không đến (T11 / T14)</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-15</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-15">Duyệt yêu cầu sửa đơn của khách</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-16</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-16">Từ chối yêu cầu sửa đơn</a><span class="chip write">GHI</span></li>
+    </ol>
+    <h4>Sản phẩm</h4>
+    <ol class="jlist">
+      <li><span class="jn">F-17</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-17">Danh sách sản phẩm theo trạng thái, tìm kiếm, lọc</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">F-18</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-18">Đếm sản phẩm theo trạng thái</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">F-19</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-19">Kiểm tra trước khi đăng (precheck)</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">F-20</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-20">Đăng sản phẩm mới, sau đó AI duyệt</a><span class="chip write">GHI</span><span class="chip ext">AI</span></li>
+      <li><span class="jn">F-21</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-21">Sửa sản phẩm</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-22</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-22">Cập nhật nhanh tồn kho</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-23</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-23">Đánh dấu hết hàng</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-24</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-24">Lưu trữ (xoá) sản phẩm</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-25</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-25">Thao tác hàng loạt</a><span class="chip write">GHI</span></li>
+    </ol>
+    <h4>Kho theo tuần <code>/farmer/stock-template</code></h4>
+    <ol class="jlist">
+      <li><span class="jn">F-26</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-26">Xem trước mẫu tồn kho hàng tuần</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">F-27</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-27">Áp dụng mẫu cho các sản phẩm</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-28</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-28">Sửa từng dòng tồn kho</a><span class="chip write">GHI</span></li>
+    </ol>
+    <h4>Chợ, sạp, lịch <code>/farmer/markets</code></h4>
+    <ol class="jlist">
+      <li><span class="jn">F-29</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-29">Xem sạp của tôi và danh sách chợ</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">F-30</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-30">Xin mở sạp ở chợ mới</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-31</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-31">Đổi nhãn sạp</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-32</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-32">Rời chợ</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-33</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-33">Thêm khung giờ nhận hàng</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-34</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-34">Bật hoặc tắt khung giờ</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-35</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-35">Xoá khung giờ</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-36</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-36">Thêm ngày nghỉ</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">F-37</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-37">Xoá ngày nghỉ</a><span class="chip write">GHI</span></li>
+    </ol>
+    <h4>Hồ sơ và đánh giá</h4>
+    <ol class="jlist">
+      <li><span class="jn">F-38</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-38">Xem hồ sơ</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">F-39</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-39">Sửa hồ sơ</a><span class="chip write">GHI</span><span class="chip ext">NGOÀI</span></li>
+      <li><span class="jn">F-40</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-40">Xem đánh giá nhận được</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">F-41</span><a href="https://claude.ai/artifact/B4xyhupwCmDdhL8hG2CBod#f-41">Trả lời đánh giá sạp hoặc sản phẩm</a><span class="chip write">GHI</span><span class="chip ext">AI</span></li>
+    </ol>
+  </article>
+
+  <article class="jfile">
+    <div class="jfile-head">
+      <span class="jfile-name">04 · Admin</span>
+      <span class="jfile-count">49 hành trình</span>
+      <a class="jfile-status done" href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ">Mở file →</a>
+    </div>
+    <p class="jfile-desc">Bản trên máy: <code>docs/hanh-trinh/04-admin.html</code>.</p>
+    <h4>Vào hệ thống và dashboard</h4>
+    <ol class="jlist">
+      <li><span class="jn">A-01</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-01">Đăng nhập cổng admin</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-02</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-02">Số việc chờ duyệt trên thanh bên, tự làm mới mỗi phút</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">A-03</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-03">Dashboard tổng quan</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">A-04</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-04">Biểu đồ đơn theo thời gian</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">A-05</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-05">Duyệt hoặc từ chối nông dân ngay trên dashboard</a><span class="chip write">GHI</span></li>
+    </ol>
+    <h4>Hàng chờ duyệt <code>/admin/approvals</code></h4>
+    <ol class="jlist">
+      <li><span class="jn">A-06</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-06">Xem hàng chờ: nông dân, yêu cầu mở sạp, sản phẩm</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">A-07</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-07">Duyệt nông dân</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-08</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-08">Từ chối nông dân</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-09</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-09">Duyệt yêu cầu mở sạp</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-10</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-10">Từ chối yêu cầu mở sạp</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-11</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-11">Duyệt sản phẩm, một hoặc nhiều</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-12</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-12">Từ chối sản phẩm</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-13</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-13">Yêu cầu AI duyệt lại sản phẩm</a><span class="chip write">GHI</span><span class="chip ext">AI</span></li>
+    </ol>
+    <h4>Quyết định của AI <code>/admin/ai-decisions</code></h4>
+    <ol class="jlist">
+      <li><span class="jn">A-14</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-14">Xem các quyết định tự động</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">A-15</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-15">Xác nhận quyết định</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-16</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-16">Đảo ngược quyết định</a><span class="chip write">GHI</span></li>
+    </ol>
+    <h4>Nông dân và khách hàng</h4>
+    <ol class="jlist">
+      <li><span class="jn">A-17</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-17">Danh sách nông dân</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">A-18</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-18">Xem trước ảnh hưởng rồi đình chỉ nông dân</a><span class="chip read">ĐỌC</span><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-19</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-19">Khôi phục nông dân</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-20</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-20">Xuất CSV nông dân hoặc khách</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">A-21</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-21">Chi tiết nông dân và lịch sử thay đổi</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">A-22</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-22">Sửa hồ sơ nông dân</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-23</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-23">Danh sách khách</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">A-24</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-24">Xem trước ảnh hưởng rồi khoá khách</a><span class="chip read">ĐỌC</span><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-25</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-25">Mở khoá khách</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-26</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-26">Chi tiết khách và lịch sử thay đổi</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">A-27</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-27">Sửa hồ sơ khách</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-28</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-28">Xem và lọc đơn toàn sàn</a><span class="chip read">ĐỌC</span></li>
+    </ol>
+    <h4>Chợ</h4>
+    <ol class="jlist">
+      <li><span class="jn">A-29</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-29">Danh sách chợ</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">A-30</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-30">Đóng hoặc mở lại chợ</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-31</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-31">Chi tiết chợ</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">A-32</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-32">Tạo chợ mới, có tra toạ độ</a><span class="chip write">GHI</span><span class="chip ext">NGOÀI</span></li>
+      <li><span class="jn">A-33</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-33">Sửa chợ: xem trước đơn bị ảnh hưởng rồi lưu</a><span class="chip read">ĐỌC</span><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-34</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-34">Thêm lịch đóng chợ</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-35</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-35">Xoá lịch đóng chợ</a><span class="chip write">GHI</span></li>
+    </ol>
+    <h4>Danh mục, khung giá, kiểm duyệt</h4>
+    <ol class="jlist">
+      <li><span class="jn">A-36</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-36">Thêm hoặc sửa danh mục</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-37</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-37">Xoá danh mục</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-38</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-38">Kéo thả sắp xếp danh mục</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-39</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-39">Thêm hoặc sửa khung giá</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-40</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-40">Xoá khung giá</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-41</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-41">Xem sản phẩm và đánh giá cần kiểm duyệt</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">A-42</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-42">Ẩn hoặc khôi phục sản phẩm</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-43</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-43">Chặn sản phẩm (có xem trước ảnh hưởng) hoặc bỏ chặn</a><span class="chip read">ĐỌC</span><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-44</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-44">Ẩn hoặc khôi phục đánh giá</a><span class="chip write">GHI</span></li>
+    </ol>
+    <h4>Báo cáo và hệ thống</h4>
+    <ol class="jlist">
+      <li><span class="jn">A-45</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-45">Báo cáo tổng hợp theo khoảng ngày và chợ</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">A-46</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-46">Xuất báo cáo</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">A-47</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-47">Thông báo chung: tạo, bật hoặc tắt, xoá</a><span class="chip write">GHI</span></li>
+      <li><span class="jn">A-48</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-48">Nhật ký bảo mật (audit logs)</a><span class="chip read">ĐỌC</span></li>
+      <li><span class="jn">A-49</span><a href="https://claude.ai/artifact/8DE9ZEoLbwDAKYeFvTyuFJ#a-49">Xem giới hạn hệ thống</a><span class="chip read">ĐỌC</span></li>
+    </ol>
+  </article>
+</section>
+
+<!-- 07 -->
+<section id="tra-cuu">
+  <h2><span class="sn">07</span>Tra cứu từng trang</h2>
+  <p class="sub">Mọi trang trong <code>frontend/src/pages</code>. Cột "Đọc" là các request GET khi trang mở; cột "Ghi" là các hành động gửi dữ liệu. Tiền tố <code>/api</code> được lược bỏ.</p>
+  <div class="filters" role="group" aria-label="Lọc theo khu vực">
+    <button type="button" data-f="all" aria-pressed="true">Tất cả</button>
+    <button type="button" data-f="shared" aria-pressed="false">Dùng chung</button>
+    <button type="button" data-f="guest" aria-pressed="false">Khách vãng lai</button>
+    <button type="button" data-f="auth" aria-pressed="false">Đăng nhập</button>
+    <button type="button" data-f="customer" aria-pressed="false">Khách hàng</button>
+    <button type="button" data-f="farmer" aria-pressed="false">Nông dân</button>
+    <button type="button" data-f="admin" aria-pressed="false">Admin</button>
+    <input id="page-search" type="search" placeholder="Tìm route, endpoint, app…" aria-label="Tìm trong bảng">
+    <span class="count" id="page-count"></span>
+  </div>
+  <div class="tbl-wrap"><table id="pages">
+    <thead><tr><th>Route và file</th><th>Đọc (GET)</th><th>Ghi</th><th>App backend</th></tr></thead>
+    <tbody>
+      <tr class="grp" data-g="shared"><td colspan="4">Dùng chung · nằm trên layout, xuất hiện ở nhiều trang · chi tiết ở file hành trình 00</td></tr>
+      <tr data-g="shared"><td class="route">Chuông thông báo<br>NotificationBell</td><td><code>notifications/unread-count/</code>, <code>notifications/?limit=5</code> (hỏi lại mỗi 30 giây nếu không có WebSocket)</td><td><code>POST notifications/{id}/read/</code>, <code>…/read-all/</code></td><td>notifications</td></tr>
+      <tr data-g="shared"><td class="route">Menu tài khoản<br>UserMenu</td><td>Dữ liệu <code>auth/me/</code> đã có trong cache</td><td><code>POST auth/logout/</code></td><td>accounts</td></tr>
+      <tr data-g="shared"><td class="route">Widget chat<br>AIChatWidget</td><td><code>public/config/</code> (bật hay tắt trợ lý)</td><td><code>POST chat/messages/</code></td><td>chat_bot</td></tr>
+      <tr data-g="shared"><td class="route">Banner thông báo chung<br>AnnouncementBanner</td><td><code>public/announcements/</code></td><td>Đóng banner (chỉ localStorage)</td><td>notifications</td></tr>
+      <tr data-g="shared"><td class="route">Mọi trang cần đăng nhập<br>guards</td><td><code>auth/me/</code></td><td><code>POST auth/refresh/</code> khi access token hết hạn</td><td>accounts</td></tr>
+      <tr data-g="shared"><td class="route">Thanh bên admin<br>AdminLayout</td><td><code>admin/approvals/counts/</code> (mỗi phút), <code>admin/ai-review/stats/</code></td><td>—</td><td>system, catalog</td></tr>
+      <tr class="grp" data-g="guest"><td colspan="4">Khách vãng lai · PublicLayout · guard NotForFarmers</td></tr>
+      <tr data-g="guest"><td class="route">/<br>HomePage</td><td><code>public/categories/</code>, <code>public/products/</code>, <code>public/markets/</code>, <code>public/farmers/</code></td><td>Thêm giỏ (chỉ localStorage)</td><td>catalog, markets, accounts</td></tr>
+      <tr data-g="guest"><td class="route">/products<br>ProductsPage</td><td><code>public/products/?q&amp;category&amp;market_id&amp;price_min…</code>, <code>public/categories/</code>, <code>public/markets/</code></td><td>Thêm giỏ, thả tim</td><td>catalog, markets</td></tr>
+      <tr data-g="guest"><td class="route">/products/:id<br>ProductDetailPage</td><td><code>public/products/{id}/</code>, <code>public/products/{id}/reviews/</code>, sản phẩm gợi ý</td><td>Thêm giỏ, thả tim</td><td>catalog, reviews</td></tr>
+      <tr data-g="guest"><td class="route">/markets<br>MarketsPage</td><td><code>public/markets/</code> (bản đồ Leaflet)</td><td>—</td><td>markets</td></tr>
+      <tr data-g="guest"><td class="route">/markets/:id<br>MarketDetailPage</td><td><code>public/markets/{id}/</code>, <code>public/markets/{id}/farmers/</code></td><td>Thả tim chợ</td><td>markets</td></tr>
+      <tr data-g="guest"><td class="route">/farmers<br>FarmersPage</td><td><code>public/farmers/</code></td><td>—</td><td>accounts</td></tr>
+      <tr data-g="guest"><td class="route">/farmers/:id<br>FarmerDetailPage</td><td><code>public/farmers/{id}/</code>, <code>…/reviews/</code>, <code>…/pickup-options/</code>, <code>public/products/?farmer_id</code></td><td>Thả tim nông dân</td><td>accounts, orders, catalog, reviews</td></tr>
+      <tr data-g="guest"><td class="route">/about, /contact, /privacy, /sitemap</td><td><code>public/config/</code> (about), danh mục, chợ, nông dân (sitemap)</td><td>—</td><td>system, catalog, markets</td></tr>
+      
+      <tr class="grp" data-g="auth"><td colspan="4">Đăng nhập, đăng ký · guard GuestOnly</td></tr>
+      <tr data-g="auth"><td class="route">/login<br>LoginPage → LoginForm</td><td>—</td><td><code>POST auth/login/</code></td><td>accounts</td></tr>
+      <tr data-g="auth"><td class="route">/register<br>RegisterCustomerPage</td><td>—</td><td><code>POST auth/register/customer/</code></td><td>accounts</td></tr>
+      <tr data-g="auth"><td class="route">/register/farmer<br>RegisterFarmerPage</td><td><code>public/geocode/</code> (tìm toạ độ địa chỉ)</td><td><code>POST auth/register/farmer/</code></td><td>accounts</td></tr>
+      <tr data-g="auth"><td class="route">/admin/login<br>AdminLoginPage</td><td>—</td><td><code>POST auth/admin/login/</code></td><td>accounts</td></tr>
+
+      <tr class="grp" data-g="customer"><td colspan="4">Khách hàng · CustomerLayout · RequireAuth + RequireRole(CUSTOMER)</td></tr>
+      <tr data-g="customer"><td class="route">/customer<br>CustomerDashboard</td><td><code>customer/dashboard/</code></td><td>Đặt lại đơn cũ: <code>GET customer/orders/{id}/reorder-preview/</code> rồi thêm giỏ</td><td>accounts, orders</td></tr>
+      <tr data-g="customer"><td class="route">/customer/cart<br>CartPage</td><td><code>public/products/?ids=…</code> (làm mới giá, tồn kho)</td><td>Sửa số lượng (chỉ localStorage)</td><td>catalog</td></tr>
+      <tr data-g="customer"><td class="route">/customer/checkout<br>CheckoutPage</td><td><code>public/farmers/{id}/pickup-options/</code></td><td><code>POST customer/orders/</code> + Idempotency-Key</td><td>orders</td></tr>
+      <tr data-g="customer"><td class="route">/customer/checkout/success</td><td>Dữ liệu truyền qua router state</td><td>—</td><td>—</td></tr>
+      <tr data-g="customer"><td class="route">/customer/orders<br>OrdersPage</td><td><code>customer/orders/?tab&amp;status&amp;ordering</code> (chỉ trang đầu, không có nút chuyển trang)</td><td>— (cột thao tác luôn trống, C-07)</td><td>orders</td></tr>
+      <tr data-g="customer"><td class="route">/customer/orders/:orderId<br>OrderDetailPage</td><td><code>customer/orders/{id}/</code></td><td><code>POST …/cancel/</code> + If-Match</td><td>orders</td></tr>
+      <tr data-g="customer"><td class="route">/customer/orders/:orderId/edit<br>EditOrderPage</td><td><code>customer/orders/{id}/</code>, <code>pickup-options</code></td><td><code>PATCH customer/orders/{id}/</code> + If-Match (thành yêu cầu sửa chờ nông dân duyệt nếu đơn đã nhận)</td><td>orders</td></tr>
+      <tr data-g="customer"><td class="route">/customer/orders/:orderId/review<br>ReviewOrderPage</td><td><code>customer/orders/{id}/</code></td><td><code>POST …/items/{itemId}/review/</code>, <code>POST …/farmer-review/</code></td><td>reviews</td></tr>
+      <tr data-g="customer"><td class="route">/customer/favorites<br>FavoritesPage</td><td><code>customer/favorite-ids/</code>, <code>customer/favorite-farmers/</code>, <code>…-products/</code>, <code>…-markets/</code></td><td><code>POST / DELETE customer/favorite-*/{id}/</code></td><td>favorites</td></tr>
+      <tr data-g="customer"><td class="route">/customer/profile<br>ProfilePage</td><td><code>customer/profile/</code></td><td><code>PATCH customer/profile/</code> (có ảnh)</td><td>accounts</td></tr>
+      <tr data-g="customer"><td class="route">/customer/notifications<br>NotificationsPage</td><td><code>notifications/</code>, <code>notifications/unread-count/</code></td><td><code>POST notifications/{id}/read/</code>, <code>…/read-all/</code></td><td>notifications</td></tr>
+      <tr data-g="customer"><td class="route">/customer/password</td><td>—</td><td><code>POST auth/change-password/</code></td><td>accounts</td></tr>
+
+      <tr class="grp" data-g="farmer"><td colspan="4">Nông dân · FarmerLayout · RequireAuth + RequireRole(FARMER)</td></tr>
+      <tr data-g="farmer"><td class="route">/farmer<br>FarmerDashboardPage</td><td><code>farmer/dashboard/</code></td><td>—</td><td>orders</td></tr>
+      <tr data-g="farmer"><td class="route">/farmer/stats<br>FarmerStatsPage</td><td><code>farmer/dashboard/stats/</code> (biểu đồ Recharts)</td><td>—</td><td>orders</td></tr>
+      <tr data-g="farmer"><td class="route">/farmer/orders<br>FarmerOrdersPage</td><td><code>farmer/orders/?tab&amp;market_id&amp;q&amp;page</code>, <code>…/tab-counts/</code>, <code>…/picking-list/</code>, <code>…/grouped-by-customer/</code>, <code>farmer/markets/</code></td><td>Hành động nhanh trên từng đơn</td><td>orders, markets</td></tr>
+      <tr data-g="farmer"><td class="route">/farmer/orders/:id<br>FarmerOrderDetailPage</td><td><code>farmer/orders/{id}/</code></td><td><code>POST …/accept/</code>, <code>…/decline/</code>, <code>…/ready/</code>, <code>…/complete/</code>, <code>…/no-show/</code>, <code>…/items/{productId}/mark-sold-out/</code>, <code>…/change-request/approve|reject/</code>, tất cả kèm If-Match</td><td>orders</td></tr>
+      <tr data-g="farmer"><td class="route">/farmer/products<br>FarmerProductsPage</td><td><code>farmer/products/?state&amp;q</code>, <code>…/counts/</code>, <code>public/categories/</code>, <code>farmer/markets/</code>, <code>farmer/profile/</code></td><td><code>PATCH farmer/products/{id}/</code> (tồn kho), <code>POST …/mark-sold-out/</code>, <code>POST …/bulk/</code>, <code>DELETE</code></td><td>catalog</td></tr>
+      <tr data-g="farmer"><td class="route">/farmer/products/new, /:id/edit<br>FarmerProductFormPage</td><td><code>farmer/products/{id}/</code>, <code>farmer/products/precheck/</code>, <code>public/categories/</code>, <code>farmer/markets/</code>, <code>public/config/</code></td><td><code>POST farmer/products/</code> / <code>PATCH …/{id}/</code> (FormData)</td><td>catalog</td></tr>
+      <tr data-g="farmer"><td class="route">/farmer/stock-template<br>FarmerStockTemplatePage</td><td><code>farmer/products/weekly-template-preview/</code>, <code>farmer/markets/</code></td><td><code>POST …/apply-weekly-template/</code>, <code>PATCH</code> từng món; trang này có nhúng các nút xử lý đơn (giống trang chi tiết đơn)</td><td>catalog</td></tr>
+      <tr data-g="farmer"><td class="route">/farmer/markets<br>FarmerMarketsPage</td><td><code>farmer/markets/</code>, <code>farmer/closures/</code>, <code>public/markets/</code>, <code>farmer/profile/</code></td><td><code>POST / PATCH / DELETE farmer/markets/</code> (xin sạp), <code>farmer/pickup-slots/</code>, <code>farmer/closures/</code></td><td>markets</td></tr>
+      <tr data-g="farmer"><td class="route">/farmer/profile<br>FarmerProfilePage</td><td><code>farmer/profile/</code></td><td><code>PATCH farmer/profile/</code></td><td>accounts</td></tr>
+      <tr data-g="farmer"><td class="route">/farmer/reviews<br>FarmerReviewsPage</td><td><code>farmer/reviews/</code></td><td><code>POST farmer/farmer-reviews/{id}/reply/</code>, <code>…/product-reviews/{id}/reply/</code></td><td>reviews</td></tr>
+      <tr data-g="farmer"><td class="route">/farmer/notifications</td><td><code>notifications/?is_read&amp;page</code> (trên URL trang là <code>?show=unread</code>), <code>notifications/unread-count/</code></td><td><code>POST notifications/{id}/read/</code>, <code>…/read-all/</code></td><td>notifications</td></tr>
+      <tr data-g="farmer"><td class="route">/farmer/settings</td><td>—</td><td><code>POST auth/change-password/</code></td><td>accounts</td></tr>
+
+      <tr class="grp" data-g="admin"><td colspan="4">Admin · AdminLayout · RequireAuth + RequireRole(ADMIN) · phiên lưu riêng</td></tr>
+      <tr data-g="admin"><td class="route">/admin<br>AdminDashboardPage</td><td>Tab Overview: <code>admin/dashboard/</code>, <code>admin/dashboard/orders-by-day/</code>, <code>admin/ai-review/stats/</code>. Tab Reports (<code>?tab=reports</code>): <code>admin/reports/summary/</code>, <code>admin/markets/</code></td><td>Duyệt hoặc từ chối nông dân (<code>POST admin/farmers/{id}/approve|reject/</code>), xuất báo cáo</td><td>system, accounts, catalog</td></tr>
+      <tr data-g="admin"><td class="route">/admin/approvals<br>AdminApprovalsPage</td><td><code>admin/farmers/?status=PENDING</code>, <code>admin/market-requests/</code>, <code>admin/products/?review_status=PENDING</code>, <code>admin/ai-review/stats/</code>; tab AI (<code>?tab=ai</code>): <code>admin/ai-review/decisions/</code></td><td><code>POST admin/farmers/{id}/approve|reject/</code>, <code>admin/market-requests/{id}/approve|reject/</code>, <code>admin/products/{id}/approve|reject|ai-recheck/</code>, <code>admin/ai-review/decisions/{id}/check/</code></td><td>accounts, markets, catalog</td></tr>
+      <tr data-g="admin"><td class="route">/admin/ai-decisions<br>AdminAIDecisionsPage<br>(không có trên thanh bên; thường mở qua tab AI ở /admin/approvals)</td><td><code>admin/ai-review/decisions/</code></td><td><code>POST …/{id}/check/</code>, đảo quyết định</td><td>catalog</td></tr>
+      <tr data-g="admin"><td class="route">/admin/farmers, /:id</td><td><code>admin/farmers/</code>, <code>admin/farmers/{id}/</code>, <code>…/suspension-impact/</code>, <code>admin/audit-trail/{model}/{id}/</code> (lịch sử thay đổi)</td><td><code>PATCH</code>, <code>POST …/suspend|reinstate/</code>, xuất CSV</td><td>accounts (+ orders khi đình chỉ)</td></tr>
+      <tr data-g="admin"><td class="route">/admin/customers, /:id</td><td><code>admin/customers/</code>, <code>…/{id}/</code>, <code>…/deactivation-impact/</code>, <code>admin/audit-trail/{model}/{id}/</code></td><td><code>PATCH</code>, <code>POST …/deactivate|activate/</code>, xuất CSV</td><td>accounts (+ orders)</td></tr>
+      <tr data-g="admin"><td class="route">/admin/orders<br>AdminOrdersPage</td><td><code>admin/orders/</code></td><td>—</td><td>orders</td></tr>
+      <tr data-g="admin"><td class="route">/admin/markets, /new, /:id, /:id/edit</td><td><code>admin/markets/</code>, <code>…/{id}/</code>, <code>…/{id}/closures/</code></td><td><code>public/geocode/</code> (chọn vị trí trên bản đồ), <code>POST / PATCH admin/markets/</code>, <code>POST …/impact/</code> (xem trước ảnh hưởng), <code>…/activate|deactivate/</code></td><td>markets (+ orders)</td></tr>
+      <tr data-g="admin"><td class="route">/admin/categories</td><td><code>admin/categories/</code>, <code>admin/price-guidelines/</code> (trang nhúng luôn bảng khung giá)</td><td><code>POST / PATCH / DELETE</code> danh mục và khung giá, kéo thả sắp xếp</td><td>catalog</td></tr>
+      <tr data-g="admin"><td class="route">/admin/price-guidelines</td><td><code>admin/price-guidelines/</code></td><td><code>POST / PATCH / DELETE</code></td><td>catalog</td></tr>
+      <tr data-g="admin"><td class="route">/admin/moderation<br>AdminModerationPage</td><td><code>admin/products/</code>, <code>admin/reviews/</code>, <code>admin/products/{id}/block-impact/</code></td><td><code>POST admin/products/{id}/hide|restore|block|unblock/</code>, <code>POST admin/{loại đánh giá}/{id}/hide|restore/</code></td><td>catalog, reviews</td></tr>
+      <tr data-g="admin"><td class="route">/admin/reports<br>(không có trên thanh bên; thường mở qua tab Reports ở /admin)</td><td><code>admin/reports/summary/</code></td><td><code>GET admin/reports/export/</code> (tải file)</td><td>system</td></tr>
+      <tr data-g="admin"><td class="route">/admin/announcements</td><td><code>admin/announcements/</code></td><td><code>POST / PATCH / DELETE</code></td><td>notifications</td></tr>
+      <tr data-g="admin"><td class="route">/admin/audit-logs</td><td><code>admin/audit-logs/</code></td><td>—</td><td>system</td></tr>
+      <tr data-g="admin"><td class="route">/admin/limits<br>AdminSettingsPage</td><td><code>admin/settings/</code></td><td>—</td><td>system</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 08 -->
+<section id="bao-ve">
+  <h2><span class="sn">08</span>Câu hỏi hội đồng hay hỏi</h2>
+  <p class="sub">Câu trả lời ngắn, có dẫn chứng trong code. Bấm để mở.</p>
+
+  <details class="qa"><summary>Vì sao tách View, Serializer, Service riêng mà không viết hết vào View?</summary>
+    <div class="ans"><p>Mỗi lớp một việc. View lo HTTP (quyền, đọc header). Serializer lo hình dạng dữ liệu. Service lo quy tắc nghiệp vụ. Nhờ vậy một quy tắc như "đổi trạng thái đơn" được dùng chung bởi nông dân (API), admin (đình chỉ), và hệ thống (lệnh <code>expire_orders</code>), mà chỉ viết một lần trong <code>fsm.py</code>. Service cũng test được mà không cần giả lập HTTP.</p></div></details>
+
+  <details class="qa"><summary>Hai khách cùng mua món cuối cùng một lúc thì sao?</summary>
+    <div class="ans"><p>Có hai lớp. <strong>Lúc đặt</strong>, checkout chỉ tính "tồn kho trừ hàng đang được giữ bởi các đơn PLACED" và <strong>không khoá dòng sản phẩm</strong>; nó khoá dòng khách (<code>FOR UPDATE</code>) và dòng nông dân (<code>FOR SHARE</code>). Vì vậy hai khách đặt gần như cùng lúc có thể cùng tạo được đơn PLACED. <strong>Lúc nông dân nhận đơn</strong>, <code>transition_order</code> khoá dòng sản phẩm và <code>apply_stock_delta</code> từ chối nếu kho xuống âm, nên nông dân chỉ nhận được đơn còn đủ hàng; đơn kia bị từ chối hoặc hết hạn. Kho chỉ trừ ở bước nhận vì nông dân có quyền từ chối; trừ ngay lúc đặt thì mỗi lần từ chối lại phải hoàn kho. Gặp deadlock của MySQL thì <code>run_with_deadlock_retry</code> tự chạy lại. Chi tiết ở hành trình C-05 và F-09.</p></div></details>
+
+  <details class="qa"><summary>Khách bấm "Đặt hàng" hai lần, hoặc mạng chập chờn gửi lại, có ra hai đơn không?</summary>
+    <div class="ans"><p><strong>Bấm đúp: không.</strong> Nút xác nhận bị khoá trong lúc chờ, và axios tự gửi lại (khi làm mới token) thì dùng đúng request cũ nên mang cùng <code>Idempotency-Key</code>. Server lưu key trên Redis (<code>idem:&lt;user&gt;:&lt;key&gt;</code>): đang xử lý thì trả 409 <code>IDEMPOTENCY_IN_PROGRESS</code>; đã xong thì trả lại đúng kết quả cũ trong 24 giờ, kèm header <code>Idempotent-Replayed: true</code>; cùng key mà khác nội dung thì trả 422 <code>IDEMPOTENCY_KEY_REUSED</code>.</p>
+      <p><strong>Rớt mạng sau khi server đã lưu, rồi khách tự bấm lại: hiện vẫn tạo thêm đơn.</strong> Tài liệu kỹ thuật (API contract §1.2) yêu cầu key "sinh 1 lần khi mở Checkout", nhưng frontend đang sinh key mới cho <strong>mỗi request</strong> trong interceptor (<code>lib/axiosClient.js</code>). Lần bấm thứ hai mang key mới nên server coi là một lần đặt mới. Backend đã làm đúng; chỗ cần sửa là <code>CheckoutPage</code> phải giữ một key cho cả lần checkout. Khoá bi quan (<code>FOR UPDATE</code> dòng khách) không chặn được trường hợp này, vì hai lần bấm không chạy cùng lúc. Chi tiết ở file 02, điểm cần lưu ý 13.</p></div></details>
+
+  <details class="qa"><summary>Khách và nông dân cùng thao tác trên một đơn thì ai thắng?</summary>
+    <div class="ans"><p>Dùng <em>optimistic locking</em>. Mỗi đơn có cột <code>version</code>, tăng 1 sau mỗi thay đổi. Khách và nông dân bắt buộc gửi version đang thấy trong header <code>If-Match</code> (thiếu thì 428). Backend khoá dòng đơn (<code>SELECT … FOR UPDATE</code>) rồi so: khác thì trả 409 <code>RESOURCE_MODIFIED</code>, FE tải lại đơn và yêu cầu người dùng xem lại. Ví dụ khách đang sửa đơn thì nông dân bấm nhận: lần lưu của khách nhận 409 thay vì ghi đè. Thao tác của admin (đình chỉ, khoá, đóng chợ, chặn món) không gửi <code>If-Match</code>, nhưng vẫn khoá dòng đơn nên chạy tuần tự, và version tăng lên khiến thao tác còn lại của khách hoặc nông dân nhận 409.</p></div></details>
+
+  <details class="qa"><summary>Bảo mật đăng nhập làm thế nào?</summary>
+    <div class="ans"><ul>
+      <li>Mật khẩu được băm bởi Django, không lưu dạng thô.</li>
+      <li>JWT access 15 phút, refresh 7 ngày. Refresh chỉ dùng được một lần: mỗi lần làm mới cấp cặp token mới; nếu một refresh cũ bị gửi lại, server coi là bị đánh cắp và thu hồi cả phiên (X-02).</li>
+      <li>Đăng xuất đưa session id vào danh sách thu hồi trên Redis; đổi mật khẩu làm mọi token cũ mất hiệu lực (claim phiên bản mật khẩu).</li>
+      <li>Throttle đăng nhập theo IP và theo email; mọi lần đăng nhập ghi <code>audit_logs</code>.</li>
+      <li>Cổng admin tách riêng: endpoint riêng, store token riêng.</li>
+      <li>Mỗi API kiểm vai trò (<code>IsCustomer</code>, <code>IsFarmer</code>, <code>IsAdmin</code>) và kiểm quyền sở hữu (nông dân A không xem được đơn của nông dân B).</li>
+    </ul></div></details>
+
+  <details class="qa"><summary>Guard ở frontend có đủ để bảo vệ không?</summary>
+    <div class="ans"><p>Không, và dự án không dựa vào nó. Guard chỉ giúp giao diện mượt (không cho vào trang không dành cho mình). Mọi quy tắc thật đều kiểm tra lại ở backend. Ví dụ nút "Nhận đơn" bị ẩn theo <code>allowedOrderActions</code>, nhưng nếu ai đó gọi thẳng API thì <code>transition_order</code> vẫn chặn.</p></div></details>
+
+  <details class="qa"><summary>Vì sao giỏ hàng lưu ở trình duyệt mà không lưu DB?</summary>
+    <div class="ans"><p>Giỏ hàng là dữ liệu tạm. Lưu localStorage thì nhanh và không tốn request. Đổi lại, giá và tồn kho trong giỏ có thể cũ, nên trang giỏ làm mới bằng <code>GET public/products/?ids=</code>, và checkout bỏ qua giá trong giỏ, tự lấy giá từ DB.</p></div></details>
+
+  <details class="qa"><summary>Thông báo realtime hoạt động thế nào? Nếu WebSocket rớt thì sao?</summary>
+    <div class="ans"><p>Thông báo luôn được lưu vào bảng <code>notifications</code> trước, WebSocket chỉ là đường đẩy nhanh. Hiện chỉ trang nông dân mở WebSocket, vì nông dân cần biết đơn mới ngay. Khách hàng và admin nhận thông báo bằng cách frontend hỏi lại server mỗi 30 giây (polling). Nông dân rớt kết nối thì frontend tự nối lại với thời gian chờ tăng dần, trong lúc đó tự chuyển sang polling; nối lại xong thì làm mới mọi dữ liệu, nên không mất thông báo nào. Chi tiết ở các hành trình X-06 và F-03.</p></div></details>
+
+  <details class="qa"><summary>AI có quyền tự phạt người dùng không?</summary>
+    <div class="ans"><p>Không. AI chỉ tự <em>duyệt</em> tin rõ ràng sạch và <em>đề xuất</em> với tin nghi ngờ (tạo cờ). Ẩn, chặn, khoá tài khoản luôn do admin. Mọi quyết định tự động hiện ở trang AI decisions để admin xác nhận hoặc đảo lại. Giá cả do luật cố định kiểm tra, không giao cho AI, vì mô hình ngôn ngữ không biết giá thị trường và mỗi lần trả lời mỗi khác.</p></div></details>
+
+  <details class="qa"><summary>Đơn PLACED mà nông dân quên không nhận thì sao?</summary>
+    <div class="ans"><p>Qua giờ nhận hàng, đơn tự chuyển EXPIRED (T8) bởi lệnh <code>expire_orders</code> chạy định kỳ, và trước mỗi lần checkout. Khách nhận thông báo ORDER_EXPIRED. Vì đơn PLACED chưa trừ kho nên không phải hoàn kho.</p></div></details>
+
+  <details class="qa"><summary>Làm sao biết ai đã sửa giá sản phẩm hay đổi trạng thái đơn?</summary>
+    <div class="ans"><p>Ba lớp lịch sử. <code>simple_history</code> lưu mọi phiên bản của sản phẩm và đơn kèm người sửa và lý do (<code>save_with_history</code>). <code>order_status_history</code> lưu từng lần chuyển trạng thái với mã T1–T14 và vai trò. <code>audit_logs</code> lưu sự kiện bảo mật và thao tác admin, kèm <code>request_id</code> để nối với log server.</p></div></details>
+</section>
+
+<!-- 09 -->
+<section id="tu-kiem">
+  <h2><span class="sn">09</span>Tự kiểm chứng trên máy</h2>
+  <p class="sub">Cách nhanh nhất để thật sự hiểu là nhìn dữ liệu chạy. Làm theo thứ tự này trước buổi bảo vệ.</p>
+  <ol class="steps">
+    <li><span class="st">Chạy hai server</span>Backend: <code>python manage.py runserver</code> (cổng 8000). Frontend: <code>npm run dev</code> (cổng 5173). Vite tự chuyển <code>/api</code> sang 8000.</li>
+    <li><span class="st">Mở tab Network của DevTools</span>F12 → Network → lọc <code>Fetch/XHR</code>. Bấm một nút trên trang và xem request: URL, method, header (<code>Authorization</code>, <code>If-Match</code>, <code>Idempotency-Key</code>), body gửi đi, envelope nhận về.</li>
+    <li><span class="st">Mở Swagger</span><code>http://localhost:8000/api/docs/</code> liệt kê mọi endpoint, có thể gửi thử request.</li>
+    <li><span class="st">Đặt breakpoint trong service</span>Đặt breakpoint ở <code>checkout_service.place_orders</code> hoặc <code>fsm.transition_order</code>, chạy backend ở chế độ debug trong VS Code, rồi đặt một đơn để xem từng bước kiểm tra.</li>
+    <li><span class="st">Xem bảng trong MySQL</span>Sau khi đặt đơn: <code>SELECT * FROM orders ORDER BY id DESC LIMIT 1;</code> rồi <code>order_items</code>, <code>order_status_history</code>, <code>notifications</code>. Nhận đơn xong, xem <code>products.stock_quantity</code> giảm.</li>
+    <li><span class="st">Lần theo request_id</span>Mỗi response có header <code>X-Request-ID</code>. Tìm đúng mã đó trong <code>audit_logs</code> hoặc <code>order_status_history.request_id</code> để thấy request nào gây ra thay đổi nào.</li>
+    <li><span class="st">Thử realtime</span>Mở hai trình duyệt: một đăng nhập khách, một đăng nhập nông dân. Khách đặt đơn, xem nông dân nhận toast ngay. Trong Network, lọc <code>WS</code> để xem các khung tin.</li>
+  </ol>
+  <div class="note">
+    <strong>Thứ tự đọc code đề xuất (khoảng 2 giờ)</strong>
+    <p><code>frontend/src/lib/axiosClient.js</code> → <code>hooks/authentication/useAuth.js</code> → <code>backend/marketlink_core/urls.py</code> → <code>marketlink_core/responses.py</code> → <code>orders/customer/views_customer.py</code> → <code>orders/services/checkout_service.py</code> → <code>orders/services/fsm.py</code> → <code>notifications/services.py</code> → <code>catalog/selectors.py</code>. Đọc xong chín file này là đủ trả lời phần lớn câu hỏi về luồng dữ liệu.</p>
+  </div>
+</section>
+</main>
+</div>
+
+<script>
+(function () {
+  // Page lookup filter
+  var table = document.getElementById('pages');
+  var buttons = document.querySelectorAll('.filters button');
+  var search = document.getElementById('page-search');
+  var count = document.getElementById('page-count');
+  var group = 'all';
+  try { group = localStorage.getItem('ml-guide-group') || 'all'; } catch (e) {}
+
+  function apply() {
+    var q = (search.value || '').trim().toLowerCase();
+    var shown = 0;
+    table.querySelectorAll('tbody tr').forEach(function (tr) {
+      var g = tr.getAttribute('data-g');
+      var inGroup = group === 'all' || g === group;
+      if (tr.classList.contains('grp')) { tr.hidden = !inGroup || q !== ''; return; }
+      var match = inGroup && (q === '' || tr.textContent.toLowerCase().indexOf(q) !== -1);
+      tr.hidden = !match;
+      if (match) shown++;
+    });
+    count.textContent = shown + ' trang';
+    buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-f') === group)); });
+  }
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      group = b.getAttribute('data-f');
+      try { localStorage.setItem('ml-guide-group', group); } catch (e) {}
+      apply();
+    });
+  });
+  search.addEventListener('input', apply);
+  apply();
+
+  // Highlight the current section in the table of contents
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var sections = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        links.forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id); });
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    sections.forEach(function (s) { if (s) io.observe(s); });
+  }
+  // Opened straight from disk (not on claude.ai): load Mermaid ourselves so the diagrams draw.
+  if (location.protocol === 'file:') {
+    var ms = document.createElement('script');
+    ms.src = 'https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js';
+    ms.onload = function () {
+      var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      window.mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+      window.mermaid.run({ querySelector: 'pre.mermaid' });
+    };
+    document.head.appendChild(ms);
+  }
+})();
+</script>

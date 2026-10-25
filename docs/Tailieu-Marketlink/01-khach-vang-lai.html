@@ -1,0 +1,1147 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hành trình khách vãng lai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Lexend:wght@500;600;700&display=swap">
+<style>
+/* Layout: same system as "Sổ tay MarketLink" — sticky journey index on the left, one reading column; stacks on phones. */
+:root {
+  --bg: #f4f6f1; --surface: #ffffff; --sunken: #eaeee6; --ink: #1b231e; --muted: #59645d; --line: #d8ded4;
+  --accent: #2e6a3e; --accent-soft: #e1ede3;
+  --fe: #2c5a87; --fe-soft: #e0ebf6; --be: #2e6a3e; --be-soft: #e1ede3;
+  --db: #9a5a0e; --db-soft: #f6e9d6; --ext: #6b4a8f; --ext-soft: #ece4f5;
+  --warn: #a3401f; --warn-soft: #f7e3da; --why: #7a5a00; --why-soft: #faf1d2;
+  --font-display: "Lexend", "Be Vietnam Pro", system-ui, sans-serif;
+  --font-body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111613; --surface: #181f1b; --sunken: #1f2722; --ink: #e3e9e4; --muted: #98a39c; --line: #2c3631;
+    --accent: #7fc492; --accent-soft: #1d3324; --fe: #8db9e6; --fe-soft: #1a2a3b; --be: #7fc492; --be-soft: #1d3324;
+    --db: #e2a55d; --db-soft: #3a2a17; --ext: #c3a5e6; --ext-soft: #2b2238; --warn: #ef9a7a; --warn-soft: #3b231b;
+    --why: #e8c766; --why-soft: #332b12; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111613; --surface: #181f1b; --sunken: #1f2722; --ink: #e3e9e4; --muted: #98a39c; --line: #2c3631;
+  --accent: #7fc492; --accent-soft: #1d3324; --fe: #8db9e6; --fe-soft: #1a2a3b; --be: #7fc492; --be-soft: #1d3324;
+  --db: #e2a55d; --db-soft: #3a2a17; --ext: #c3a5e6; --ext-soft: #2b2238; --warn: #ef9a7a; --warn-soft: #3b231b;
+  --why: #e8c766; --why-soft: #332b12; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.65; }
+.wrap { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 44px; max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px; }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 20px); align-self: start; max-height: calc(100vh - 40px); overflow-y: auto; font-size: 14px; }
+.toc-title { font-family: var(--font-display); font-weight: 600; font-size: 15px; margin: 0 0 10px; }
+.toc-group { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 14px 0 4px 10px; }
+.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
+.toc a { display: flex; gap: 8px; color: var(--muted); text-decoration: none; padding: 4px 10px; border-radius: 6px; border-left: 2px solid transparent; }
+.toc a:hover, .toc a:focus-visible { color: var(--ink); background: var(--sunken); outline: none; }
+.toc a.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-soft); }
+.toc .num { font-family: var(--font-mono); font-size: 12px; flex: none; padding-top: 1px; }
+.toc a.dim { opacity: .35; }
+main { min-width: 0; max-width: 840px; }
+header.hero { padding-block: 4px 24px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 4.4vw, 42px); line-height: 1.15; margin: 0 0 14px; text-wrap: balance; }
+.lede { font-size: 18px; color: var(--muted); max-width: 66ch; margin: 0 0 12px; }
+section.group { padding-block: 36px 4px; scroll-margin-top: 12px; }
+h2 { font-family: var(--font-display); font-weight: 600; font-size: 26px; line-height: 1.25; margin: 0 0 8px; text-wrap: balance; display: flex; gap: 12px; align-items: baseline; }
+h2 .sn { font-family: var(--font-mono); font-size: 15px; color: var(--accent); font-weight: 500; }
+h3 { font-family: var(--font-display); font-weight: 600; font-size: 17px; margin: 22px 0 8px; }
+h4 { font-weight: 600; font-size: 15px; margin: 18px 0 6px; }
+p { margin: 0 0 12px; max-width: 70ch; }
+.sub { color: var(--muted); }
+code { font-family: var(--font-mono); font-size: .85em; }
+p code, li code, td code, dd code, .path code { background: var(--sunken); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+a { color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 0 0 12px; }
+li { margin-bottom: 4px; }
+pre.code { background: var(--sunken); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; overflow-x: auto; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.55; margin: 6px 0 12px; }
+.diagram { background: var(--sunken); border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin: 6px 0 16px; overflow-x: auto; }
+.diagram pre.mermaid { margin: 0; background: transparent; text-align: center; }
+
+.chip { display: inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .04em; padding: 2px 7px; border-radius: 4px; vertical-align: 2px; white-space: nowrap; }
+.chip.fe { color: var(--fe); background: var(--fe-soft); }
+.chip.be { color: var(--be); background: var(--be-soft); }
+.chip.db { color: var(--db); background: var(--db-soft); }
+.chip.ext { color: var(--ext); background: var(--ext-soft); }
+.chip.read { color: var(--fe); background: var(--fe-soft); }
+.chip.write { color: var(--db); background: var(--db-soft); }
+.chip.local { color: var(--muted); background: var(--sunken); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 18px 0 0; }
+.tools input { font: inherit; font-size: 14px; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); flex: 1 1 220px; min-width: 0; }
+.tools button { font: inherit; font-size: 14px; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.tools button:hover { background: var(--sunken); }
+.tools :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.count { font-size: 13px; color: var(--muted); }
+
+/* concepts */
+.concept { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; margin: 0 0 12px; }
+.concept h3 { margin-top: 0; }
+
+/* journey card */
+details.j { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; margin: 0 0 14px; scroll-margin-top: 12px; }
+details.j > summary { cursor: pointer; list-style: none; padding: 16px 20px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; align-items: baseline; }
+details.j > summary::-webkit-details-marker { display: none; }
+details.j > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 12px; }
+.jid { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--accent); }
+.jt { font-family: var(--font-display); font-weight: 600; font-size: 19px; line-height: 1.3; text-wrap: balance; }
+.jk { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.jtoggle { grid-column: 1 / -1; font-size: 13px; color: var(--muted); }
+details.j[open] .jtoggle .open-t, details.j:not([open]) .jtoggle .close-t { display: none; }
+.jb { padding: 0 20px 18px; border-top: 1px solid var(--line); }
+.meta { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 4px 14px; margin: 14px 0 4px; font-size: 15px; }
+.meta dt { color: var(--muted); font-size: 13px; padding-top: 2px; }
+.meta dd { margin: 0; min-width: 0; }
+
+ol.steps { list-style: none; padding: 0; margin: 6px 0 12px; counter-reset: step; }
+ol.steps > li { counter-increment: step; position: relative; padding: 0 0 14px 42px; margin: 0; }
+ol.steps > li::before { content: counter(step); position: absolute; left: 0; top: 1px; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-mono); font-size: 12px; font-weight: 500; background: var(--surface); border: 1.5px solid var(--line); color: var(--ink); }
+ol.steps > li::after { content: ""; position: absolute; left: 14px; top: 31px; bottom: 2px; width: 1.5px; background: var(--line); }
+ol.steps > li:last-child::after { display: none; }
+.st { font-weight: 600; display: block; margin-bottom: 3px; }
+.st .chip { margin-right: 6px; }
+ol.sub-steps { padding-left: 20px; margin: 6px 0 6px; }
+ol.sub-steps li { margin-bottom: 6px; }
+
+.why { background: var(--why-soft); border-radius: 8px; padding: 10px 14px; margin: 8px 0 10px; font-size: 15px; }
+.why::before { content: "Vì sao"; display: inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--why); margin-right: 8px; }
+.why p:last-child { margin-bottom: 0; }
+.note { border-radius: 8px; padding: 12px 14px; margin: 8px 0 12px; background: var(--accent-soft); font-size: 15px; }
+.note.warn { background: var(--warn-soft); }
+.note strong:first-child { display: block; margin-bottom: 2px; }
+.note p:last-child { margin-bottom: 0; }
+
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); margin: 6px 0 14px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); background: var(--sunken); }
+tr:last-child td { border-bottom: 0; }
+.files { font-size: 14px; color: var(--muted); }
+.files code { color: var(--ink); }
+.files p { margin-bottom: 6px; }
+
+ol.findings { padding-left: 24px; }
+ol.findings li { margin-bottom: 10px; }
+
+@media (max-width: 1000px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 20px 16px 64px; }
+  nav.toc { position: static; max-height: none; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin-bottom: 8px; }
+  .toc .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+}
+@media (max-width: 620px) {
+  .toc .cols { grid-template-columns: 1fr; }
+  details.j > summary { grid-template-columns: auto minmax(0, 1fr); }
+  .jk { grid-column: 1 / -1; justify-content: flex-start; }
+  .meta { grid-template-columns: 1fr; }
+  .meta dt { padding-top: 8px; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Danh sách hành trình">
+  <p class="toc-title">Khách vãng lai</p>
+  <div class="cols">
+    <div>
+      <p class="toc-group">Nền tảng</p>
+      <ol><li><a href="#khai-niem"><span class="num">··</span>Điều chung của nhóm</a></li></ol>
+      <p class="toc-group">Trang chủ</p>
+      <ol>
+        <li><a href="#g-01"><span class="num">G-01</span>Tải trang chủ</a></li>
+        <li><a href="#g-02"><span class="num">G-02</span>Lấy vị trí của tôi</a></li>
+      </ol>
+      <p class="toc-group">Sản phẩm</p>
+      <ol>
+        <li><a href="#g-03"><span class="num">G-03</span>Danh sách sản phẩm</a></li>
+        <li><a href="#g-04"><span class="num">G-04</span>Tìm theo từ khoá</a></li>
+        <li><a href="#g-05"><span class="num">G-05</span>Lọc, sắp xếp, phân trang</a></li>
+        <li><a href="#g-06"><span class="num">G-06</span>Chi tiết sản phẩm</a></li>
+        <li><a href="#g-07"><span class="num">G-07</span>Đánh giá sản phẩm</a></li>
+        <li><a href="#g-08"><span class="num">G-08</span>Sản phẩm liên quan</a></li>
+      </ol>
+    </div>
+    <div>
+      <p class="toc-group">Chợ</p>
+      <ol>
+        <li><a href="#g-09"><span class="num">G-09</span>Danh sách chợ, bản đồ</a></li>
+        <li><a href="#g-10"><span class="num">G-10</span>Chi tiết chợ, các sạp</a></li>
+      </ol>
+      <p class="toc-group">Nông dân</p>
+      <ol>
+        <li><a href="#g-11"><span class="num">G-11</span>Danh sách nông dân</a></li>
+        <li><a href="#g-12"><span class="num">G-12</span>Trang nông dân</a></li>
+      </ol>
+      <p class="toc-group">Đăng ký và khác</p>
+      <ol>
+        <li><a href="#g-13"><span class="num">G-13</span>Đăng ký khách</a></li>
+        <li><a href="#g-14"><span class="num">G-14</span>Đăng ký nông dân</a></li>
+        <li><a href="#g-15"><span class="num">G-15</span>Bấm mua khi chưa đăng nhập</a></li>
+        <li><a href="#g-16"><span class="num">G-16</span>Sơ đồ trang</a></li>
+      </ol>
+      <p class="toc-group">Kết luận</p>
+      <ol><li><a href="#luu-y"><span class="num">!!</span>Điểm cần lưu ý</a></li></ol>
+    </div>
+  </div>
+</nav>
+
+<main>
+<header class="hero">
+  <p class="eyebrow"><a href="https://claude.ai/artifact/HCcrWguA4ztxDyTtp7UbSE#luong">← Sổ tay MarketLink</a> · Hành trình dữ liệu · File 01</p>
+  <h1>Hành trình của khách vãng lai</h1>
+  <p class="lede">Những gì một người chưa đăng nhập làm được: xem trang chủ, tìm và lọc sản phẩm, xem chợ, xem sạp nông dân, đăng ký tài khoản. Các phần nằm trên layout (chuông, chat, banner, đăng nhập) ở <a href="https://claude.ai/artifact/1xMtZqRaKMwASP5kuYdSsS">file 00 dùng chung</a>.</p>
+  <div class="legend">
+    <span><span class="chip fe">FE</span> trình duyệt (React)</span>
+    <span><span class="chip be">BE</span> server (Django)</span>
+    <span><span class="chip db">DB</span> MySQL</span>
+    <span><span class="chip ext">REDIS / NGOÀI</span> dịch vụ ngoài</span>
+    <span><span class="chip read">ĐỌC</span> <span class="chip write">GHI</span> <span class="chip local">TRÌNH DUYỆT</span> loại hành trình</span>
+  </div>
+  <div class="tools">
+    <input id="q" type="search" placeholder="Tìm trong các hành trình: cache, distance, public_products…" aria-label="Tìm trong các hành trình">
+    <button type="button" id="open-all">Mở tất cả</button>
+    <button type="button" id="close-all">Thu gọn tất cả</button>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+
+<!-- ============ KHÁI NIỆM ============ -->
+<section class="group" id="khai-niem">
+  <h2><span class="sn">··</span>Điều chung của cả nhóm</h2>
+  <p class="sub">Mọi hành trình ở file này đều đọc dữ liệu công khai. Ba cơ chế dưới đây lặp lại ở hầu hết các hành trình, nên giải thích một lần ở đây.</p>
+
+  <div class="concept">
+    <h3>Quy tắc "được hiện công khai" nằm ở backend, trong selector</h3>
+    <p>Mọi API công khai đều lấy dữ liệu qua một hàm "base" có sẵn bộ lọc, không view nào tự viết điều kiện riêng:</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Đối tượng</th><th>Hàm base</th><th>Chỉ hiện khi thoả tất cả</th></tr></thead>
+      <tbody>
+        <tr><td>Sản phẩm</td><td><code>catalog/selectors.py → public_product_base()</code></td><td>Đã được duyệt (<code>review_status = APPROVED</code>); không bị admin ẩn; không bị lưu trữ; nông dân <code>APPROVED</code> và tài khoản còn hoạt động; có ít nhất một sạp <strong>đang bán</strong> (sạp đã duyệt, chợ đang mở) mà sản phẩm được đăng ở đó</td></tr>
+        <tr><td>Nông dân</td><td><code>accounts/selectors.py → public_farmer_base()</code></td><td>Nông dân <code>APPROVED</code>; tài khoản còn hoạt động; có ít nhất một sạp đang bán</td></tr>
+        <tr><td>Chợ</td><td><code>markets/selectors.py → public_markets()</code></td><td>Chợ <code>is_active = 1</code></td></tr>
+        <tr><td>Đánh giá</td><td><code>reviews/selectors.py → public_product_reviews / public_farmer_reviews</code></td><td>Không bị admin ẩn; và sản phẩm hoặc nông dân được đánh giá phải đang hiện công khai (không thì 404)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="why"><p>Một quy tắc hiển thị chỉ được viết ở <strong>một chỗ</strong>. Trang danh sách, trang chi tiết, trợ lý AI (X-10), giỏ hàng đều gọi cùng hàm, nên không có cửa sau nào để lộ một sản phẩm bị ẩn hay một nông dân bị đình chỉ. Khi luật đổi (ví dụ thêm điều kiện "sạp phải đang bán"), chỉ sửa một hàm.</p></div>
+  </div>
+
+  <div class="concept">
+    <h3>Bộ lọc nằm trên URL, ô tìm kiếm chờ 300 ms</h3>
+    <p><code>useUrlFilters(defaults)</code> (<code>hooks/common/useUrlFilters.js</code>) đọc bộ lọc từ query string của URL và ghi lại vào đó. Giá trị bằng mặc định thì bị xoá khỏi URL cho gọn. Đổi bất kỳ bộ lọc nào (trừ chính <code>page</code>) thì số trang tự về 1.</p>
+    <p><code>useDebouncedSearchParam('q')</code> giữ chữ người dùng đang gõ trong state, và chỉ ghi lên URL sau <strong>300 ms</strong> kể từ phím cuối (<code>SEARCH_DEBOUNCE_MS</code>). Enter thì ghi ngay; Esc thì xoá. Việc ghi dùng <code>replace</code> nên không tạo thêm mục trong lịch sử trình duyệt.</p>
+    <div class="why">
+      <p><strong>URL là nơi lưu bộ lọc:</strong> copy link gửi người khác vẫn ra đúng kết quả; bấm Back quay về đúng bộ lọc trước; tải lại trang không mất lựa chọn.</p>
+      <p><strong>Chờ 300 ms:</strong> gõ "ca chua" là 7 phím. Không chờ thì có 7 request, 6 cái bị bỏ đi. Chờ 300 ms thì chỉ gửi khi người dùng ngừng gõ.</p>
+      <p><strong>Ghi bằng <code>replace</code> khi gõ:</strong> nếu mỗi lần ghi tạo một mục lịch sử, bấm Back sẽ lùi từng chữ một.</p>
+    </div>
+  </div>
+
+  <div class="concept">
+    <h3>Hai lớp bộ nhớ đệm: React Query ở trình duyệt, <code>cache_page</code> ở server</h3>
+    <p>Mỗi query của React Query có <strong>khoá</strong> chứa cả tham số, ví dụ <code>['public','products',{q:'rau',page:2}]</code> (<code>constants/queryKeys.js → publicKeys</code>). Đổi tham số là đổi khoá, nên React Query gửi request mới; quay lại tham số cũ thì lấy ngay từ bộ nhớ. <code>staleTime</code> quyết định bao lâu thì coi dữ liệu là cũ.</p>
+    <p>Một số view backend còn có <code>cache_page</code>: kết quả lưu ở cache server theo <strong>toàn bộ URL</strong> (gồm query string), có view tách thêm theo header <code>Authorization</code>.</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>API</th><th>Cache server</th><th>staleTime frontend</th></tr></thead>
+      <tbody>
+        <tr><td><code>public/categories/</code></td><td>5 phút, dùng chung cho mọi người</td><td>30 phút</td></tr>
+        <tr><td><code>public/products/</code></td><td>60 giây, tách theo <code>Authorization</code></td><td>5 phút (<code>usePublicProducts</code>), 0 (<code>usePublicProductList</code>)</td></tr>
+        <tr><td><code>public/products/{id}/</code></td><td>Không</td><td>0, luôn tải lại khi mở trang</td></tr>
+        <tr><td><code>public/markets/</code></td><td>5 phút, tách theo <code>Authorization</code></td><td>10 phút / 0 (bản danh sách)</td></tr>
+        <tr><td><code>public/farmers/</code>, đánh giá, lịch nhận hàng</td><td>Không</td><td>5 phút / 0 / 60 giây</td></tr>
+      </tbody>
+    </table></div>
+    <div class="why">
+      <p><strong>Cache server:</strong> các API này bị gọi bởi mọi khách mở trang chủ và trang sản phẩm, trong khi nội dung đổi chậm. Lưu kết quả 1–5 phút giảm mạnh số truy vấn nặng (sản phẩm có tính điểm đánh giá trung bình bằng JOIN).</p>
+      <p><strong>Tách theo <code>Authorization</code>:</strong> kết quả có trường <code>is_favorite</code> riêng cho từng khách đã đăng nhập. Không tách thì khách A có thể nhận danh sách mang trái tim của khách B.</p>
+      <p><strong>Chi tiết sản phẩm không cache và staleTime = 0:</strong> đây là trang khách quyết định đặt hàng, số tồn kho phải mới nhất.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRANG CHỦ ============ -->
+<section class="group" id="nhom-1">
+  <h2><span class="sn">01</span>Trang chủ</h2>
+
+  <details class="j" id="g-01" open>
+    <summary>
+      <span class="jid">G-01</span><span class="jt">Tải trang chủ: danh mục, sản phẩm, chợ, nông dân</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Mở <code>/</code>. Khách hàng đã đăng nhập cũng về trang này sau khi đăng nhập.</dd>
+        <dt>Component</dt><dd><code>pages/guest/HomePage.jsx</code> trong <code>PublicLayout</code>, guard <code>NotForFarmers</code>.</dd>
+      </dl>
+
+      <div class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant P as HomePage
+  participant RQ as React Query
+  participant BE as Django
+  participant DB as MySQL
+  P->>RQ: 4 query cùng lúc
+  par danh mục
+    RQ->>BE: GET /public/categories/
+  and chợ
+    RQ->>BE: GET /public/markets/?ordering=name&amp;page_size=5
+  and sản phẩm
+    RQ->>BE: GET /public/products/?ordering=rating&amp;page_size=10
+  and nông dân
+    RQ->>BE: GET /public/farmers/?ordering=rating&amp;page_size=5
+  end
+  BE->>DB: mỗi API một truy vấn qua hàm base công khai
+  BE-->>RQ: 4 envelope độc lập
+  RQ-->>P: mỗi khu vực tự vẽ khi dữ liệu của nó về
+</pre>
+      </div>
+
+      <h3>Các bước</h3>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Bốn query chạy song song</span>
+          <ul>
+            <li><code>useCategories()</code> → <code>GET /api/public/categories/</code>.</li>
+            <li><code>usePublicMarkets(...)</code> → <code>GET /api/public/markets/?ordering=name&amp;page_size=5</code>. Nếu đã có vị trí (G-02) thì gửi <code>lat</code>, <code>lng</code>, <code>ordering=distance</code>.</li>
+            <li><code>usePublicProducts({ ordering: 'rating', page_size: 10 })</code> → <code>GET /api/public/products/?ordering=rating&amp;page_size=10</code>.</li>
+            <li><code>usePublicFarmers({ ordering: 'rating', page_size: 5 })</code> → <code>GET /api/public/farmers/?ordering=rating&amp;page_size=5</code>.</li>
+          </ul>
+          <div class="why"><p><strong>Xin nhiều hơn số hiển thị</strong> (5 chợ để hiện 3, 10 sản phẩm để hiện 8, 5 nông dân để hiện 4): backend chỉ chấp nhận <code>page_size</code> là 5, 10 hoặc 20 (<code>StandardPagination.allowed_page_sizes</code>); số khác bị đổi về 20. Frontend chọn mức nhỏ nhất đủ dùng rồi cắt bớt bằng <code>slice</code>.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Danh mục</span>
+          <code>PublicCategoryListView</code>: <code>list_active_categories()</code> lấy các dòng <code>categories</code> có <code>is_active = 1</code>, sắp theo <code>display_order</code> rồi tên. Trả mảng <code>{ id, name, icon, display_order }</code>, không phân trang, cache server 5 phút.
+          <div class="why"><p>Thứ tự danh mục do admin quyết định (kéo thả, hành trình A-38), nên sắp theo <code>display_order</code> chứ không theo tên.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Sản phẩm nổi bật</span>
+          <code>PublicProductListView</code> → <code>public_products(ordering='rating')</code>: hàm base công khai, lọc thêm <code>is_available = 1</code> và <code>stock_quantity &gt; 0</code> (mặc định chỉ hàng còn), sắp theo điểm đánh giá trung bình giảm dần (sản phẩm chưa có đánh giá xếp cuối), rồi theo số lượt đánh giá. Chi tiết truy vấn ở G-03.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Chợ và nông dân</span>
+          Chợ: G-09. Nông dân: G-11. Cùng view, chỉ khác tham số.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Mỗi khu vực tự xử lý trạng thái</span>
+          Component <code>CardGrid</code> trong <code>HomePage.jsx</code> nhận một query: đang tải thì hiện khung xương; lỗi và không có dữ liệu thì hiện "… couldn't be loaded" kèm nút "Try again" (<code>query.refetch()</code>); rỗng thì hiện câu báo trống; có dữ liệu thì cắt đúng số lượng và vẽ thẻ (<code>MarketCard</code>, <code>ProductCard</code>, <code>FarmerCard</code>).
+          <div class="why"><p>Bốn API độc lập: nếu API nông dân lỗi, khách vẫn thấy sản phẩm và chợ. Không có chuyện cả trang trắng vì một phần hỏng.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Các thao tác trên trang chủ dẫn sang hành trình khác</span>
+          <ul>
+            <li>Ô tìm kiếm: bấm Search thì chuyển sang <code>/products?q=&lt;từ khoá&gt;</code> (G-04). Trang chủ không tự gọi API tìm kiếm.</li>
+            <li>Ô danh mục: link tới <code>/products?category=&lt;id&gt;</code> (G-05).</li>
+            <li>"Use my location": G-02.</li>
+            <li>"Add to cart" trên thẻ sản phẩm, trái tim trên thẻ: G-15 nếu chưa đăng nhập, C-01 / C-15 nếu là khách hàng.</li>
+          </ul></li>
+      </ol>
+
+      <h3>Lưu trữ</h3>
+      <p>Chỉ đọc MySQL: <code>categories</code>, <code>products</code> (+ <code>product_markets</code>, <code>farmer_markets</code>, <code>markets</code>, <code>farmer_profiles</code>, <code>users</code>, <code>order_items</code>, <code>product_reviews</code> để lọc và tính điểm), <code>markets</code>, <code>farmer_profiles</code>. Cache server cho danh mục, sản phẩm, chợ.</p>
+
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/guest/HomePage.jsx</code>, <code>hooks/queries/guest/usePublicCatalog.js</code>, <code>api/guest/catalogApi.js</code>, <code>lib/adapters/pagination.adapter.js</code>, <code>components/common/cards/{ProductCard,MarketCard,FarmerCard}.jsx</code></p>
+        <p><strong>Backend:</strong> <code>catalog/public_portal/views_public.py → PublicCategoryListView, PublicProductListView</code>, <code>catalog/selectors.py</code>, <code>markets/public_portal/views_public.py</code>, <code>accounts/public_portal/views_public.py</code>, <code>marketlink_core/pagination.py</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="g-02" open>
+    <summary>
+      <span class="jid">G-02</span><span class="jt">Lấy vị trí của tôi để xem gần nhất</span><span class="jk"><span class="chip local">TRÌNH DUYỆT</span><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Bấm "Use my location" ở trang chủ, "Near me" ở trang chợ, hoặc chọn sắp xếp "Nearest first" ở trang nông dân. Trình duyệt hỏi "Cho phép trang này biết vị trí?".</dd>
+        <dt>Thành phần</dt><dd><code>hooks/useGeolocation.js</code>, <code>stores/geo.store.js</code></dd>
+      </dl>
+      <h3>Các bước</h3>
+      <ol class="steps">
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Xin vị trí</span>
+          <code>requestLocation()</code> gọi <code>navigator.geolocation.getCurrentPosition</code> với độ chính xác cao, chờ tối đa 10 giây. Trình duyệt không hỗ trợ: toast "Geolocation is not supported". Người dùng từ chối hoặc hết giờ: toast "Location unavailable — allow access in your browser settings."</li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Lưu toạ độ</span>
+          Thành công thì <code>setCoords(lat, lng)</code> vào <code>useGeoStore</code> (Zustand <code>persist</code>, localStorage khoá <code>marketlink-geo</code>) và toast "Location updated". <strong>Không gửi lên server để lưu.</strong>
+          <div class="why"><p>Vị trí là dữ liệu nhạy cảm và chỉ cần cho việc sắp xếp. Giữ ở trình duyệt thì server không phải lưu, không phải bảo vệ. Lưu localStorage để lần sau mở trang không phải hỏi lại.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Các trang đang mở tự cập nhật</span>
+          Trang nào đọc <code>useGeolocation()</code> thì nhận <code>lat</code>, <code>lng</code> mới. Vì toạ độ nằm trong tham số của query, query key đổi và React Query tự gửi request mới:
+          <ul>
+            <li>Trang chủ: <code>GET /public/markets/?lat=…&amp;lng=…&amp;ordering=distance&amp;page_size=5</code>.</li>
+            <li>Trang chợ khi bật "Near me": G-09.</li>
+            <li>Trang nông dân khi chọn "Nearest first": G-11.</li>
+            <li>Trang chi tiết chợ: gửi <code>lat</code>, <code>lng</code> để hiện khoảng cách (G-10).</li>
+          </ul></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Backend tính khoảng cách trong SQL</span>
+          <code>parse_coordinates</code> (<code>marketlink_core/geo.py</code>) đọc <code>lat</code>, <code>lng</code>; thiếu một trong hai, sai định dạng, hoặc ngoài khoảng ±90 / ±180 thì coi như không có. <code>distance_km()</code> tạo một biểu thức SQL tính khoảng cách mặt cầu (công thức cos cầu, bán kính Trái Đất 6371 km, kẹp giá trị cos trong [-1, 1] để tránh lỗi làm tròn), gắn vào truy vấn dưới tên <code>distance</code>, rồi <code>ORDER BY distance</code>. Kết quả làm tròn 2 chữ số, trả trong trường <code>distance_km</code>.
+          <div class="why"><p>Tính trong DB thay vì tải hết về Python rồi tính: sắp xếp và phân trang phải dựa trên khoảng cách. Nếu tính sau khi đã lấy trang 1 theo tên, "gần nhất" chỉ đúng trong 20 dòng đó.</p></div></li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>hooks/useGeolocation.js</code>, <code>stores/geo.store.js</code>, <code>constants/storageKeys.js</code></p>
+        <p><strong>Backend:</strong> <code>marketlink_core/geo.py → parse_coordinates, distance_km, rounded</code></p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============ SẢN PHẨM ============ -->
+<section class="group" id="nhom-2">
+  <h2><span class="sn">02</span>Sản phẩm</h2>
+
+  <details class="j" id="g-03" open>
+    <summary>
+      <span class="jid">G-03</span><span class="jt">Xem danh sách sản phẩm</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Mở <code>/products</code> (menu "Produce").</dd>
+        <dt>Component</dt><dd><code>pages/guest/ProductsPage.jsx</code>, thẻ <code>components/common/cards/ProductCard.jsx</code>.</dd>
+      </dl>
+
+      <div class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant U as URL
+  participant P as ProductsPage
+  participant RQ as React Query
+  participant V as PublicProductListView
+  participant C as Cache server
+  participant DB as MySQL
+  U->>P: useUrlFilters đọc category, market_id, price, in_stock, ordering, page
+  P->>RQ: usePublicProducts(tham số)
+  RQ->>V: GET /api/public/products/?ordering=newest&amp;page=1&amp;page_size=20
+  V->>C: URL này đã có trong 60 giây qua chưa
+  alt có
+    C-->>RQ: trả bản đã lưu
+  else chưa
+    V->>DB: public_product_base + lọc + ORDER BY + LIMIT 20
+    V->>DB: favorite_ids nếu là khách hàng
+    V-->>RQ: count, page, total_pages, next, previous, results
+  end
+  RQ-->>P: lưu theo khoá chứa tham số, vẽ lưới thẻ
+</pre>
+      </div>
+
+      <h3>Các bước</h3>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Đọc bộ lọc từ URL</span>
+          <code>useUrlFilters</code> với mặc định <code>{ category: '', market_id: '', price_min: '', price_max: '', in_stock: true, ordering: 'newest', page: 1 }</code>. <code>ordering</code> lạ (gõ tay vào URL) thì quay về <code>newest</code>; <code>page</code> được làm tròn và tối thiểu 1.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Ba query phụ cho thanh lọc</span>
+          <ul>
+            <li><code>useCategories()</code>: danh sách ô chọn danh mục.</li>
+            <li><code>usePublicMarkets({ ordering: 'name', page_size: 20 })</code>: danh sách chợ trong ô chọn chợ.</li>
+            <li><code>usePublicProducts({ ordering: 'price_desc', page_size: 5, in_stock: false })</code>: lấy sản phẩm đắt nhất (kể cả hết hàng) để làm mức trần của thanh trượt giá, làm tròn lên. Không có thì trần là 20.
+              <div class="why"><p>Thanh trượt giá phải có điểm cuối. Lấy giá cao nhất thật thay vì một số cố định để thanh trượt không quá ngắn (cắt mất hàng đắt) hay quá dài (khó kéo).</p></div></li>
+          </ul></li>
+        <li><span class="st"><span class="chip fe">FE</span>Query chính</span>
+          <code>usePublicProducts</code> với <code>q</code>, <code>category</code> (danh sách id nối bằng dấu phẩy), <code>market_id</code>, <code>price_min</code>, <code>price_max</code>, <code>in_stock</code> (chỉ gửi <code>false</code> khi bỏ tick), <code>ordering</code>, <code>page</code>, <code>page_size: 20</code>. Tham số rỗng gửi là <code>undefined</code> nên axios bỏ khỏi URL.
+<pre class="code">GET /api/public/products/?ordering=newest&amp;page=1&amp;page_size=20</pre></li>
+        <li><span class="st"><span class="chip be">BE</span>View đổi chuỗi sang kiểu đúng</span>
+          <code>PublicProductListView</code> (<code>AllowAny</code>, cache server 60 giây tách theo <code>Authorization</code>) đọc từng tham số qua hàm nhỏ: <code>int_list</code> (bỏ phần tử không phải số), <code>optional_int</code>, <code>optional_decimal</code>, <code>weekday</code> (chỉ nhận 1–7), <code>in_stock_flag</code> (chỉ <code>false</code> hoặc <code>0</code> mới tắt).
+          <div class="why"><p>Tham số sai không làm hỏng trang: giá trị không đọc được thì bị bỏ qua thay vì trả lỗi 400. Đây là trang công khai, người dùng hay sửa URL bằng tay.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Selector <code>public_products()</code></span>
+          <ol class="sub-steps">
+            <li>Bắt đầu từ <code>public_product_base()</code> (quy tắc hiển thị ở phần đầu file). Hàm này cũng gắn hai cột tính: <code>rating_avg</code> (trung bình sao, bỏ đánh giá bị ẩn) và <code>rating_count</code>, bằng JOIN qua <code>order_items</code> → <code>product_reviews</code>. <code>select_related("farmer", "category")</code> gộp bảng nông dân và danh mục vào cùng câu SQL.</li>
+            <li><code>in_stock</code> bật: thêm <code>is_available = 1 AND stock_quantity &gt; 0</code>.</li>
+            <li>Các bộ lọc khác (G-04, G-05).</li>
+            <li>Sắp xếp theo <code>PRODUCT_ORDERING</code>: <code>newest</code> (mới tạo trước), <code>price_asc</code>, <code>price_desc</code>, <code>rating</code> (sao cao trước, chưa có sao xếp cuối, rồi nhiều lượt hơn trước). Luôn có cột phụ <code>id</code> để thứ tự cố định.</li>
+            <li><code>.distinct()</code> vì các JOIN có thể nhân bản dòng.</li>
+          </ol>
+          <div class="why">
+            <p><strong><code>select_related</code>:</strong> mỗi thẻ hiện tên sạp và tên danh mục. Không gộp bảng thì 20 thẻ thành 1 + 20 + 20 câu SQL (lỗi "N+1").</p>
+            <p><strong>Cột phụ <code>id</code> khi sắp xếp:</strong> hai sản phẩm cùng giá mà không có cột phụ thì MySQL có thể trả thứ tự khác nhau giữa hai lần gọi, khiến một sản phẩm xuất hiện ở cả trang 1 và trang 2.</p>
+          </div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Phân trang và trái tim</span>
+          <code>StandardPagination</code> cắt trang (mặc định 20; chỉ nhận 5, 10, 20). <code>product_context()</code> gọi <code>favorite_ids(user, "product", ids)</code>: người xem là khách hàng thì một truy vấn lấy những id trong trang này mà họ đã thích; còn lại trả <code>None</code>.</li>
+        <li><span class="st"><span class="chip be">BE</span>Định dạng</span>
+          <code>ProductCardSerializer</code> trả mỗi sản phẩm:
+<pre class="code">{ "id": 12, "name": "Cà chua bi", "image": "/media/products/…jpg",
+  "price": "2.50", "unit": "KG", "stock_quantity": 40,
+  "min_per_order": 1, "max_per_order": 10, "is_available": true,
+  "availability": "IN_STOCK",
+  "category": { "id": 3, "name": "Vegetables" },
+  "farmer": { "id": 7, "stall_name": "Vườn Cô Ba" },
+  "rating_avg": 4.6, "rating_count": 12, "is_favorite": null }</pre>
+          <code>availability</code>: <code>UNAVAILABLE</code> nếu nông dân tạm ngừng bán món này; <code>IN_STOCK</code> nếu tồn kho &gt; 0; còn lại <code>OUT_OF_STOCK</code>. <code>is_favorite</code> là <code>null</code> với người chưa đăng nhập.
+          <div class="why"><p>Giá trả dạng chuỗi <code>"2.50"</code> chứ không phải số: tiền không được làm tròn sai bởi số thực của JavaScript.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Hiển thị</span>
+          <code>catalogApi.getProducts</code> qua <code>adaptPaginated</code>. Trang hiện "Showing 1–20 of 134", lưới <code>ProductCard</code>, và thanh <code>Pagination</code>. Đang tải hoặc đang đổi trang thì hiện khung xương. Rỗng thì "No produce matches your filters" kèm nút "Clear all filters" nếu đang có bộ lọc.
+          <br>Trên mỗi thẻ: ảnh và tên dẫn tới <code>/products/{id}</code> (G-06); tên sạp dẫn tới <code>/farmers/{id}</code> (G-12); nhãn tồn kho; giá; sao; nút "Add to cart" (bị khoá nếu không phải <code>IN_STOCK</code>); hết hàng thì có dòng nhắc "save it to your favorites" để được báo khi có hàng lại.</li>
+      </ol>
+
+      <h3>Lưu trữ</h3>
+      <p>Chỉ đọc MySQL: <code>products</code>, <code>categories</code>, <code>farmer_profiles</code>, <code>users</code>, <code>farmer_markets</code>, <code>markets</code>, <code>product_markets</code>, <code>order_items</code>, <code>product_reviews</code>, <code>favorite_products</code> (nếu là khách hàng). Cache server 60 giây.</p>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/guest/ProductsPage.jsx</code>, <code>hooks/common/useUrlFilters.js</code>, <code>hooks/queries/guest/usePublicCatalog.js → usePublicProducts</code>, <code>api/guest/catalogApi.js → getProducts</code>, <code>components/common/cards/ProductCard.jsx</code>, <code>components/common/badges/StockBadge.jsx</code>, <code>components/common/Pagination.jsx</code></p>
+        <p><strong>Backend:</strong> <code>catalog/public_portal/urls_public.py</code>, <code>catalog/public_portal/views_public.py → PublicProductListView, product_context</code>, <code>catalog/selectors.py → public_product_base, public_products, PRODUCT_ORDERING</code>, <code>catalog/public_portal/serializers_public.py → ProductCardSerializer</code>, <code>favorites/selectors.py → favorite_ids</code>, <code>marketlink_core/pagination.py</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="g-04" open>
+    <summary>
+      <span class="jid">G-04</span><span class="jt">Tìm sản phẩm theo từ khoá</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Gõ vào ô "Search" ở thanh lọc trang <code>/products</code>, hoặc ô tìm kiếm ở trang chủ rồi bấm Search.</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Gõ chữ</span>
+          Ô nhập gắn với <code>search.value</code> và <code>search.onChange</code> của <code>useDebouncedSearchParam('q')</code>. Chữ hiện ngay trên ô, nhưng URL chưa đổi.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Ngừng gõ 300 ms</span>
+          <code>useDebouncedValue</code> trả giá trị đã cắt khoảng trắng; <code>commit</code> ghi <code>?q=…</code> lên URL (dùng <code>replace</code>), đồng thời xoá <code>page</code> để quay về trang 1. Enter ghi ngay, Esc xoá chữ.
+          <br>Từ trang chủ: form gọi <code>navigate('/products?q=…')</code>, trang sản phẩm đọc <code>q</code> từ URL như trên.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Query đổi khoá, gửi request</span>
+          <code>search.term</code> (giá trị đã ghi lên URL) nằm trong tham số của <code>usePublicProducts</code> → <code>GET /api/public/products/?q=ca%20chua&amp;…</code>. Thanh lọc hiện một "chip" <code>“ca chua”</code>; bấm vào chip là xoá từ khoá.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Điều kiện tìm</span>
+          <code>public_products(q=…)</code> thêm <code>name LIKE '%ca chua%' OR farmer.stall_name LIKE '%ca chua%'</code> (<code>icontains</code>, không phân biệt hoa thường). Các bước khác như G-03.
+          <div class="why"><p>Tìm cả tên sạp vì khách hay nhớ "mua của Cô Ba" hơn là nhớ tên món.</p></div></li>
+      </ol>
+      <div class="note warn"><p><strong>Chưa khớp nhãn:</strong> ô tìm ở trang chủ ghi "Search produce, stalls, or markets", nhưng backend chỉ tìm theo tên sản phẩm và tên sạp, <strong>không tìm theo tên chợ</strong>. Muốn lọc theo chợ phải dùng ô chọn chợ (G-05).</p></div>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>hooks/common/useDebouncedSearchParam.js</code>, <code>hooks/common/useDebouncedValue.js</code>, <code>pages/guest/ProductsPage.jsx</code>, <code>pages/guest/HomePage.jsx → onSearch</code></p>
+        <p><strong>Backend:</strong> <code>catalog/selectors.py → public_products</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="g-05" open>
+    <summary>
+      <span class="jid">G-05</span><span class="jt">Lọc theo danh mục, chợ, khoảng giá, còn hàng; sắp xếp; phân trang</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Dùng thanh lọc bên trái trang <code>/products</code>; hoặc bấm ô danh mục ở trang chủ, nút "Shop produce here" ở trang chợ.</dd>
+      </dl>
+      <h3>Từng điều khiển → tham số URL → điều kiện SQL</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Điều khiển</th><th>URL</th><th>Backend thêm điều kiện</th></tr></thead>
+        <tbody>
+          <tr><td>Ô tick danh mục (chọn nhiều)</td><td><code>category=3,5</code></td><td><code>category_id IN (3, 5)</code></td></tr>
+          <tr><td>Ô chọn chợ</td><td><code>market_id=2</code></td><td>Sản phẩm phải được đăng ở một sạp <strong>đang bán</strong> tại chợ 2 (<code>Exists(open_stalls_for_product().filter(market_id=2))</code>)</td></tr>
+          <tr><td>Thanh trượt giá (hai đầu)</td><td><code>price_min=1.5&amp;price_max=8</code></td><td><code>price &gt;= 1.5 AND price &lt;= 8</code></td></tr>
+          <tr><td>"In stock only" (mặc định bật)</td><td>bỏ tick thì <code>in_stock=false</code></td><td>Bỏ điều kiện <code>is_available = 1 AND stock_quantity &gt; 0</code></td></tr>
+          <tr><td>Ô sắp xếp</td><td><code>ordering=price_asc</code></td><td><code>ORDER BY price, id</code></td></tr>
+          <tr><td>Nút trang</td><td><code>page=3</code></td><td><code>LIMIT 20 OFFSET 40</code></td></tr>
+          <tr><td><em>(chỉ qua API)</em> ngày trong tuần</td><td><code>day=6</code></td><td>Có khung giờ nhận hàng đang bật vào thứ 6, ở sạp đang bán có đăng sản phẩm này</td></tr>
+        </tbody>
+      </table></div>
+      <h3>Các bước</h3>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Đổi một bộ lọc</span>
+          Mỗi điều khiển gọi <code>setFilters({...})</code>. Danh mục: <code>toggleCategory(id)</code> thêm hoặc bớt id trong danh sách. Thanh trượt giá: chỉ ghi lên URL khi <strong>thả chuột / nhả phím / rời ô</strong> (<code>onPointerUp</code>, <code>onKeyUp</code>, <code>onBlur</code>), và chỉ khi giá trị thật sự đổi; kéo về hai đầu thì xoá tham số.
+          <div class="why"><p>Thanh trượt đổi giá trị liên tục khi kéo. Ghi URL mỗi lần đổi sẽ bắn hàng chục request; chỉ ghi khi thả tay là đủ.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Trang tự về 1</span>
+          <code>setFilters</code> xoá <code>page</code> khỏi URL mỗi khi đổi bộ lọc khác.
+          <div class="why"><p>Đang ở trang 5 mà lọc hẹp lại chỉ còn 2 trang, nếu giữ <code>page=5</code> thì sẽ ra trang trống.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Chip bộ lọc đang dùng</span>
+          Mỗi bộ lọc đang bật hiện thành một chip (từ khoá, tên chợ, tên danh mục, khoảng giá, "Including sold out"). Bấm chip là xoá đúng bộ lọc đó. "Clear all filters" gọi <code>search.clear()</code> và <code>resetFilters()</code>.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Truy vấn</span>
+          Như G-03, cộng các điều kiện ở bảng trên. Bộ lọc chợ và ngày dùng <code>Exists(...)</code> (truy vấn con) thay vì JOIN.
+          <div class="why"><p><code>Exists</code> chỉ hỏi "có ít nhất một dòng khớp không", không nhân bản dòng sản phẩm như JOIN (một sản phẩm bán ở 3 chợ sẽ thành 3 dòng), nên đếm tổng và phân trang vẫn đúng.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Chuyển trang</span>
+          <code>goToPage(n)</code> ghi <code>page=n</code> rồi cuộn lên đầu danh sách. Nếu <code>page</code> trên URL vượt quá số trang thật (ví dụ link cũ), backend trả 404; trang thấy lỗi 404 ở trang &gt; 1 thì tự đặt lại <code>page=1</code> (dùng <code>replace</code>).</li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/guest/ProductsPage.jsx</code> (<code>PriceRange</code>, <code>toggleCategory</code>, <code>chips</code>, <code>goToPage</code>), <code>hooks/common/useUrlFilters.js</code></p>
+        <p><strong>Backend:</strong> <code>catalog/public_portal/views_public.py</code> (<code>int_list</code>, <code>optional_decimal</code>, <code>weekday</code>, <code>in_stock_flag</code>), <code>catalog/selectors.py → public_products, open_stalls_for_product</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="g-06" open>
+    <summary>
+      <span class="jid">G-06</span><span class="jt">Xem chi tiết sản phẩm</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Bấm ảnh hoặc tên một sản phẩm → <code>/products/:id</code>.</dd>
+        <dt>Component</dt><dd><code>pages/guest/ProductDetailPage.jsx</code> (gồm <code>PurchaseBox</code>, <code>ReviewList</code>, <code>RelatedProducts</code>).</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Query</span>
+          <code>usePublicProduct(id)</code>: chỉ chạy khi <code>id</code> là số nguyên dương; <code>staleTime</code> 0 nên luôn tải lại khi mở trang.
+<pre class="code">GET /api/public/products/12/</pre></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>PublicProductDetailView</span>
+          <code>public_product(product_id)</code> = <code>public_product_base()</code> lọc theo id, không có thì 404 "Product not found.". <strong>Không</strong> lọc còn hàng, nên trang sản phẩm hết hàng vẫn xem được. Sau đó <code>product_context(..., with_markets=True)</code>:
+          <ul>
+            <li><code>favorite_ids</code> như G-03.</li>
+            <li><code>markets_for_products([id])</code>: lấy các khung giờ nhận hàng đang bật ở sạp đã duyệt của nông dân, chỉ giữ các sạp mà sản phẩm này được đăng ở đó (<code>linked_pairs</code>), gom theo chợ thành <code>[{ market_id, market_name, days: [6, 7] }]</code>.</li>
+          </ul>
+          <code>ProductDetailSerializer</code> = các trường của thẻ + <code>description</code> + <code>markets</code>.
+          <div class="why"><p>Một nông dân có thể có sạp ở nhiều chợ nhưng chỉ mang một số món tới mỗi chợ. Khách cần biết <strong>món này</strong> nhận được ở chợ nào, ngày nào, nên phải lọc theo bảng <code>product_markets</code>.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Hiển thị</span>
+          Ảnh, danh mục, tên, sao, trái tim, giá theo đơn vị, nhãn tồn kho (<code>UNAVAILABLE</code> / <code>OUT_OF_STOCK</code>; ≤ 10 thì "Low stock · N left"; còn lại "N in stock"), mô tả, tên sạp (link G-12), danh sách "At &lt;chợ&gt; · Sat, Sun".
+          <br>Không có dữ liệu: lỗi 404 hoặc không có lỗi thì "This product is unavailable"; lỗi khác thì "couldn't be loaded" kèm "Try again".</li>
+        <li><span class="st"><span class="chip fe">FE</span>Ô chọn số lượng (PurchaseBox)</span>
+          Bắt đầu ở <code>min_per_order</code>. Tối đa = nhỏ nhất của (tồn kho, <code>max_per_order</code>, 999), nhưng không dưới mức tối thiểu. Nút "Reserve for pickup" chỉ bật khi <code>IN_STOCK</code> và tồn kho ≥ mức tối thiểu; tồn kho dưới mức tối thiểu thì hiện "Only N left, below the minimum…". Bấm nút → <code>addToCart(product, quantity)</code>: G-15 nếu chưa đăng nhập, C-01 nếu là khách hàng.
+          <br><code>PurchaseBox</code> có <code>key={product.id}</code>: chuyển sang sản phẩm khác thì ô số lượng được tạo lại từ đầu, không giữ số của sản phẩm trước.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Hai phần tải riêng</span>
+          Đánh giá (G-07) và sản phẩm liên quan (G-08) là hai query khác, tải song song sau khi có sản phẩm.</li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/guest/ProductDetailPage.jsx</code>, <code>hooks/queries/guest/usePublicCatalog.js → usePublicProduct</code>, <code>api/guest/catalogApi.js → getProduct</code>, <code>components/common/QuantityStepper.jsx</code>, <code>stores/cart.store.js → MAX_QUANTITY</code></p>
+        <p><strong>Backend:</strong> <code>catalog/public_portal/views_public.py → PublicProductDetailView</code>, <code>catalog/selectors.py → public_product, markets_for_products, linked_pairs</code>, <code>catalog/public_portal/serializers_public.py → ProductDetailSerializer</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="g-07" open>
+    <summary>
+      <span class="jid">G-07</span><span class="jt">Xem đánh giá sản phẩm</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Kéo xuống phần "How shoppers rated it" và "What shoppers say" ở trang chi tiết sản phẩm; bấm "Show more reviews".</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Query dạng "tải thêm"</span>
+          <code>usePublicProductReviews(id)</code> dùng <code>useInfiniteQuery</code>: trang 1 tải ngay; "Show more reviews" gọi <code>fetchNextPage()</code> với số trang lấy từ <code>next</code> của lần trước. <code>select</code> gộp mọi trang đã tải thành một mảng <code>reviews</code>, lấy <code>summary</code> từ trang đầu.
+<pre class="code">GET /api/public/products/12/reviews/?page=1</pre></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>PublicProductReviewListView</span>
+          <ol class="sub-steps">
+            <li><code>public_product(id)</code> trước: sản phẩm không còn hiện công khai thì 404.
+              <div class="why"><p>Sản phẩm bị ẩn hoặc chặn thì đánh giá của nó cũng không được lộ ra qua đường API này.</p></div></li>
+            <li><code>public_product_reviews(product_id, rating)</code>: các dòng <code>product_reviews</code> của sản phẩm (qua <code>order_items</code>), <code>is_hidden_by_admin = 0</code>, mới nhất trước. Tham số <code>rating</code> (1–5) lọc theo số sao, nhưng giao diện hiện chưa dùng.</li>
+            <li>Phân trang <code>PublicReviewPagination</code>: <strong>10</strong> đánh giá một trang.</li>
+            <li>Mỗi dòng qua <code>serialize_public_review</code>: tên người viết được rút gọn bằng <code>short_customer_name</code> ("Nguyen Van An" thành "Nguyen V. A."), kèm số sao, bình luận, trả lời của nông dân, ngày.
+              <div class="why"><p>Không lộ họ tên đầy đủ của khách trên trang công khai, nhưng vẫn đủ để thấy đây là người thật.</p></div></li>
+            <li><code>rating_summary()</code> tính trên <strong>toàn bộ</strong> đánh giá hiển thị (không theo trang, không theo bộ lọc sao): trung bình, tổng số, phân bố <code>{ "5": 8, "4": 3, … }</code>. Gắn vào <code>data.summary</code>.</li>
+          </ol></li>
+        <li><span class="st"><span class="chip fe">FE</span>Hiển thị</span>
+          <code>RatingBreakdown</code> vẽ 5 thanh ngang, độ dài = phần trăm số đánh giá của mức sao đó. Danh sách bình luận kèm khối "Reply from the stall" nếu nông dân đã trả lời.</li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/guest/ProductDetailPage.jsx → ReviewList, RatingBreakdown</code>, <code>hooks/queries/guest/usePublicCatalog.js → usePublicProductReviews</code></p>
+        <p><strong>Backend:</strong> <code>catalog/public_portal/urls_public.py</code>, <code>reviews/public_portal/views_public.py</code>, <code>reviews/public_portal/serializers_public.py</code>, <code>reviews/selectors.py → public_product_reviews, rating_summary</code>, <code>reviews/display.py → short_customer_name</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="g-08" open>
+    <summary>
+      <span class="jid">G-08</span><span class="jt">Xem sản phẩm liên quan</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Kéo xuống cuối trang chi tiết sản phẩm, phần "You may also like".</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Query</span>
+          <code>RelatedProducts</code> gọi <code>usePublicProducts({ category: &lt;id danh mục&gt;, ordering: 'rating', page_size: 5 })</code> → <code>GET /api/public/products/?category=3&amp;ordering=rating&amp;page_size=5</code>.</li>
+        <li><span class="st"><span class="chip be">BE</span>Backend</span>Như G-03: sản phẩm công khai, còn hàng, cùng danh mục, điểm cao trước.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Lọc và hiển thị</span>
+          Bỏ chính sản phẩm đang xem khỏi kết quả, lấy tối đa 4. Không còn gì thì không vẽ phần này.
+          <div class="why"><p>Xin 5 để còn đủ 4 sau khi bỏ sản phẩm đang xem (nó có thể nằm trong top 5 cùng danh mục).</p></div></li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/guest/ProductDetailPage.jsx → RelatedProducts</code></p>
+        <p><strong>Backend:</strong> như G-03</p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============ CHỢ ============ -->
+<section class="group" id="nhom-3">
+  <h2><span class="sn">03</span>Chợ</h2>
+
+  <details class="j" id="g-09" open>
+    <summary>
+      <span class="jid">G-09</span><span class="jt">Xem danh sách chợ và bản đồ</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Mở <code>/markets</code>: gõ tìm, bấm "Near me", chọn ngày mở cửa, chuyển giữa "List" và "Map", bấm "Show more markets".</dd>
+        <dt>Component</dt><dd><code>pages/guest/MarketsPage.jsx</code>, <code>components/common/cards/MarketCard.jsx</code>, <code>components/common/maps/MarketsMap.jsx</code></dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Bộ lọc</span>
+          <code>useUrlFilters({ day: 0, near: false, view: 'list' })</code> và ô tìm <code>q</code> (300 ms). <code>day</code> lạ thì về 0 ("All days"). "Near me": chưa có vị trí thì chạy G-02 trước; bật cờ <code>near</code>. Chỉ sắp theo khoảng cách khi <strong>vừa</strong> bật <code>near</code> <strong>vừa</strong> có toạ độ.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Query "tải thêm"</span>
+          <code>usePublicMarketList({ q, day, lat, lng, ordering })</code> (<code>useInfiniteQuery</code>, 20 chợ mỗi lần):
+<pre class="code">GET /api/public/markets/?q=ben&amp;day=6&amp;lat=10.77&amp;lng=106.70&amp;ordering=distance&amp;page=1&amp;page_size=20</pre>
+          Có toạ độ thì luôn gửi để backend tính khoảng cách cho từng thẻ, kể cả khi đang sắp theo tên.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>PublicMarketListView</span>
+          Cache server 5 phút (tách theo <code>Authorization</code>). <code>public_markets(q, day, coordinates)</code>:
+          <ul>
+            <li><code>markets.is_active = 1</code>.</li>
+            <li><code>q</code>: tên hoặc địa chỉ chứa từ khoá.</li>
+            <li><code>day</code>: chợ có dòng <code>market_operating_days</code> đúng ngày đó.</li>
+            <li>Cột tính <code>farmer_count</code>: số sạp đã duyệt của nông dân đã duyệt ở chợ này.</li>
+            <li>Nạp sẵn (<code>prefetch_related</code>) ngày mở cửa và các lịch đóng chợ <strong>trong 7 ngày tới</strong> (<code>BOOKING_HORIZON_DAYS</code>).</li>
+            <li>Có toạ độ: cột <code>distance</code> (G-02).</li>
+          </ul>
+          <code>order_public_markets</code>: <code>distance</code> + có toạ độ thì gần trước; còn lại theo tên. Kèm <code>favorite_ids(kind="market")</code>.
+          <div class="why">
+            <p><strong>Chỉ lấy lịch đóng chợ sắp tới:</strong> lịch đóng còn hiệu lực từ hôm nay và bắt đầu trước hôm nay + 7 (<code>_prefetches</code>). Khách chỉ đặt hàng được trong khoảng đó, nên chỉ cảnh báo những ngày đóng ảnh hưởng tới họ.</p>
+            <p><strong><code>prefetch_related</code>:</strong> lấy ngày mở cửa và lịch đóng của <strong>cả trang</strong> bằng 2 truy vấn thêm, thay vì 2 truy vấn cho <strong>mỗi</strong> chợ.</p>
+          </div></li>
+        <li><span class="st"><span class="chip be">BE</span>Định dạng</span>
+          <code>MarketSummarySerializer</code>: <code>id, name, address, image, latitude, longitude, operating_days [1..7], open_time "06:00", close_time, upcoming_closures [{start_date, end_date, reason}], farmer_count, distance_km, is_favorite</code>.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Danh sách</span>
+          Mỗi <code>MarketCard</code>: ảnh, khoảng cách (nếu có), tên, địa chỉ, trái tim, nhãn ngày mở cửa, nhãn cảnh báo "Closed 28/01 – 03/02" cho mỗi lịch đóng, giờ mở và số sạp, nút chỉ đường. Nút chỉ đường mở Google Maps ở tab mới, không qua backend.</li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Bản đồ</span>
+          <code>MarketsMap</code> (Leaflet) vẽ một điểm cho mỗi chợ <strong>đã tải</strong>. Ảnh nền bản đồ tải thẳng từ OpenStreetMap, không qua backend của mình. Rê chuột lên một thẻ thì điểm tương ứng được làm nổi bật (<code>highlightedId</code>). Chuyển List/Map ghi <code>view</code> lên URL bằng <code>replace</code>.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Tải thêm</span>
+          "Show more markets" hiện khi <code>hasNextPage</code>; gọi trang kế tiếp và nối vào danh sách. Bản đồ cũng có thêm điểm.</li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/guest/MarketsPage.jsx</code>, <code>hooks/queries/guest/usePublicCatalog.js → usePublicMarketList</code>, <code>components/common/cards/MarketCard.jsx</code>, <code>components/common/maps/MarketsMap.jsx</code>, <code>components/common/maps/DirectionsButton.jsx</code></p>
+        <p><strong>Backend:</strong> <code>markets/public_portal/views_public.py → PublicMarketListView</code>, <code>markets/selectors.py → public_markets, order_public_markets, _market_annotations, _prefetches</code>, <code>markets/public_portal/serializers_public.py</code>, <code>marketlink_core/geo.py</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="g-10" open>
+    <summary>
+      <span class="jid">G-10</span><span class="jt">Xem chi tiết chợ và các sạp trong chợ</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Bấm một chợ → <code>/markets/:id</code>. Chọn ngày để lọc sạp; bấm "Show more stalls"; "Get directions"; "Shop produce here".</dd>
+        <dt>Component</dt><dd><code>pages/guest/MarketDetailPage.jsx</code> (gồm <code>MarketFarmers</code>).</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Query chợ</span>
+          <code>usePublicMarket(id, coords)</code> → <code>GET /api/public/markets/5/?lat=…&amp;lng=…</code> (toạ độ chỉ gửi khi đã có, G-02). Toạ độ nằm trong query key nên lấy vị trí xong là tải lại để có khoảng cách.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>PublicMarketDetailView</span>
+          <code>public_market(market_id, coordinates)</code>: cùng <code>public_markets()</code> của G-09 lọc theo id; chợ tắt hoặc không tồn tại thì 404. <code>MarketSerializer</code> = trường tóm tắt + <code>description</code>, <code>map_provider</code>.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Hiển thị chợ</span>
+          Ảnh bìa, tên, địa chỉ, trái tim; chip giờ mở, khoảng cách, số sạp; khung cảnh báo các lịch đóng sắp tới (kèm lý do); mô tả; ngày mở cửa; "Get directions" (Google Maps, tab mới); "Shop produce here" dẫn tới <code>/products?market_id=5</code> (G-05); bản đồ nhỏ.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Danh sách sạp</span>
+          <code>MarketFarmers</code> có bộ lọc ngày riêng (<code>?day=</code> trên URL). Chỉ hiện nút cho những ngày <strong>chợ có mở</strong>; <code>day</code> trên URL không thuộc ngày mở thì bị bỏ. <code>usePublicMarketFarmers(id, { day })</code>, 20 sạp mỗi lần:
+<pre class="code">GET /api/public/markets/5/farmers/?day=6&amp;page=1&amp;page_size=20</pre></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>PublicMarketFarmerListView</span>
+          <ol class="sub-steps">
+            <li><code>public_market(id)</code>: chợ không công khai thì 404.</li>
+            <li><code>public_farmers(market_id, day)</code>: nông dân công khai (phần đầu file) có sạp đang bán ở chợ này; nếu có <code>day</code> thì nông dân phải có khung giờ đang bật vào ngày đó <strong>và</strong> ngày đó nằm trong ngày làm việc của nông dân (<code>operating_days</code>).</li>
+            <li><code>farmer_context(..., market_id=5)</code>: nạp danh sách sạp, lịch nghỉ, trái tim; <code>only_market_id</code> làm trường <code>markets</code> chỉ còn sạp ở chợ này.
+              <div class="why"><p>Để thẻ nông dân hiện đúng "Stall location: Lô A12" của chợ đang xem, không lẫn vị trí sạp ở chợ khác.</p></div></li>
+          </ol></li>
+        <li><span class="st"><span class="chip fe">FE</span>Hiển thị sạp</span>
+          Mỗi <code>FarmerCard</code> kèm dòng "Stall location: …". Không có sạp vào ngày đã chọn thì "No stalls here on Saturday" kèm nút "Show every day".</li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/guest/MarketDetailPage.jsx</code>, <code>hooks/queries/guest/usePublicCatalog.js → usePublicMarket, usePublicMarketFarmers</code>, <code>components/common/maps/MarketsMap.jsx → MiniMap</code>, <code>utils/helpers/geo.js → googleMapsDirectionsUrl</code></p>
+        <p><strong>Backend:</strong> <code>markets/public_portal/views_public.py → PublicMarketDetailView, PublicMarketFarmerListView</code>, <code>markets/selectors.py → public_market</code>, <code>accounts/selectors.py → public_farmers, farmer_market_rows, farmer_closure_map</code>, <code>accounts/public_portal/context.py → farmer_context</code></p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============ NÔNG DÂN ============ -->
+<section class="group" id="nhom-4">
+  <h2><span class="sn">04</span>Nông dân</h2>
+
+  <details class="j" id="g-11" open>
+    <summary>
+      <span class="jid">G-11</span><span class="jt">Xem danh sách nông dân, sắp xếp gần nhất</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Mở <code>/farmers</code> (menu "Stalls"): gõ tìm, chọn cách sắp xếp, "Show more stalls".</dd>
+        <dt>Component</dt><dd><code>pages/guest/FarmersPage.jsx</code>, <code>components/common/cards/FarmerCard.jsx</code></dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Bộ lọc</span>
+          <code>useUrlFilters({ ordering: 'rating' })</code> và ô tìm <code>q</code>. Bốn cách sắp xếp: "Top rated" (<code>rating</code>), "Best stocked" (<code>in_stock</code>), "Nearest first" (<code>distance</code>), "Name A–Z" (<code>name</code>). Chọn "Nearest first" khi chưa có vị trí thì chạy G-02.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Query "tải thêm"</span>
+          <code>usePublicFarmerList</code>, 20 nông dân mỗi lần:
+<pre class="code">GET /api/public/farmers/?q=ba&amp;ordering=rating&amp;lat=…&amp;lng=…&amp;page=1&amp;page_size=20</pre></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>PublicFarmerListView → public_farmers()</span>
+          Không có cache server. Bắt đầu từ <code>public_farmer_base()</code>, hàm này gắn sẵn các cột tính:
+          <ul>
+            <li><code>rating_avg</code>, <code>rating_count</code>: từ <code>farmer_reviews</code> của các đơn của nông dân, bỏ đánh giá bị ẩn.</li>
+            <li><code>completed_order_count</code>: số đơn đã hoàn tất.</li>
+            <li><code>in_stock_product_count</code>: truy vấn con đếm sản phẩm đã duyệt, không ẩn, không lưu trữ, đang bán, còn hàng.</li>
+            <li><code>popularity</code> = đơn hoàn tất × 2 + số đánh giá × 1.</li>
+          </ul>
+          Lọc thêm: <code>q</code> khớp tên sạp <strong>hoặc tên chợ</strong> nơi nông dân có sạp đang bán; <code>market_id</code>, <code>day</code>, <code>category_id</code> (chỉ qua API). Có toạ độ: <code>distance</code> = khoảng cách tới <strong>chợ gần nhất</strong> trong các chợ nông dân đang bán (truy vấn con lấy giá trị nhỏ nhất).
+          <br>Sắp xếp theo <code>FARMER_ORDERING</code>. <code>distance</code> mà không có toạ độ thì đổi sang <code>name</code>; giá trị lạ thì dùng <code>popular</code>.
+          <div class="why">
+            <p><strong>Khoảng cách tính tới chợ, không tới nhà nông dân:</strong> khách gặp nông dân ở chợ. Toạ độ nhà/vườn của nông dân là thông tin riêng, chỉ admin thấy.</p>
+            <p><strong>Đơn hoàn tất nặng gấp đôi đánh giá</strong> trong độ phổ biến: đơn giao xong là bằng chứng mua bán thật, khó làm giả hơn một đánh giá.</p>
+          </div></li>
+        <li><span class="st"><span class="chip be">BE</span>Định dạng</span>
+          <code>FarmerSummarySerializer</code>: <code>id</code> (là <code>user_id</code>), <code>stall_name, image, rating_avg, rating_count, markets [{market_id, market_name, stall_label}], operating_days, in_stock_product_count, upcoming_closures, distance_km, is_favorite</code>.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Hiển thị</span>
+          Lưới <code>FarmerCard</code>: ảnh, tên sạp (link G-12), trái tim, sao, "N products in stock", khoảng cách nếu có. "Show more stalls" tải trang kế.</li>
+      </ol>
+      <div class="note warn"><p><strong>Chưa khớp nhãn:</strong> ô tìm ghi "Search by stall name or address", nhưng backend tìm theo tên sạp và <strong>tên chợ</strong>, không tìm theo địa chỉ.</p></div>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/guest/FarmersPage.jsx</code>, <code>hooks/queries/guest/usePublicCatalog.js → usePublicFarmerList</code>, <code>components/common/cards/FarmerCard.jsx</code></p>
+        <p><strong>Backend:</strong> <code>accounts/public_portal/views_public.py → PublicFarmerListView</code>, <code>accounts/selectors.py → public_farmer_base, public_farmers, FARMER_ORDERING, _in_stock_subquery</code>, <code>accounts/public_portal/serializers_public.py → FarmerSummarySerializer</code>, <code>accounts/public_portal/context.py</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="g-12" open>
+    <summary>
+      <span class="jid">G-12</span><span class="jt">Xem trang nông dân: thông tin, sản phẩm, đánh giá, lịch nhận hàng</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Bấm tên một sạp → <code>/farmers/:id</code>. Chuyển giữa 4 tab: "On the stall", "Reviews", "About the stall", "Pickup times".</dd>
+        <dt>Component</dt><dd><code>pages/guest/FarmerDetailPage.jsx</code> (gồm <code>StallProducts</code>, <code>StallReviews</code>, <code>StallAbout</code>, <code>StallSchedule</code>).</dd>
+      </dl>
+
+      <div class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant P as FarmerDetailPage
+  participant BE as Django
+  P->>BE: GET /public/farmers/7/
+  BE-->>P: hồ sơ, sạp, lịch nghỉ, khung giờ, số điện thoại
+  Note over P: chỉ tab đang mở mới được vẽ và mới gọi API
+  alt tab On the stall, mặc định
+    P->>BE: GET /public/products/?farmer_id=7&amp;page_size=20
+  else tab Reviews
+    P->>BE: GET /public/farmers/7/reviews/?page=1
+  else tab About
+    Note over P: dùng dữ liệu hồ sơ đã có, không gọi thêm
+  else tab Pickup times
+    P->>BE: GET /public/farmers/7/pickup-options/
+  end
+</pre>
+      </div>
+
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Query hồ sơ</span>
+          <code>usePublicFarmer(id, coords)</code> → <code>GET /api/public/farmers/7/</code> (kèm <code>lat</code>, <code>lng</code> nếu có).</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>PublicFarmerDetailView</span>
+          <code>public_farmer(id)</code> = <code>public_farmer_base()</code> theo id; không công khai thì 404. Context: sạp, lịch nghỉ, trái tim, và <code>pickup_windows(farmer_id)</code> (các sạp đang bán kèm khung giờ đang bật, toạ độ chợ). <code>FarmerPublicSerializer</code> = trường tóm tắt + <code>contact_person</code>, <code>phone</code>, <code>description</code>, <code>order_cutoff_hours</code>, <code>pickup_windows</code>.
+          <div class="why"><p>Serializer công khai <strong>cố ý bỏ</strong> địa chỉ và toạ độ của nông dân (thường là nhà riêng); khách gặp nông dân ở chợ. Số điện thoại thì có, để khách gọi hỏi hàng.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Phần đầu trang</span>
+          Ảnh bìa, avatar, tên sạp, người liên hệ, sao, trái tim; nhãn từng chợ kèm vị trí sạp; nhãn "Sells on Mon, Wed, Sat"; khung cảnh báo lịch nghỉ trong 7 ngày tới.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Tab lưu trên URL</span>
+          <code>useUrlFilters({ tab: 'products' })</code>; đổi tab ghi <code>?tab=reviews</code> bằng <code>replace</code>. Component <code>Tabs</code> (Radix) <strong>chỉ vẽ nội dung tab đang mở</strong>, nên query của tab khác chưa chạy.
+          <div class="why"><p>Khách mở trang thường chỉ xem tab sản phẩm. Chưa mở tab Reviews thì không tải đánh giá, chưa mở Pickup times thì không tính lịch: bớt 2 request cho đa số lượt xem.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span><span class="chip be">BE</span>Tab "On the stall"</span>
+          <code>usePublicProductList({ farmer_id })</code> (<code>useInfiniteQuery</code>, 20 mỗi lần) → <code>GET /api/public/products/?farmer_id=7&amp;page=1&amp;page_size=20</code>. Backend như G-03 thêm <code>farmer_id = 7</code>; chỉ hàng còn. "Show more products" tải tiếp. Số trên tên tab là <code>in_stock_product_count</code> của hồ sơ.</li>
+        <li><span class="st"><span class="chip fe">FE</span><span class="chip be">BE</span>Tab "Reviews"</span>
+          <code>usePublicFarmerReviews(id)</code> → <code>GET /api/public/farmers/7/reviews/?page=1</code>. Giống G-07 nhưng đọc <code>farmer_reviews</code> (đánh giá cả đơn hàng, không theo món); kiểm tra <code>public_farmer(id)</code> trước; 10 mỗi trang.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Tab "About the stall"</span>
+          Không gọi thêm API. Mô tả; số điện thoại (link <code>tel:</code>); "Orders close N hours before each pickup slot" (<code>order_cutoff_hours</code>); nút tới từng chợ; bản đồ nhỏ và nút chỉ đường tới <strong>chợ đầu tiên</strong> trong <code>pickup_windows</code>.</li>
+        <li><span class="st"><span class="chip fe">FE</span><span class="chip be">BE</span>Tab "Pickup times"</span>
+          <code>usePickupOptions(farmerId)</code> (<code>staleTime</code> 60 giây) → <code>GET /api/public/farmers/7/pickup-options/</code>. <code>PickupOptionsView</code>: <code>AllowAny</code>, không đọc token; nông dân phải <code>APPROVED</code> và còn hoạt động, không thì 404. <code>list_pickup_options(farmer)</code> (<code>orders/services/pickup_service.py</code>):
+          <ol class="sub-steps">
+            <li>Khoảng ngày: 7 ngày tính cả hôm nay, tức từ hôm nay tới hôm nay + 6 (<code>BOOKING_HORIZON_DAYS</code>, hằng số viết cứng trong <code>orders/constants.py</code>, xem file 00, X-11).</li>
+            <li>Lấy mọi khung giờ đang bật ở sạp đã duyệt, chợ đang mở.</li>
+            <li>Đọc lịch đóng chợ và lịch nghỉ của nông dân trong khoảng đó.</li>
+            <li>Với mỗi ngày × mỗi khung giờ, chỉ giữ khi <strong>tất cả</strong> đúng: đúng thứ trong tuần của khung giờ; chợ mở ngày đó; khung giờ nằm trong giờ mở cửa của chợ; nông dân làm việc ngày đó; không trúng lịch đóng chợ; không trúng lịch nghỉ của nông dân; <strong>chưa qua giờ chốt đơn</strong> (giờ bắt đầu − <code>order_cutoff_hours</code>).</li>
+            <li>Gom theo chợ → ngày → các khung giờ, mỗi khung giờ kèm <code>cutoff_at</code>.</li>
+            <li>API còn nhận tham số tuỳ chọn <code>products=1,2,3</code>: khi có, chỉ giữ khung giờ ở những sạp mà <strong>mọi</strong> sản phẩm trong danh sách đều được đăng (<code>_active_slots</code>). Trang nông dân không gửi tham số này; trang checkout gửi danh sách món trong giỏ (C-04).</li>
+          </ol>
+          Frontend bỏ các khung giờ không <code>is_bookable</code> (backend hiện luôn trả <code>true</code>), bỏ ngày trống, rồi hiện "Thứ 7 · 28/09 — 06:00–08:00, Order by 27/09 18:00". Không còn gì: "No pickup times are open right now".
+          <div class="why"><p>Đây là <strong>cùng hàm</strong> mà trang checkout dùng để cho khách chọn giờ nhận (C-04). Khách thấy lịch ở trang nông dân thế nào thì lúc đặt hàng cũng y như vậy, không có chuyện thấy một đằng đặt một nẻo. Khác biệt duy nhất: checkout lọc thêm theo các món trong giỏ, vì một món chỉ nhận được ở sạp mà nó được đăng.</p></div></li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/guest/FarmerDetailPage.jsx</code>, <code>hooks/queries/guest/usePublicCatalog.js → usePublicFarmer, usePublicFarmerReviews, usePublicProductList</code>, <code>hooks/queries/customer/usePickupOptions.js</code>, <code>services/customer/pickupApi.js</code></p>
+        <p><strong>Backend:</strong> <code>accounts/public_portal/views_public.py → PublicFarmerDetailView</code>, <code>accounts/selectors.py → public_farmer, pickup_windows</code>, <code>accounts/public_portal/serializers_public.py → FarmerPublicSerializer</code>, <code>reviews/public_portal/views_public.py → PublicFarmerReviewListView</code>, <code>orders/public/urls_public.py</code>, <code>orders/public/views_public.py → PickupOptionsView</code>, <code>orders/services/pickup_service.py → list_pickup_options, _is_open_on</code></p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============ ĐĂNG KÝ VÀ KHÁC ============ -->
+<section class="group" id="nhom-5">
+  <h2><span class="sn">05</span>Đăng ký và khác</h2>
+
+  <details class="j" id="g-13" open>
+    <summary>
+      <span class="jid">G-13</span><span class="jt">Đăng ký tài khoản khách</span><span class="jk"><span class="chip write">GHI</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Bấm "Sign up" → <code>/register</code>, điền họ tên, email, số điện thoại, địa chỉ, mật khẩu, nhập lại mật khẩu → "Create my account".</dd>
+        <dt>Component</dt><dd><code>pages/guest/RegisterCustomerPage.jsx</code> → <code>components/common/forms/RegisterCustomerForm.jsx</code>. Guard <code>GuestOnly</code>.</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Kiểm tra form</span>
+          <code>registerCustomerSchema</code> (<code>schemas/common/auth.schema.js</code>):
+          <ul>
+            <li><code>email</code>: như đăng nhập (X-01), chuyển chữ thường.</li>
+            <li><code>full_name</code>: 2–100 ký tự sau khi cắt khoảng trắng.</li>
+            <li><code>phone</code>: <code>normalizePhone</code> bỏ khoảng trắng, dấu chấm, gạch, ngoặc; đổi <code>+84…</code> hoặc <code>84…</code> (11 số) thành <code>0…</code>; rồi phải khớp <code>0(3|5|7|8|9)</code> + 8 chữ số (số di động Việt Nam).</li>
+            <li><code>address</code>: 5–255 ký tự.</li>
+            <li><code>password</code>: 8–128 ký tự, có chữ và số. <code>confirm_password</code> phải trùng.</li>
+          </ul>
+          <div class="why"><p><strong>Chuẩn hoá số điện thoại</strong> trước khi kiểm tra và lưu: "0912 345 678", "0912.345.678", "+84912345678" là cùng một số. Lưu một dạng duy nhất thì kiểm tra "số đã được dùng" mới đúng.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Request</span>
+          <code>useRegisterCustomer({ silent: true })</code> → <code>authApi.registerCustomer</code>:
+<pre class="code">POST /api/auth/register/customer/
+{ "email": "an@gmail.com", "full_name": "Nguyễn Văn An", "phone": "0912345678",
+  "address": "12 Lê Lợi, Q1", "password": "…", "confirm_password": "…" }</pre></li>
+        <li><span class="st"><span class="chip be">BE</span>CustomerRegisterView</span>
+          <code>AllowAny</code>, <code>authentication_classes = []</code>, throttle scope <code>register</code>: <strong>10 lần mỗi giờ trên một IP</strong>.
+          <div class="why"><p>Chặn một máy tạo hàng loạt tài khoản rác.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span>Serializer</span>
+          <code>CustomerRegisterWriteSerializer</code>: email chữ thường; <code>clean_phone</code> chuẩn hoá giống frontend rồi kiểm tra mẫu <code>^(0|\+84)(3|5|7|8|9)\d{8}$</code>; <code>check_password_strength</code> (quy tắc frontend + bộ kiểm tra của Django, xem X-05); hai mật khẩu phải trùng.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>register_customer()</span>
+          (<code>accounts/services/customer_registration_service.py</code>)
+          <ol class="sub-steps">
+            <li>Email đã có trong <code>users</code>: <code>EMAIL_EXISTS</code>, lỗi gắn vào trường <code>email</code>.</li>
+            <li>Số điện thoại đã có trong <code>customer_profiles</code>: lỗi gắn vào trường <code>phone</code>.</li>
+            <li>Trong một transaction: <code>create_user</code> tạo dòng <code>users</code> với vai trò CUSTOMER (mật khẩu được băm); tạo dòng <code>customer_profiles</code>.</li>
+            <li>Nếu MySQL báo trùng (<code>IntegrityError</code>), kiểm tra lại email và số điện thoại để trả đúng lỗi của trường.
+              <div class="why"><p>Hai người bấm đăng ký cùng email cùng lúc đều qua được bước kiểm tra 1; ràng buộc <code>UNIQUE</code> trong DB chặn người thứ hai. Bắt lỗi đó và đổi thành câu "email đã được dùng" thay vì lỗi 500.</p></div></li>
+          </ol></li>
+        <li><span class="st"><span class="chip be">BE</span>Đăng nhập luôn</span>
+          Trả 201 với <code>build_auth_payload(user)</code>: cặp token + thông tin tài khoản, giống hệt đăng nhập (X-01 bước 8–9).
+          <div class="why"><p>Đăng ký xong không bắt đăng nhập lại: bớt một bước, giảm số người bỏ ngang.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Bắt đầu phiên</span>
+          <code>useStartSession</code> như X-01 bước 10: lưu token, ghi cache <code>/me</code>, chuyển về trang chủ của khách (<code>/</code>) hoặc trang đang dở trước đó; toast "Welcome to MarketLink".</li>
+      </ol>
+      <h3>Lỗi và cách hiển thị</h3>
+      <p>Mutation để <code>silent</code> nên không có toast. <code>useServerErrors.report</code> gắn lỗi vào đúng ô (email, phone, password…); lỗi không kèm trường nào (thử quá nhiều lần, mất mạng, lỗi server) thì hiện trong hộp <code>FormAlert</code> đầu form. Quá 10 lần/giờ: <code>THROTTLED</code> hiện trong hộp. Riêng lỗi dạng <code>non_field_errors</code> thì bị mất, xem Điểm cần lưu ý 13.</p>
+      <h3>Lưu trữ</h3>
+      <p>MySQL <code>users</code>, <code>customer_profiles</code> (ghi). Redis: bộ đếm throttle. localStorage: token.</p>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/guest/RegisterCustomerPage.jsx</code>, <code>components/common/forms/RegisterCustomerForm.jsx</code>, <code>components/common/forms/useServerErrors.js</code>, <code>schemas/common/auth.schema.js → registerCustomerSchema, normalizePhone</code>, <code>hooks/authentication/useAuth.js → useRegisterCustomer</code></p>
+        <p><strong>Backend:</strong> <code>accounts/auth/urls.py</code>, <code>accounts/auth/views_customer.py → CustomerRegisterView</code>, <code>accounts/auth/serializers_customer.py</code>, <code>accounts/auth/serializers_common.py → clean_phone, check_password_strength, build_auth_payload</code>, <code>accounts/phone.py</code>, <code>accounts/services/customer_registration_service.py</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="g-14" open>
+    <summary>
+      <span class="jid">G-14</span><span class="jt">Đăng ký nông dân, có tra địa chỉ và chọn vị trí trên bản đồ</span><span class="jk"><span class="chip write">GHI</span><span class="chip ext">NGOÀI</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd><code>/register/farmer</code>. Bước 1: email, số điện thoại, mật khẩu → "Continue". Bước 2: tên sạp, người liên hệ, địa chỉ, ghim vị trí vườn (tuỳ chọn), ngày làm việc → "Submit for review".</dd>
+        <dt>Component</dt><dd><code>pages/auth/RegisterFarmerPage.jsx</code> → <code>RegisterFarmerForm</code> trong <code>pages/auth/RegisterForms.jsx</code>; bản đồ <code>components/common/maps/MapPicker.jsx</code>.</dd>
+      </dl>
+
+      <div class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  actor N as Nông dân
+  participant F as RegisterFarmerForm
+  participant G as GeocodeView
+  participant OSM as Nominatim OSM
+  participant V as FarmerRegisterView
+  participant DB as MySQL
+  N->>F: bước 1, bấm Continue
+  F->>F: chỉ kiểm tra 4 ô của bước 1
+  N->>F: bước 2, gõ địa chỉ, bấm Find on map
+  F->>G: GET /api/public/geocode/?q=địa chỉ
+  G->>OSM: tìm địa chỉ, tối đa 1 lần mỗi giây
+  OSM-->>G: toạ độ hoặc không thấy
+  G-->>F: found, latitude, longitude
+  N->>F: kéo ghim cho đúng, chọn ngày, Submit
+  F->>V: POST /api/auth/register/farmer/
+  V->>DB: transaction: users + farmer_profiles PENDING
+  opt không có ghim
+    V->>OSM: tự tra toạ độ từ địa chỉ, lỗi thì bỏ qua
+    V->>DB: UPDATE latitude, longitude
+  end
+  V->>DB: INSERT audit_logs ACCOUNT_REGISTERED
+  V-->>F: 201 token, user farmer_status PENDING
+  F-->>N: đăng nhập luôn, vào /farmer, chờ duyệt
+</pre>
+      </div>
+
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Bước 1, chỉ kiểm tra phần của bước 1</span>
+          Toàn form dùng <code>registerFarmerSchema</code>. "Continue" gọi <code>trigger(REGISTER_FARMER_STEP_1)</code>: chỉ kiểm tra <code>email</code>, <code>phone</code>, <code>password</code>, <code>confirm_password</code>; đúng hết mới sang bước 2.
+          <div class="why"><p>Báo lỗi tài khoản ngay ở bước 1, thay vì để người dùng điền hết bước 2 rồi mới biết email sai.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Bước 2</span>
+          <code>stall_name</code>, <code>contact_person</code>: 2–100 ký tự. <code>address</code>: 5–255. <code>operating_days</code>: chọn ít nhất 1 ngày, không trùng (nút bật/tắt Mon…Sun, giá trị 1–7). <code>latitude</code>, <code>longitude</code>: có thể để trống.</li>
+        <li><span class="st"><span class="chip fe">FE</span><span class="chip be">BE</span><span class="chip ext">NGOÀI</span>"Find on map" (tuỳ chọn)</span>
+          Nút chỉ bật khi địa chỉ ≥ 5 ký tự. <code>useGeocode</code> (mutation <code>silent</code>) → <code>GET /api/public/geocode/?q=12 Lê Lợi, Q1</code>.
+          <br><code>GeocodeView</code>: <code>AllowAny</code>; throttle scope <code>geocode</code> <strong>10 lần mỗi phút</strong>; <code>q</code> 5–255 ký tự. <code>geocode_address()</code> (<code>accounts/geocoding.py</code>):
+          <ul>
+            <li>Tắt bằng <code>GEOCODING_ENABLED</code> thì trả "không thấy".</li>
+            <li>Xin "lượt" bằng <code>cache.add("geocoding:nominatim:slot", ttl=1 giây)</code>; chưa có lượt thì chờ, tối đa 2 giây, quá thì bỏ.</li>
+            <li>Gọi Nominatim của OpenStreetMap, giới hạn trong Việt Nam (<code>countrycodes=vn</code>), lấy 1 kết quả, timeout 5 giây, có User-Agent riêng.</li>
+            <li>Mọi lỗi mạng hoặc dữ liệu đều trả "không thấy", không bao giờ ném lỗi.</li>
+          </ul>
+          Trả <code>{ found, latitude, longitude }</code>. Tìm thấy: bản đồ bay tới đó, đặt ghim. Không thấy: "We couldn't find that address. Click the map…". Lỗi 429: "Too many searches in a row…".
+          <div class="why">
+            <p><strong>Đi qua backend thay vì gọi thẳng Nominatim từ trình duyệt:</strong> Nominatim cho phép tối đa 1 request mỗi giây <strong>cho cả ứng dụng</strong> và đòi User-Agent định danh. Chỉ backend giữ được giới hạn chung đó (khoá trong cache dùng chung).</p>
+            <p><strong>Tìm nguyên địa chỉ, không tự cắt ngắn:</strong> chú thích trong code ghi rằng thử tìm phần rút gọn thì ghim lệch cả cây số, tệ hơn không có ghim. Kết quả chỉ là điểm khởi đầu; người dùng luôn thấy ghim và kéo được.</p>
+          </div></li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Chỉnh ghim</span>
+          Bấm vào bản đồ để đặt ghim, kéo ghim để chỉnh; toạ độ làm tròn 6 chữ số. Ảnh nền từ OpenStreetMap. Dòng chú thích: chỉ đội MarketLink thấy vị trí này, khách chỉ thấy chợ.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Gửi</span>
+          Chỉ gửi <code>latitude</code>, <code>longitude</code> khi <strong>cả hai</strong> có giá trị.
+<pre class="code">POST /api/auth/register/farmer/
+{ "email": "…", "phone": "0912345678", "password": "…", "confirm_password": "…",
+  "stall_name": "Vườn Cô Ba", "contact_person": "Trần Thị Ba",
+  "address": "…", "operating_days": [3, 6, 7],
+  "latitude": 10.8231, "longitude": 106.6297 }</pre></li>
+        <li><span class="st"><span class="chip be">BE</span>FarmerRegisterView và serializer</span>
+          <code>AllowAny</code>, throttle <code>register</code> 10 lần/giờ. <code>FarmerRegisterAuthSerializer</code>: mật khẩu như G-13; <code>validate_vn_phone</code> chuẩn hoá, kiểm tra mẫu và <strong>chưa có trong <code>farmer_profiles</code></strong>; <code>normalize_operating_days</code> (danh sách ≥ 1 phần tử, mỗi phần tử là số nguyên 1–7, không trùng, trả về đã sắp xếp); <code>clean_coordinate_pair</code> (hai toạ độ phải đi cùng nhau, làm tròn 6 chữ số).
+          <div class="why"><p>Số điện thoại kiểm tra trùng <strong>trong bảng nông dân</strong>, tách với bảng khách: một người có thể vừa là khách vừa mở sạp bằng cùng số.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>register_farmer()</span>
+          (<code>accounts/services/registration.py</code>)
+          <ol class="sub-steps">
+            <li>Trong transaction: email đã có thì <code>EMAIL_EXISTS</code>; tạo <code>users</code> (vai trò FARMER) và <code>farmer_profiles</code> với <code>status = PENDING</code>. Trùng ở DB thì đọc thông báo lỗi để biết trùng email hay số điện thoại.</li>
+            <li>Có ghim: giữ nguyên, <strong>không</strong> tra địa chỉ.
+              <div class="why"><p>Nông dân biết vườn mình ở đâu rõ hơn kết quả tìm địa chỉ.</p></div></li>
+            <li>Không có ghim: sau khi transaction xong, gọi <code>geocode_address(address)</code> (G-14 bước 3); tìm được thì <code>UPDATE</code> toạ độ. Lỗi thì ghi log và bỏ qua.
+              <div class="why"><p>Gọi <strong>ngoài</strong> transaction: chờ mạng tối đa vài giây mà vẫn giữ khoá DB là làm nghẽn các request khác. Lỗi không làm hỏng đăng ký: toạ độ chỉ để admin tham khảo khi duyệt.</p></div></li>
+          </ol></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Nhật ký và trả về</span>
+          Ghi <code>audit_logs</code> <code>ACCOUNT_REGISTERED</code> với <code>details.role = FARMER</code>. Trả 201: token + <code>user</code> có <code>farmer_status: "PENDING"</code>, message "awaiting administrator approval".</li>
+        <li><span class="st"><span class="chip fe">FE</span>Sau khi thành công</span>
+          <code>useStartSession</code>: đăng nhập luôn, chuyển về <code>/farmer</code>; toast "Your stall application has been sent — We'll let you know as soon as an administrator approves it." Nông dân PENDING vào được khu vực của mình nhưng chưa đăng bán được (cần admin duyệt, A-07, và có sạp được duyệt, A-09).
+          <div class="why"><p>Cho đăng nhập ngay để nông dân thấy trạng thái chờ duyệt và chuẩn bị hồ sơ, sạp, lịch trong lúc chờ; quyền bán hàng do backend chặn theo trạng thái.</p></div></li>
+      </ol>
+      <h3>Lỗi và cách hiển thị</h3>
+      <p>Mutation không <code>silent</code> nên có toast chung, đồng thời <code>mapServerErrorsToForm</code> gắn lỗi vào từng ô. Nếu lỗi rơi vào một ô của bước 1 (ví dụ email đã có, số điện thoại đã có), form <strong>tự quay về bước 1</strong> để người dùng thấy ô bị lỗi.</p>
+      <h3>Lưu trữ</h3>
+      <p>MySQL <code>users</code>, <code>farmer_profiles</code> (ghi, có thể <code>UPDATE</code> toạ độ), <code>audit_logs</code> (ghi). Cache: khoá lượt gọi Nominatim, bộ đếm throttle. Dịch vụ ngoài: Nominatim.</p>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/auth/RegisterFarmerPage.jsx</code>, <code>pages/auth/RegisterForms.jsx → RegisterFarmerForm, OperatingDaysPicker</code>, <code>components/common/maps/MapPicker.jsx</code>, <code>hooks/queries/common/useGeocode.js</code>, <code>api/common/geocodeApi.js</code>, <code>schemas/common/auth.schema.js → registerFarmerSchema, REGISTER_FARMER_STEP_1</code>, <code>hooks/authentication/useAuth.js → useRegisterFarmer</code></p>
+        <p><strong>Backend:</strong> <code>accounts/auth/urls_auth.py</code>, <code>accounts/auth/views_auth.py → FarmerRegisterView</code>, <code>accounts/auth/serializers_auth.py</code>, <code>accounts/farmer/serializers_farmer.py → validate_vn_phone, clean_coordinate_pair</code>, <code>accounts/operating_days.py</code>, <code>accounts/services/registration.py</code>, <code>accounts/public_portal/views_public.py → GeocodeView</code>, <code>accounts/geocoding.py</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="g-15" open>
+    <summary>
+      <span class="jid">G-15</span><span class="jt">Bấm "Thêm giỏ" hoặc "Yêu thích" khi chưa đăng nhập</span><span class="jk"><span class="chip local">TRÌNH DUYỆT</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Chưa đăng nhập, bấm "Add to cart" / "Reserve for pickup" hoặc biểu tượng trái tim trên bất kỳ thẻ nào.</dd>
+        <dt>Thành phần</dt><dd><code>hooks/common/useAddToCart.js</code>, <code>components/common/favorites/FavoriteButton.jsx</code></dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Thêm giỏ</span>
+          <code>addToCart(product)</code> kiểm tra <code>role</code> từ <code>useAuth()</code>:
+          <ul>
+            <li>Chưa đăng nhập: <code>requireSignIn()</code> = <code>navigate('/login', { state: { from: location } })</code>. Không thêm gì vào giỏ.</li>
+            <li>Đăng nhập nhưng không phải khách hàng: toast "Sign in with a shopper account to order". (Nông dân thật ra không tới được trang công khai vì guard <code>NotForFarmers</code>.)</li>
+            <li>Khách hàng: thêm vào giỏ, xem C-01.</li>
+          </ul></li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Trái tim</span>
+          <code>FavoriteButton</code> chặn sự kiện click lan ra thẻ (để không mở trang chi tiết), rồi: không phải khách hàng thì gọi <code>onRequireSignIn</code> (cùng hàm trên); không có hàm đó thì toast "Sign in to save favorites". Khách hàng: C-15.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Quay lại sau khi đăng nhập</span>
+          Trang đăng nhập nhận <code>state.from</code>. Đăng nhập xong (X-01 bước 10), <code>redirectAfterSignIn</code> đưa khách quay lại đúng trang sản phẩm đang xem.
+          <br><strong>Lưu ý:</strong> món hàng <strong>không</strong> được tự thêm vào giỏ sau khi đăng nhập; khách phải bấm lại.</li>
+      </ol>
+      <div class="why"><p>Không gọi API nào khi chưa đăng nhập: giỏ hàng và yêu thích đều gắn với tài khoản khách hàng, nên chặn ngay trên trình duyệt thay vì gửi request để nhận 401. Ghi lại trang đang xem để khách không phải tìm lại sản phẩm.</p></div>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>hooks/common/useAddToCart.js</code>, <code>components/common/favorites/FavoriteButton.jsx</code>, <code>hooks/authentication/useAuth.js → redirectAfterSignIn</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="g-16" open>
+    <summary>
+      <span class="jid">G-16</span><span class="jt">Sơ đồ trang (sitemap)</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Bấm "Sitemap" dưới chân trang → <code>/sitemap</code>.</dd>
+        <dt>Component</dt><dd><code>pages/guest/SitemapPage.jsx</code></dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Ba query</span>
+          <code>useCategories()</code>, <code>usePublicMarkets({ page_size: 50 })</code>, <code>usePublicFarmers({ page_size: 50 })</code> → <code>GET /public/categories/</code>, <code>GET /public/markets/?page_size=50</code>, <code>GET /public/farmers/?page_size=50</code>.</li>
+        <li><span class="st"><span class="chip be">BE</span>Backend</span>Như G-01, G-09, G-11.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Hiển thị</span>Danh sách link tới các trang tĩnh, từng danh mục, từng chợ, từng sạp.</li>
+      </ol>
+      <div class="note warn"><p><strong>Không hiện đủ:</strong> trang xin 50 dòng nhưng <code>StandardPagination</code> chỉ nhận <code>page_size</code> 5, 10 hoặc 20; số khác bị đổi về 20. Sitemap chỉ liệt kê 20 chợ và 20 sạp đầu tiên, dù có nhiều hơn.</p></div>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/guest/SitemapPage.jsx</code></p>
+        <p><strong>Backend:</strong> <code>marketlink_core/pagination.py → StandardPagination.get_page_size</code></p>
+      </div>
+    </div>
+  </details>
+  <p class="sub">Trang <code>/about</code> chỉ đọc cấu hình công khai (X-11) để viết số ngày đặt trước; <code>/contact</code> và <code>/privacy</code> là nội dung tĩnh, không gọi API.</p>
+</section>
+
+<!-- ============ LƯU Ý ============ -->
+<section class="group" id="luu-y">
+  <h2><span class="sn">!!</span>Điểm cần lưu ý (phát hiện khi đọc code)</h2>
+  <p class="sub">Những chỗ code hiện tại chạy khác với điều người đọc có thể nghĩ. Ghi lại để không trả lời sai khi bị hỏi, và để quyết định có sửa hay không.</p>
+  <ol class="findings">
+    <li><strong>Số tồn kho hiển thị chưa trừ hàng đang được giữ.</strong> Thẻ và trang chi tiết hiện <code>stock_quantity</code> gốc ("12 in stock"). Khi đặt hàng, backend trừ thêm số lượng trong các đơn đang chờ nông dân nhận (<code>get_held_quantities</code>, xem C-05). Khách có thể thấy 12 nhưng chỉ đặt được 5.</li>
+    <li><strong>Sitemap chỉ hiện 20 chợ và 20 sạp</strong> vì xin <code>page_size=50</code> mà backend chỉ cho tối đa 20 (G-16).</li>
+    <li><strong>Ô tìm ở trang chủ hứa tìm cả chợ</strong> ("Search produce, stalls, or markets") nhưng chỉ tìm tên sản phẩm và tên sạp (G-04).</li>
+    <li><strong>Ô tìm ở trang nông dân ghi "stall name or address"</strong> nhưng backend tìm tên sạp và tên chợ (G-11).</li>
+    <li><strong>Trang chi tiết nông dân gửi toạ độ nhưng backend bỏ qua.</strong> <code>usePublicFarmer(id, coords)</code> gửi <code>lat</code>, <code>lng</code>, nhưng <code>PublicFarmerDetailView</code> không đọc chúng, nên nhãn khoảng cách trên trang nông dân không bao giờ hiện. Toạ độ nằm trong query key nên lấy vị trí xong vẫn tải lại hồ sơ một lần vô ích.</li>
+    <li><strong>Ô chọn chợ ở trang sản phẩm chỉ có 20 chợ đầu</strong> (theo tên), vì chỉ tải một trang <code>page_size: 20</code>. Có trên 20 chợ thì các chợ sau không chọn được ở đây (vẫn dùng được qua link "Shop produce here").</li>
+    <li><strong>Số sản phẩm trên tab "On the stall" có thể khác danh sách.</strong> Con số (<code>in_stock_product_count</code>) không đòi sản phẩm phải được đăng ở một sạp đang bán, còn danh sách (<code>public_product_base</code>) thì đòi. Sản phẩm chỉ đăng ở một chợ vừa bị tắt vẫn được đếm nhưng không hiện.</li>
+    <li><strong>Hook prefetch khi rê chuột không làm gì.</strong> Menu "Markets / Produce / Stalls" gọi <code>prefetchMarkets</code>… từ <code>hooks/usePrefetchRoutes.js</code>, nhưng cả ba là hàm rỗng.</li>
+    <li><strong>File và component không còn dùng:</strong> <code>lib/adapters/catalog.adapter.js</code> không được import ở đâu; <code>RegisterCustomerForm</code> trong <code>pages/auth/RegisterForms.jsx</code> không được dùng (trang đăng ký khách dùng bản trong <code>components/common/forms/</code>).</li>
+    <li><strong>Đăng ký nông dân không bỏ qua token cũ.</strong> <code>CustomerRegisterView</code> và <code>LoginView</code> đặt <code>authentication_classes = []</code>, còn <code>FarmerRegisterView</code> thì không. Nếu trình duyệt còn giữ một token hỏng, request đăng ký nông dân có thể bị 401 trước khi tới view.</li>
+    <li><strong>Nhật ký đăng ký không đồng đều.</strong> Đăng ký nông dân ghi <code>ACCOUNT_REGISTERED</code> nhưng để trống IP và user agent; đăng ký khách không ghi nhật ký nào.</li>
+    <li><strong>Trang danh sách sản phẩm hiện khung xương mỗi lần đổi bộ lọc</strong>, dù query có <code>keepPreviousData</code> (giữ dữ liệu cũ): điều kiện <code>isPlaceholderData</code> làm trang thay danh sách cũ bằng khung xương.</li>
+    <li><strong><code>useServerErrors</code> truyền sai tham số.</strong> Hàm gọi <code>mapServerErrorsToForm(fieldErrors, setError, fields)</code> với <code>fields</code> là một mảng, trong khi hàm nhận <code>{ fields }</code>. Danh sách trường vì thế không có tác dụng: mọi khoá lỗi đều được gắn như một ô, kể cả khoá không có trên form (không hiện ở đâu). Lỗi <code>non_field_errors</code> được đưa vào <code>root.server</code>, nhưng form đăng ký khách không vẽ <code>root.server</code> và hộp <code>FormAlert</code> lại bị tắt vì hàm báo "đã gắn được", nên câu lỗi biến mất. Với đăng ký hiện tại, backend chỉ trả lỗi theo đúng tên ô nên người dùng chưa gặp.</li>
+  </ol>
+</section>
+</main>
+</div>
+
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('details.j'));
+  var q = document.getElementById('q');
+  var count = document.getElementById('count');
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+
+  function applySearch() {
+    var term = (q.value || '').trim().toLowerCase();
+    var shown = 0;
+    cards.forEach(function (card) {
+      var hit = term === '' || card.textContent.toLowerCase().indexOf(term) !== -1;
+      card.hidden = !hit;
+      if (hit) { shown++; if (term) card.open = true; }
+      var link = document.querySelector('.toc a[href="#' + card.id + '"]');
+      if (link) link.classList.toggle('dim', !hit);
+    });
+    count.textContent = term ? shown + ' / ' + cards.length + ' hành trình khớp' : cards.length + ' hành trình';
+  }
+  q.addEventListener('input', applySearch);
+  document.getElementById('open-all').addEventListener('click', function () { cards.forEach(function (c) { c.open = true; }); });
+  document.getElementById('close-all').addEventListener('click', function () { cards.forEach(function (c) { c.open = false; }); });
+  tocLinks.forEach(function (a) {
+    a.addEventListener('click', function () {
+      var target = document.querySelector(a.getAttribute('href'));
+      if (target && target.tagName === 'DETAILS') target.open = true;
+    });
+  });
+  applySearch();
+
+  if ('IntersectionObserver' in window) {
+    var targets = tocLinks.map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        tocLinks.forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id); });
+      });
+    }, { rootMargin: '-15% 0px -75% 0px' });
+    targets.forEach(function (t) { io.observe(t); });
+  }
+
+  // Opened straight from disk (not on claude.ai): load Mermaid ourselves so the diagrams draw.
+  if (location.protocol === 'file:') {
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js';
+    s.onload = function () {
+      var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      window.mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+      window.mermaid.run({ querySelector: 'pre.mermaid' });
+    };
+    document.head.appendChild(s);
+  }
+})();
+</script>

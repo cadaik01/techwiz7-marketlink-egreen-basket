@@ -1,0 +1,1086 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hành trình khách hàng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Lexend:wght@500;600;700&display=swap">
+<style>
+/* Layout: same system as "Sổ tay MarketLink" — sticky journey index on the left, one reading column; stacks on phones. */
+:root {
+  --bg: #f4f6f1; --surface: #ffffff; --sunken: #eaeee6; --ink: #1b231e; --muted: #59645d; --line: #d8ded4;
+  --accent: #2e6a3e; --accent-soft: #e1ede3;
+  --fe: #2c5a87; --fe-soft: #e0ebf6; --be: #2e6a3e; --be-soft: #e1ede3;
+  --db: #9a5a0e; --db-soft: #f6e9d6; --ext: #6b4a8f; --ext-soft: #ece4f5;
+  --warn: #a3401f; --warn-soft: #f7e3da; --why: #7a5a00; --why-soft: #faf1d2;
+  --font-display: "Lexend", "Be Vietnam Pro", system-ui, sans-serif;
+  --font-body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111613; --surface: #181f1b; --sunken: #1f2722; --ink: #e3e9e4; --muted: #98a39c; --line: #2c3631;
+    --accent: #7fc492; --accent-soft: #1d3324; --fe: #8db9e6; --fe-soft: #1a2a3b; --be: #7fc492; --be-soft: #1d3324;
+    --db: #e2a55d; --db-soft: #3a2a17; --ext: #c3a5e6; --ext-soft: #2b2238; --warn: #ef9a7a; --warn-soft: #3b231b;
+    --why: #e8c766; --why-soft: #332b12; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111613; --surface: #181f1b; --sunken: #1f2722; --ink: #e3e9e4; --muted: #98a39c; --line: #2c3631;
+  --accent: #7fc492; --accent-soft: #1d3324; --fe: #8db9e6; --fe-soft: #1a2a3b; --be: #7fc492; --be-soft: #1d3324;
+  --db: #e2a55d; --db-soft: #3a2a17; --ext: #c3a5e6; --ext-soft: #2b2238; --warn: #ef9a7a; --warn-soft: #3b231b;
+  --why: #e8c766; --why-soft: #332b12; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.65; }
+.wrap { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 44px; max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px; }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 20px); align-self: start; max-height: calc(100vh - 40px); overflow-y: auto; font-size: 14px; }
+.toc-title { font-family: var(--font-display); font-weight: 600; font-size: 15px; margin: 0 0 10px; }
+.toc-group { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 14px 0 4px 10px; }
+.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
+.toc a { display: flex; gap: 8px; color: var(--muted); text-decoration: none; padding: 4px 10px; border-radius: 6px; border-left: 2px solid transparent; }
+.toc a:hover, .toc a:focus-visible { color: var(--ink); background: var(--sunken); outline: none; }
+.toc a.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-soft); }
+.toc .num { font-family: var(--font-mono); font-size: 12px; flex: none; padding-top: 1px; }
+.toc a.dim { opacity: .35; }
+main { min-width: 0; max-width: 840px; }
+header.hero { padding-block: 4px 24px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 4.4vw, 42px); line-height: 1.15; margin: 0 0 14px; text-wrap: balance; }
+.lede { font-size: 18px; color: var(--muted); max-width: 66ch; margin: 0 0 12px; }
+section.group { padding-block: 36px 4px; scroll-margin-top: 12px; }
+h2 { font-family: var(--font-display); font-weight: 600; font-size: 26px; line-height: 1.25; margin: 0 0 8px; text-wrap: balance; display: flex; gap: 12px; align-items: baseline; }
+h2 .sn { font-family: var(--font-mono); font-size: 15px; color: var(--accent); font-weight: 500; }
+h3 { font-family: var(--font-display); font-weight: 600; font-size: 17px; margin: 22px 0 8px; }
+h4 { font-weight: 600; font-size: 15px; margin: 18px 0 6px; }
+p { margin: 0 0 12px; max-width: 70ch; }
+.sub { color: var(--muted); }
+code { font-family: var(--font-mono); font-size: .85em; }
+p code, li code, td code, dd code, .path code { background: var(--sunken); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+a { color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 0 0 12px; }
+li { margin-bottom: 4px; }
+pre.code { background: var(--sunken); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; overflow-x: auto; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.55; margin: 6px 0 12px; }
+.diagram { background: var(--sunken); border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin: 6px 0 16px; overflow-x: auto; }
+.diagram pre.mermaid { margin: 0; background: transparent; text-align: center; }
+
+.chip { display: inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .04em; padding: 2px 7px; border-radius: 4px; vertical-align: 2px; white-space: nowrap; }
+.chip.fe { color: var(--fe); background: var(--fe-soft); }
+.chip.be { color: var(--be); background: var(--be-soft); }
+.chip.db { color: var(--db); background: var(--db-soft); }
+.chip.ext { color: var(--ext); background: var(--ext-soft); }
+.chip.read { color: var(--fe); background: var(--fe-soft); }
+.chip.write { color: var(--db); background: var(--db-soft); }
+.chip.local { color: var(--muted); background: var(--sunken); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 18px 0 0; }
+.tools input { font: inherit; font-size: 14px; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); flex: 1 1 220px; min-width: 0; }
+.tools button { font: inherit; font-size: 14px; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.tools button:hover { background: var(--sunken); }
+.tools :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.count { font-size: 13px; color: var(--muted); }
+
+/* concepts */
+.concept { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; margin: 0 0 12px; }
+.concept h3 { margin-top: 0; }
+
+/* journey card */
+details.j { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; margin: 0 0 14px; scroll-margin-top: 12px; }
+details.j > summary { cursor: pointer; list-style: none; padding: 16px 20px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; align-items: baseline; }
+details.j > summary::-webkit-details-marker { display: none; }
+details.j > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 12px; }
+.jid { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--accent); }
+.jt { font-family: var(--font-display); font-weight: 600; font-size: 19px; line-height: 1.3; text-wrap: balance; }
+.jk { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.jtoggle { grid-column: 1 / -1; font-size: 13px; color: var(--muted); }
+details.j[open] .jtoggle .open-t, details.j:not([open]) .jtoggle .close-t { display: none; }
+.jb { padding: 0 20px 18px; border-top: 1px solid var(--line); }
+.meta { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 4px 14px; margin: 14px 0 4px; font-size: 15px; }
+.meta dt { color: var(--muted); font-size: 13px; padding-top: 2px; }
+.meta dd { margin: 0; min-width: 0; }
+
+ol.steps { list-style: none; padding: 0; margin: 6px 0 12px; counter-reset: step; }
+ol.steps > li { counter-increment: step; position: relative; padding: 0 0 14px 42px; margin: 0; }
+ol.steps > li::before { content: counter(step); position: absolute; left: 0; top: 1px; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-mono); font-size: 12px; font-weight: 500; background: var(--surface); border: 1.5px solid var(--line); color: var(--ink); }
+ol.steps > li::after { content: ""; position: absolute; left: 14px; top: 31px; bottom: 2px; width: 1.5px; background: var(--line); }
+ol.steps > li:last-child::after { display: none; }
+.st { font-weight: 600; display: block; margin-bottom: 3px; }
+.st .chip { margin-right: 6px; }
+ol.sub-steps { padding-left: 20px; margin: 6px 0 6px; }
+ol.sub-steps li { margin-bottom: 6px; }
+
+.why { background: var(--why-soft); border-radius: 8px; padding: 10px 14px; margin: 8px 0 10px; font-size: 15px; }
+.why::before { content: "Vì sao"; display: inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--why); margin-right: 8px; }
+.why p:last-child { margin-bottom: 0; }
+.note { border-radius: 8px; padding: 12px 14px; margin: 8px 0 12px; background: var(--accent-soft); font-size: 15px; }
+.note.warn { background: var(--warn-soft); }
+.note strong:first-child { display: block; margin-bottom: 2px; }
+.note p:last-child { margin-bottom: 0; }
+
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); margin: 6px 0 14px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); background: var(--sunken); }
+tr:last-child td { border-bottom: 0; }
+.files { font-size: 14px; color: var(--muted); }
+.files code { color: var(--ink); }
+.files p { margin-bottom: 6px; }
+
+ol.findings { padding-left: 24px; }
+ol.findings li { margin-bottom: 10px; }
+
+@media (max-width: 1000px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 20px 16px 64px; }
+  nav.toc { position: static; max-height: none; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin-bottom: 8px; }
+  .toc .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+}
+@media (max-width: 620px) {
+  .toc .cols { grid-template-columns: 1fr; }
+  details.j > summary { grid-template-columns: auto minmax(0, 1fr); }
+  .jk { grid-column: 1 / -1; justify-content: flex-start; }
+  .meta { grid-template-columns: 1fr; }
+  .meta dt { padding-top: 8px; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Danh sách hành trình">
+  <p class="toc-title">Khách hàng</p>
+  <div class="cols">
+    <div>
+      <p class="toc-group">Nền tảng</p>
+      <ol><li><a href="#khai-niem"><span class="num">··</span>Điều chung của nhóm</a></li></ol>
+      <p class="toc-group">Giỏ hàng và checkout</p>
+      <ol>
+        <li><a href="#c-01"><span class="num">C-01</span>Thêm vào giỏ</a></li>
+        <li><a href="#c-02"><span class="num">C-02</span>Sửa, xoá trong giỏ</a></li>
+        <li><a href="#c-03"><span class="num">C-03</span>Làm mới giỏ</a></li>
+        <li><a href="#c-04"><span class="num">C-04</span>Chọn ngày, giờ nhận</a></li>
+        <li><a href="#c-05"><span class="num">C-05</span>Đặt hàng</a></li>
+        <li><a href="#c-06"><span class="num">C-06</span>Trang đặt thành công</a></li>
+      </ol>
+      <p class="toc-group">Đơn hàng</p>
+      <ol>
+        <li><a href="#c-07"><span class="num">C-07</span>Danh sách đơn</a></li>
+        <li><a href="#c-08"><span class="num">C-08</span>Chi tiết đơn</a></li>
+        <li><a href="#c-09"><span class="num">C-09</span>Huỷ đơn</a></li>
+        <li><a href="#c-10"><span class="num">C-10</span>Sửa đơn</a></li>
+        <li><a href="#c-11"><span class="num">C-11</span>Đặt lại đơn cũ</a></li>
+      </ol>
+    </div>
+    <div>
+      <p class="toc-group">Đánh giá</p>
+      <ol>
+        <li><a href="#c-12"><span class="num">C-12</span>Đánh giá món</a></li>
+        <li><a href="#c-13"><span class="num">C-13</span>Đánh giá sạp</a></li>
+      </ol>
+      <p class="toc-group">Yêu thích</p>
+      <ol>
+        <li><a href="#c-14"><span class="num">C-14</span>Tải id đã thích</a></li>
+        <li><a href="#c-15"><span class="num">C-15</span>Thả, bỏ tim</a></li>
+        <li><a href="#c-16"><span class="num">C-16</span>Trang yêu thích</a></li>
+      </ol>
+      <p class="toc-group">Tài khoản</p>
+      <ol>
+        <li><a href="#c-17"><span class="num">C-17</span>Dashboard</a></li>
+        <li><a href="#c-18"><span class="num">C-18</span>Xem hồ sơ</a></li>
+        <li><a href="#c-19"><span class="num">C-19</span>Sửa hồ sơ</a></li>
+      </ol>
+      <p class="toc-group">Kết luận</p>
+      <ol><li><a href="#luu-y"><span class="num">!!</span>Điểm cần lưu ý</a></li></ol>
+    </div>
+  </div>
+</nav>
+
+<main>
+<header class="hero">
+  <p class="eyebrow"><a href="https://claude.ai/artifact/HCcrWguA4ztxDyTtp7UbSE#luong">← Sổ tay MarketLink</a> · Hành trình dữ liệu · File 02</p>
+  <h1>Hành trình của khách hàng</h1>
+  <p class="lede">Những gì khách hàng đã đăng nhập làm: giỏ hàng, đặt hàng, theo dõi, huỷ, sửa đơn, đánh giá, yêu thích, hồ sơ. Đăng nhập, thông báo, chat ở <a href="https://claude.ai/artifact/1xMtZqRaKMwASP5kuYdSsS">file 00</a>; xem sản phẩm, chợ, sạp ở <a href="https://claude.ai/artifact/Hob1Wp73CAXsbKkXqjpYK8">file 01</a>.</p>
+  <div class="legend">
+    <span><span class="chip fe">FE</span> trình duyệt (React)</span>
+    <span><span class="chip be">BE</span> server (Django)</span>
+    <span><span class="chip db">DB</span> MySQL</span>
+    <span><span class="chip ext">REDIS / NGOÀI</span> dịch vụ ngoài</span>
+    <span><span class="chip read">ĐỌC</span> <span class="chip write">GHI</span> <span class="chip local">TRÌNH DUYỆT</span> loại hành trình</span>
+  </div>
+  <div class="tools">
+    <input id="q" type="search" placeholder="Tìm trong các hành trình: If-Match, Idempotency, held, pending_change…" aria-label="Tìm trong các hành trình">
+    <button type="button" id="open-all">Mở tất cả</button>
+    <button type="button" id="close-all">Thu gọn tất cả</button>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+
+<!-- ============ KHÁI NIỆM ============ -->
+<section class="group" id="khai-niem">
+  <h2><span class="sn">··</span>Điều chung của cả nhóm</h2>
+  <p class="sub">Mọi trang <code>/customer/*</code> được bọc bởi <code>RequireAuth</code> + <code>RequireRole([CUSTOMER])</code> (X-03), và mọi API <code>/api/customer/*</code> dùng quyền <code>IsCustomer</code>. Bốn cơ chế dưới đây lặp lại nhiều lần trong file.</p>
+
+  <div class="concept">
+    <h3>Một đơn cho mỗi nông dân</h3>
+    <p>Giỏ hàng có thể chứa hàng của nhiều nông dân. Khi đặt, mỗi nông dân thành <strong>một đơn riêng</strong>, tối đa 5 nông dân một lần checkout.</p>
+    <div class="why"><p>Mỗi nông dân có chợ, khung giờ nhận, giờ chốt đơn và quyết định nhận hay từ chối của riêng mình. Gộp chung một đơn thì một nông dân từ chối sẽ kéo theo cả đơn. Giới hạn 5 để một lần checkout không khoá quá nhiều dòng trong DB và khách không phải chọn giờ nhận cho quá nhiều nơi.</p></div>
+  </div>
+
+  <div class="concept">
+    <h3>Tồn kho: "giữ chỗ" khi đặt, "trừ thật" khi nông dân nhận</h3>
+    <p>Khi khách đặt, kho <strong>chưa bị trừ</strong>. Số còn đặt được = <code>stock_quantity</code> trừ tổng số lượng trong các đơn <code>PLACED</code> chưa tới giờ nhận (<code>get_held_quantities</code>, <code>catalog/services/stock.py</code>). Kho chỉ bị trừ thật ở bước nông dân nhận đơn (T2, F-09), trong transaction có khoá dòng sản phẩm; huỷ hoặc từ chối sau khi đã nhận thì hoàn lại.</p>
+    <div class="why"><p>Nông dân có quyền từ chối đơn. Nếu trừ kho ngay lúc đặt, mỗi lần từ chối hay hết hạn lại phải hoàn kho, dễ sai lệch. "Giữ chỗ" chỉ là phép tính, không ghi gì vào kho, nên đơn bị từ chối hay hết hạn tự động thôi giữ.</p></div>
+  </div>
+
+  <div class="concept">
+    <h3>Chống ghi đè bằng <code>version</code> và header <code>If-Match</code></h3>
+    <p>Mỗi đơn có cột <code>version</code>, tăng 1 sau mỗi thay đổi. Khi huỷ hoặc sửa, frontend gửi version đang thấy trong header <code>If-Match: "3"</code> (<code>axiosClient</code> tự gắn khi có tham số <code>ifMatch</code>). Backend khoá dòng đơn rồi so: khác thì trả <strong>409 <code>RESOURCE_MODIFIED</code></strong>; thiếu header thì <strong>428</strong>.</p>
+    <div class="why"><p>Khách đang mở trang sửa đơn thì nông dân bấm nhận đơn. Không có version, lần lưu của khách sẽ dựa trên trạng thái cũ (đơn còn PLACED) và ghi đè lên thay đổi của nông dân. Có version, khách được báo "đơn vừa thay đổi, hãy tải lại".</p></div>
+  </div>
+
+  <div class="concept">
+    <h3>Ai được làm gì do backend quyết định: <code>allowed_actions</code></h3>
+    <p>API chi tiết đơn trả danh sách <code>allowed_actions</code> (<code>customer_allowed_actions</code> trong <code>orders/customer/serializers_customer.py</code>). Component <code>OrderActions</code> chỉ vẽ nút có trong danh sách:</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Trạng thái đơn</th><th>Trước giờ chốt</th><th>Sau giờ chốt</th></tr></thead>
+      <tbody>
+        <tr><td>PLACED</td><td><code>MODIFY</code> (sửa ngay), <code>CANCEL</code></td><td>Không gì</td></tr>
+        <tr><td>ACCEPTED</td><td><code>REQUEST_CHANGE</code> (gửi yêu cầu sửa), <code>CANCEL</code></td><td>Không gì</td></tr>
+        <tr><td>Chợ đổi lịch, cần chọn giờ mới (<code>reschedule_requested_at</code>)</td><td colspan="2"><code>MODIFY</code> hoặc <code>REQUEST_CHANGE</code>, <code>RESCHEDULE</code>, <code>CANCEL</code>, bất kể giờ chốt</td></tr>
+        <tr><td>COMPLETED</td><td colspan="2"><code>REVIEW</code> (nếu còn món hoặc sạp chưa đánh giá), <code>REORDER</code></td></tr>
+        <tr><td>CANCELLED, DECLINED, NO_SHOW, EXPIRED</td><td colspan="2"><code>REORDER</code></td></tr>
+      </tbody>
+    </table></div>
+    <div class="why"><p>Luật "được sửa tới khi nào" viết một lần ở backend. Frontend không phải tự tính lại; đổi luật không phải sửa frontend. Backend vẫn kiểm tra lại ở từng API, nên gọi thẳng API cũng không vượt được.</p></div>
+  </div>
+</section>
+
+<!-- ============ GIỎ HÀNG VÀ CHECKOUT ============ -->
+<section class="group" id="nhom-1">
+  <h2><span class="sn">01</span>Giỏ hàng và checkout</h2>
+
+  <details class="j" id="c-01" open>
+    <summary>
+      <span class="jid">C-01</span><span class="jt">Thêm sản phẩm vào giỏ</span><span class="jk"><span class="chip local">TRÌNH DUYỆT</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Bấm "Add to cart" trên thẻ sản phẩm, hoặc chọn số lượng rồi "Reserve for pickup" ở trang chi tiết.</dd>
+        <dt>Thành phần</dt><dd><code>hooks/common/useAddToCart.js</code>, <code>stores/cart.store.js</code></dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Kiểm tra vai trò</span>
+          Chưa đăng nhập: chuyển tới <code>/login</code> (G-15). Không phải khách hàng: toast từ chối. Khách hàng: tiếp.</li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Chụp thông tin cần cho giỏ</span>
+          <code>toCartLine(product)</code> chỉ giữ những gì giỏ cần: <code>product_id, farmer_id, farmer_stall_name, name, unit, price, image, min_per_order, max_per_order</code>.</li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Thêm vào kho Zustand</span>
+          <code>addItem(line, quantity)</code>: món chưa có thì thêm dòng mới; đã có thì cộng dồn số lượng và cập nhật thông tin mới nhất. Số lượng luôn bị kẹp trong [<code>min_per_order</code>, min(<code>max_per_order</code>, 999)] (<code>clamp</code>, <code>lineMin</code>, <code>lineMax</code>). <code>persist</code> ghi giỏ xuống localStorage, khoá <code>marketlink-cart</code>.</li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Báo cho khách</span>
+          Toast tuỳ trường hợp: dưới mức tối thiểu thì "minimum N … We added N"; vượt mức tối đa thì "at most N … Your cart now has the maximum"; còn lại "… added to your cart". Biểu tượng giỏ trên thanh trên cùng (<code>MiniCartDrawer</code>) và thanh dưới (<code>CustomerLayout</code>) hiện tổng số lượng (<code>cartCount</code>).</li>
+      </ol>
+      <div class="why">
+        <p><strong>Giỏ hàng không lưu trên server:</strong> giỏ là dữ liệu tạm, thay đổi liên tục. Lưu ở trình duyệt thì không tốn request nào, thêm bớt tức thì. Đổi lại, giá và tồn kho trong giỏ có thể cũ; vì vậy có C-03 làm mới khi mở giỏ, và checkout (C-05) bỏ qua giá trong giỏ, tự lấy giá trong DB.</p>
+        <p><strong>Kẹp số lượng ngay khi thêm:</strong> khách thấy ngay giới hạn của nông dân, thay vì tới lúc đặt mới bị từ chối.</p>
+      </div>
+      <div class="note warn"><p><strong>Giỏ không gắn với tài khoản.</strong> Khoá <code>marketlink-cart</code> dùng chung cho mọi người dùng trên trình duyệt đó và không bị xoá khi đăng xuất (X-04). Khách sau đăng nhập trên cùng máy sẽ thấy giỏ của khách trước.</p></div>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>hooks/common/useAddToCart.js → toCartLine, useAddToCart</code>, <code>stores/cart.store.js → addItem, clamp, lineMin, lineMax, cartCount</code>, <code>components/common/drawer/MiniCartDrawer.jsx</code>, <code>layouts/CustomerLayout.jsx</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="c-02" open>
+    <summary>
+      <span class="jid">C-02</span><span class="jt">Đổi số lượng, xoá món, xoá giỏ</span><span class="jk"><span class="chip local">TRÌNH DUYỆT</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Trong <code>/customer/cart</code>: bấm +/− ở ô số lượng, bấm thùng rác.</dd>
+        <dt>Component</dt><dd><code>pages/customer/CartPage.jsx</code> → <code>CartGroup</code> (một khối mỗi nông dân) → <code>CartLine</code> (một dòng mỗi món).</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Gom theo nông dân</span>
+          <code>cartGroups(lines)</code> gom các dòng theo <code>farmer_id</code>, tính tạm tính mỗi nhóm (chỉ cộng dòng còn đặt được). <code>cartTotal</code> tính tổng.</li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Đổi số lượng</span>
+          <code>QuantityStepper</code> có tối thiểu = <code>min_per_order</code>, tối đa = nhỏ nhất của (tồn kho đã làm mới, <code>max_per_order</code>, 999). <code>setQuantity(id, n)</code>: n ≤ 0 thì xoá dòng; còn lại thì kẹp như C-01.</li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Xoá</span>
+          <code>removeItem(id)</code> bỏ dòng. <code>clear()</code> xoá cả giỏ, hiện chỉ được gọi sau khi đặt hàng thành công (C-05).</li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Trạng thái từng dòng</span>
+          Dòng không còn bán (sau C-03) có nhãn "Unavailable", bị mờ, không đổi số lượng được, không tính tiền. Dòng có số lượng lớn hơn tồn kho hiện cảnh báo thiếu hàng.</li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Nút Checkout</span>
+          Bị khoá khi không còn dòng nào đặt được, hoặc khi có <strong>hơn 5 nông dân</strong> (kèm câu "A checkout covers at most 5 stalls…"). Nút là một link được khoá bằng CSS (<code>pointer-events: none</code>).</li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/customer/CartPage.jsx</code>, <code>components/customer/cart/CartGroup.jsx</code>, <code>components/customer/cart/CartLine.jsx</code>, <code>components/common/QuantityStepper.jsx</code>, <code>stores/cart.store.js → cartGroups, cartTotal, setQuantity, removeItem, isOrderable, MAX_FARMERS_PER_CHECKOUT</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="c-03" open>
+    <summary>
+      <span class="jid">C-03</span><span class="jt">Mở trang giỏ: làm mới giá và tồn kho</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Mở <code>/customer/cart</code>. Không cần bấm gì.</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Query theo danh sách id</span>
+          <code>useCartRefresh()</code> lấy id các món trong giỏ (tối đa 50, sắp xếp tăng dần), <code>staleTime: 0</code>:
+<pre class="code">GET /api/public/products/?ids=3,12,18</pre>
+          <div class="why"><p>Sắp xếp id trước khi làm query key: giỏ [12, 3] và [3, 12] là cùng một yêu cầu, dùng chung cache. <code>staleTime</code> 0 để lần nào mở giỏ cũng lấy giá mới nhất.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Chế độ <code>ids</code> của API sản phẩm</span>
+          <code>public_products(ids=…)</code> có nhánh riêng: lấy theo hàm base công khai, lọc <code>id IN (…)</code> (tối đa 50), <strong>không</strong> lọc còn hàng, không áp bộ lọc nào khác, sắp theo id.
+          <div class="why"><p>Món đã hết hàng hoặc tạm ngừng bán vẫn phải trả về, để giỏ biết mà đánh dấu "Unavailable" thay vì lặng lẽ biến mất. Món không còn hiện công khai (bị ẩn, nông dân bị đình chỉ) thì không có trong kết quả.</p></div></li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Cập nhật giỏ</span>
+          <code>refreshLines(products)</code>: món có trong kết quả thì thay tên, đơn vị, giá, ảnh, nông dân, tồn kho, trạng thái, min/max bằng dữ liệu mới, và kẹp lại số lượng; món <strong>không</strong> có trong kết quả thì đặt <code>availability: 'UNAVAILABLE'</code>, tồn kho 0. Giỏ được ghi lại localStorage.</li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>hooks/queries/customer/useCartRefresh.js</code>, <code>services/guest/catalogApi.js → products, MAX_IDS</code>, <code>stores/cart.store.js → refreshLines</code></p>
+        <p><strong>Backend:</strong> <code>catalog/public_portal/views_public.py → PublicProductListView</code>, <code>catalog/selectors.py → public_products (nhánh ids), MAX_CART_REFRESH_IDS</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="c-04" open>
+    <summary>
+      <span class="jid">C-04</span><span class="jt">Chọn ngày và khung giờ nhận cho từng nông dân</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Ở <code>/customer/checkout</code>, với mỗi nông dân: chọn chợ (nếu có nhiều), chọn ngày, chọn khung giờ, ghi chú.</dd>
+        <dt>Component</dt><dd><code>pages/customer/CheckoutPage.jsx → PickupPicker</code></dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Chỉ lấy dòng đặt được</span>
+          Trang dựng lại các nhóm từ giỏ, bỏ dòng không đặt được; nhóm nào hết dòng thì bỏ. Không còn nhóm: "There is nothing to order".</li>
+        <li><span class="st"><span class="chip fe">FE</span><span class="chip be">BE</span>Lịch nhận theo đúng các món trong nhóm</span>
+          Mỗi nhóm gọi <code>usePickupOptions(farmer_id, product_ids)</code>:
+<pre class="code">GET /api/public/farmers/7/pickup-options/?products=3,12</pre>
+          Backend dùng cùng <code>list_pickup_options</code> như G-12, cộng thêm: với mỗi sản phẩm, chỉ giữ khung giờ ở <strong>sạp có đăng sản phẩm đó</strong> (<code>farmer_market__product_links__product_id</code>). Kết quả là những chợ, ngày, giờ mà <strong>tất cả</strong> món trong nhóm đều nhận được.
+          <div class="why"><p>Nông dân có thể chỉ mang dâu tây tới chợ A, còn rau tới cả A và B. Nếu khách đặt cả hai món mà chọn chợ B, nông dân không có dâu ở đó. Lọc theo món ngay khi hiện lịch thì khách không chọn được giờ sai.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Chọn</span>
+          Không có lịch phù hợp: câu báo "No pickup window fits all of these items…" (gợi ý bỏ bớt món). Có: chọn chợ (nếu &gt; 1) → chọn ngày → chọn khung giờ. Khung giờ đã qua giờ chốt (so với đồng hồ <code>useNow</code>) bị khoá. Chọn xong hiện "Edit or cancel until: &lt;giờ chốt&gt;", nút chỉ đường, ô ghi chú (tối đa 300 ký tự).
+          <br>Lựa chọn lưu trong state <code>selections[farmer_id]</code> = <code>{ market_id, date, pickup_slot_id, cutoff_at, note }</code>. Nút "Confirm N orders" chỉ bật khi mọi nhóm đã có <code>pickup_slot_id</code> và <code>date</code>.</li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/customer/CheckoutPage.jsx → PickupPicker</code>, <code>hooks/queries/customer/usePickupOptions.js</code>, <code>services/customer/pickupApi.js</code>, <code>hooks/useNow.js</code></p>
+        <p><strong>Backend:</strong> <code>orders/public/views_public.py → PickupOptionsView</code>, <code>orders/services/pickup_service.py → list_pickup_options, _active_slots</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="c-05" open>
+    <summary>
+      <span class="jid">C-05</span><span class="jt">Đặt hàng</span><span class="jk"><span class="chip write">GHI</span><span class="chip ext">REDIS</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Bấm "Confirm N orders" → hộp xác nhận "Place N orders?" → "Place N orders".</dd>
+        <dt>Thành phần</dt><dd><code>pages/customer/CheckoutPage.jsx → place()</code>, <code>hooks/queries/customer/useCheckout.js</code>, <code>services/customer/ordersApi.js → checkout</code></dd>
+      </dl>
+
+      <div class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  actor K as Khách
+  participant P as CheckoutPage
+  participant V as CustomerOrdersView
+  participant R as Redis
+  participant S as place_orders
+  participant DB as MySQL
+  K->>P: Place N orders
+  P->>V: POST /api/customer/orders/ + Idempotency-Key
+  V->>R: SET NX idem:user:key = processing
+  alt key đã xong trước đó
+    R-->>V: kết quả cũ
+    V-->>P: trả lại đúng kết quả cũ, không tạo đơn mới
+  else key mới
+    V->>DB: hết hạn các đơn PLACED đã quá giờ của các nông dân này
+    V->>S: transaction
+    S->>DB: khoá FOR UPDATE khách, khoá FOR SHARE nông dân
+    S->>DB: đếm đơn đang chờ, kiểm tra khung giờ, sản phẩm, tồn kho trừ hàng đang giữ, chợ
+    S->>DB: INSERT orders, order_items, order_status_history T1
+    S->>DB: INSERT notifications cho từng nông dân
+    S-->>V: commit
+    V->>R: lưu kết quả 24 giờ
+    V-->>P: 201 danh sách đơn
+    P->>P: xoá giỏ, sang trang thành công
+  end
+</pre>
+      </div>
+
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Dựng body từ giỏ và lựa chọn</span>
+<pre class="code">{ "groups": [
+  { "farmer_id": 7, "pickup_slot_id": 21, "pickup_date": "2026-10-10",
+    "note": "Để giúp túi riêng",
+    "items": [ { "product_id": 3, "quantity": 2 }, { "product_id": 12, "quantity": 1 } ] }
+] }</pre>
+          <strong>Không gửi giá.</strong>
+          <div class="why"><p>Giá trong giỏ nằm ở localStorage, ai cũng sửa được. Server tự lấy giá trong DB tại thời điểm đặt; khách không thể tự đặt giá cho mình.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Gửi kèm Idempotency-Key</span>
+          <code>ordersApi.checkout</code> gọi <code>axiosClient.post(…, { idempotent: true })</code>; interceptor gắn header <code>Idempotency-Key: &lt;UUID mới&gt;</code> nếu request chưa có. Hộp xác nhận hiện trạng thái loading nên không bấm lại được trong lúc chờ.
+          <div class="why"><p>Nếu access token hết hạn giữa chừng, interceptor làm mới token rồi gửi lại <strong>cùng request đó</strong> (X-02). Vì header đã có sẵn nên lần gửi lại mang <strong>cùng</strong> key, và server nhận ra đây là cùng một lần đặt. Không có key thì lần gửi lại có thể tạo ra đơn thứ hai.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span>View: quyền, giới hạn, key</span>
+          <code>CustomerOrdersView.post</code>: <code>IsCustomer</code>; throttle scope <code>orders</code> <strong>10 lần mỗi giờ</strong> (chỉ áp cho POST). <code>require_idempotency_key</code>: thiếu thì 428 <code>PRECONDITION_REQUIRED</code>; không phải UUID thì 400.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip ext">REDIS</span>run_idempotent</span>
+          (<code>orders/services/idempotency_service.py</code>) Tính "dấu vân tay" của body (SHA-256 của JSON đã sắp khoá). Đặt khoá <code>idem:&lt;user&gt;:&lt;key&gt;</code> trong cache bằng <code>cache.add</code> (chỉ thành công nếu chưa có), giá trị <code>processing</code>, sống 5 phút.
+          <ul>
+            <li>Đặt được: request này là chủ, chạy tiếp.</li>
+            <li>Khoá đã có, khác dấu vân tay: 422 <code>IDEMPOTENCY_KEY_REUSED</code> (cùng key mà nội dung khác).</li>
+            <li>Khoá đã có, đang <code>processing</code>: 409 <code>IDEMPOTENCY_IN_PROGRESS</code>.</li>
+            <li>Khoá đã có, đã xong: trả lại đúng status và body cũ, kèm header <code>Idempotent-Replayed: true</code>.</li>
+          </ul>
+          Chạy xong thì lưu kết quả 24 giờ. Chạy lỗi thì xoá khoá để khách thử lại được.
+          <div class="why"><p>Khoá gồm cả <code>user_id</code> nên người khác không dùng lại được key của mình. Lỗi thì xoá khoá vì lỗi (ví dụ hết hàng) không phải là "đã đặt"; khách sửa giỏ rồi đặt lại phải được.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Serializer</span>
+          <code>CheckoutWriteSerializer</code>: 1–5 nhóm, mỗi <code>farmer_id</code> một lần; mỗi nhóm có <code>farmer_id</code>, <code>pickup_slot_id</code>, <code>pickup_date</code>, <code>note</code> ≤ 300 ký tự, 1–50 món, mỗi món một lần, số lượng 1–999.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Dọn đơn quá hạn trước</span>
+          <code>expire_overdue_before_checkout</code>: với các nông dân trong giỏ, chuyển những đơn <code>PLACED</code> đã tới giờ nhận mà chưa được nhận sang <code>EXPIRED</code> (T8).
+          <div class="why"><p>Đơn quá hạn mà còn PLACED thì vẫn bị tính là "đang giữ hàng" và "đang chờ". Dọn trước để khách không bị chặn oan bởi hàng giữ ảo. Lệnh định kỳ <code>expire_orders</code> cũng làm việc này, nhưng không chờ nó.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>place_orders(): một transaction</span>
+          (<code>orders/services/checkout_service.py</code>), bọc trong <code>run_with_deadlock_retry</code>:
+          <ol class="sub-steps">
+            <li><code>_lock_customer</code>: <code>SELECT … FOR UPDATE</code> dòng <code>users</code> và <code>customer_profiles</code> của khách. Bị khoá thì <code>ACCOUNT_LOCKED</code>.
+              <div class="why"><p>Hai lần đặt song song của cùng một khách phải xếp hàng, để giới hạn "tối đa 10 đơn chờ" ở bước 3 không bị vượt khi cả hai cùng đếm thấy 9.</p></div></li>
+            <li><code>_lock_farmers</code>: <code>SELECT … FOR SHARE</code> các dòng <code>farmer_profiles</code>, theo thứ tự id. Nông dân không <code>APPROVED</code> hoặc tài khoản bị khoá: <code>PRODUCT_NOT_AVAILABLE</code>, lỗi gắn vào <code>groups.N.farmer_id</code>.
+              <div class="why"><p>Khoá chia sẻ (FOR SHARE): nhiều khách đặt cùng một nông dân vẫn chạy song song, nhưng admin không đình chỉ được nông dân đó giữa chừng (đình chỉ cần khoá độc quyền, A-18). Nhờ vậy không có đơn mới "lọt" vào sau khi admin đã huỷ hết đơn của nông dân. Khoá theo thứ tự id để hai transaction không chờ nhau vòng tròn (deadlock).</p></div></li>
+            <li><code>_check_placed_order_limit</code>: số đơn <code>PLACED</code> chưa tới giờ nhận + số nhóm mới &gt; <code>MAX_PLACED_ORDERS_PER_CUSTOMER</code> (mặc định 10) thì <code>OPEN_ORDER_LIMIT_EXCEEDED</code>.
+              <div class="why"><p>Chặn khách đặt tràn lan để "giữ" hàng của nhiều sạp rồi không nhận.</p></div></li>
+            <li><code>_resolve_windows</code> → <code>resolve_pickup</code> cho từng nhóm: khung giờ phải đang bật và thuộc nông dân; ngày trong 7 ngày tới; <code>validate_pickup_date</code>: chợ đang mở, mở vào thứ đó, không có lịch đóng chợ, khung giờ đúng thứ, nằm trong giờ chợ, nông dân làm việc và không nghỉ ngày đó, <strong>chưa qua giờ chốt</strong>. Sai thì <code>SLOT_NOT_AVAILABLE</code> hoặc <code>CUTOFF_PASSED</code>, gắn vào <code>groups.N.pickup_slot_id</code>. Kết quả: giờ bắt đầu, kết thúc, giờ chốt thật của đơn.</li>
+            <li><code>_validate_products</code>: đọc các sản phẩm (<code>in_bulk</code>) và số đang giữ. Với từng món, lần lượt: phải thuộc đúng nông dân của nhóm; phải đang bán (<code>is_on_sale</code>: còn bán, không lưu trữ, không bị ẩn, đã duyệt); số lượng ≥ <code>min_per_order</code> và ≤ <code>max_per_order</code>; <strong>tồn kho − đang giữ ≥ số lượng</strong>. Lỗi gắn vào <code>groups.N.items.M.…</code>; thiếu hàng trả <code>INSUFFICIENT_STOCK</code> kèm <code>data.available</code>.</li>
+            <li><code>_validate_markets</code>: mỗi món phải được đăng ở sạp của chợ mà khung giờ thuộc về (<code>product_markets</code>). Không thì "X is not sold at &lt;chợ&gt;".</li>
+            <li><code>_create_order</code> cho từng nhóm: <code>INSERT orders</code> (status PLACED, version 1, chợ, khung giờ, nhãn sạp, ngày, giờ bắt đầu/kết thúc/chốt, ghi chú, <code>total_amount</code> = Σ giá × số lượng); <code>bulk_create</code> các <code>order_items</code> (chụp lại tên, đơn vị, <strong>đơn giá lúc đặt</strong>, thành tiền); <code>record_order_placed</code>: <code>INSERT order_status_history</code> (T1, vai trò CUSTOMER, <code>request_id</code>) và <code>notify(nông dân, ORDER_PLACED)</code>.
+              <div class="why"><p>Dòng đơn chụp lại tên và giá: nông dân đổi giá hay đổi tên sản phẩm về sau thì đơn cũ vẫn đúng như lúc khách đặt.</p></div></li>
+          </ol>
+          Kiểm tra theo thứ tự "rẻ trước, đắt sau, lỗi sớm thì dừng sớm". Lỗi ở bất kỳ bước nào thì <strong>toàn bộ</strong> transaction bị huỷ: không nhóm nào được tạo.</li>
+        <li><span class="st"><span class="chip be">BE</span>Response</span>
+          Đọc lại các đơn vừa tạo trong cùng transaction (<code>order_summary_queryset</code>, một truy vấn) và trả <strong>201</strong>:
+          <code>{ "orders": [ { id, status: "PLACED", version: 1, farmer, market, stall_label, pickup_date, pickup_start_at, pickup_end_at, cutoff_at, item_count, total_amount, … } ] }</code>. Sau commit: thông báo được đẩy và gửi email (file 00, nhóm 2).</li>
+        <li><span class="st"><span class="chip fe">FE</span>Thành công</span>
+          <code>useCheckout.onSuccess</code>: <code>clear()</code> giỏ; đánh dấu cũ cache dashboard; chuyển sang <code>/customer/checkout/success</code> và truyền danh sách đơn qua <code>state</code> của router (C-06).</li>
+        <li><span class="st"><span class="chip fe">FE</span>Lỗi</span>
+          Đóng hộp xác nhận rồi:
+          <ul>
+            <li><code>OPEN_ORDER_LIMIT_EXCEEDED</code>: hộp thoại riêng "Too many orders waiting" kèm nút "My orders".</li>
+            <li>Lỗi có khoá <code>groups.N.items.M.…</code>: <code>readItemErrors</code> đổi chỉ số N, M thành <code>product_id</code> và hiện lỗi ngay dưới dòng món đó.</li>
+            <li>Lỗi có khoá <code>groups.N.pickup_slot_id</code> (hoặc <code>pickup_date</code>, <code>farmer_id</code>, <code>note</code>): <code>readGroupErrors</code> hiện dưới khối chọn giờ của nông dân đó.</li>
+            <li>Còn lại: hộp <code>FormAlert</code> đầu trang.</li>
+          </ul>
+          Mutation không <code>silent</code> nên toast chung cũng hiện.</li>
+      </ol>
+      <h3>Lưu trữ</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Nơi</th><th>Đọc / ghi</th></tr></thead>
+        <tbody>
+          <tr><td>MySQL <code>orders</code>, <code>order_items</code>, <code>order_status_history</code></td><td>Ghi đơn mới; cập nhật đơn quá hạn thành EXPIRED</td></tr>
+          <tr><td>MySQL <code>notifications</code></td><td>Ghi thông báo cho nông dân</td></tr>
+          <tr><td>MySQL <code>users</code>, <code>customer_profiles</code>, <code>farmer_profiles</code>, <code>products</code>, <code>product_markets</code>, <code>pickup_slots</code>, <code>farmer_markets</code>, <code>markets</code>, <code>market_operating_days</code>, <code>market_closures</code>, <code>farmer_closures</code></td><td>Đọc và khoá để kiểm tra</td></tr>
+          <tr><td>Redis</td><td>Khoá idempotency (5 phút đang xử lý, 24 giờ kết quả); bộ đếm throttle</td></tr>
+          <tr><td>localStorage</td><td>Xoá giỏ</td></tr>
+        </tbody>
+      </table></div>
+      <div class="note"><p><strong>Hai khách cùng đặt món cuối cùng.</strong> Lúc đặt, backend <strong>không</strong> khoá dòng sản phẩm; nó chỉ tính "tồn kho − đang giữ". Hai khách đặt gần như cùng lúc có thể cùng qua bước này, tạo hai đơn PLACED. Chỗ chặn thật là bước nông dân nhận đơn (F-09): <code>transition_order</code> khoá dòng sản phẩm và từ chối nếu kho xuống âm, nên nông dân chỉ nhận được đơn còn đủ hàng.</p></div>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/customer/CheckoutPage.jsx → place, readItemErrors, readGroupErrors</code>, <code>hooks/queries/customer/useCheckout.js</code>, <code>services/customer/ordersApi.js → checkout</code>, <code>lib/axiosClient.js</code> (Idempotency-Key)</p>
+        <p><strong>Backend:</strong> <code>orders/customer/urls_customer.py</code>, <code>orders/customer/views_customer.py → CustomerOrdersView.post, _place_orders, _checkout_with_summaries</code>, <code>orders/customer/serializers_customer.py → CheckoutWriteSerializer</code>, <code>marketlink_core/http.py → require_idempotency_key</code>, <code>orders/services/idempotency_service.py</code>, <code>orders/services/checkout_service.py</code>, <code>orders/services/pickup_service.py → resolve_pickup</code>, <code>markets/services/validation.py → validate_pickup_date</code>, <code>catalog/services/stock.py → get_held_quantities</code>, <code>orders/services/fsm.py → record_order_placed</code>, <code>orders/services/expiry.py</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="c-06" open>
+    <summary>
+      <span class="jid">C-06</span><span class="jt">Trang đặt hàng thành công</span><span class="jk"><span class="chip local">TRÌNH DUYỆT</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Tự tới <code>/customer/checkout/success</code> sau C-05.</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Đọc dữ liệu từ router</span>
+          <code>location.state.orders</code> là danh sách đơn C-05 vừa nhận. Không gọi API.</li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Hiển thị</span>
+          Mỗi đơn: mã (link C-08), nhãn trạng thái, tên sạp, chợ và vị trí sạp, ngày giờ nhận, tổng tiền. Nút "View my orders", "Continue shopping".</li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Tải lại trang</span>
+          <code>state</code> của router mất khi tải lại hoặc mở link trực tiếp; trang hiện câu "This page only shows a summary right after checkout…" và nút tới danh sách đơn.</li>
+      </ol>
+      <div class="why"><p>Đã có sẵn dữ liệu trong response của C-05, gọi lại API chỉ để hiện tóm tắt là thừa. Chuyển trang bằng <code>replace</code> nên bấm Back không quay lại trang checkout với giỏ đã trống.</p></div>
+      <div class="files"><p><strong>Frontend:</strong> <code>pages/customer/CheckoutSuccessPage.jsx</code>, <code>hooks/queries/customer/useCheckout.js</code></p></div>
+    </div>
+  </details>
+</section>
+
+<!-- ============ ĐƠN HÀNG ============ -->
+<section class="group" id="nhom-2">
+  <h2><span class="sn">02</span>Đơn hàng</h2>
+
+  <details class="j" id="c-07" open>
+    <summary>
+      <span class="jid">C-07</span><span class="jt">Danh sách đơn, lọc theo trạng thái</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd><code>/customer/orders</code>: tab "Open" / "History", chọn một trạng thái.</dd>
+        <dt>Component</dt><dd><code>pages/customer/OrdersPage.jsx</code>, bảng <code>components/common/table/DataTable.jsx</code></dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Bộ lọc trên URL</span>
+          <code>?tab=history</code> (mặc định open) và <code>?status=…</code>. Tab Open có PLACED, ACCEPTED, READY_FOR_PICKUP; History có COMPLETED, CANCELLED, DECLINED, NO_SHOW, EXPIRED. Bấm lại trạng thái đang chọn thì bỏ chọn. Sắp xếp: Open theo giờ nhận gần nhất; History theo ngày đặt mới nhất.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Query</span>
+          <code>useCustomerOrders(params)</code> → <code>GET /api/customer/orders/?tab=open&amp;status=ACCEPTED&amp;ordering=pickup_start_at</code>.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>CustomerOrdersView.get</span>
+          <code>CustomerOrderListQuerySerializer</code> kiểm tra <code>tab</code>, <code>status</code> (danh sách, phải là trạng thái có thật), <code>farmer_id</code>, <code>pickup_from</code>, <code>pickup_to</code>, <code>ordering</code>. <code>customer_orders_queryset(customer, …)</code>: <strong>luôn lọc <code>customer = request.user</code></strong>; tab open/history; lọc thêm; JOIN khách, nông dân, chợ; đếm số dòng món (<code>item_count</code>); sắp xếp có cột phụ <code>id</code>. Phân trang 20.</li>
+        <li><span class="st"><span class="chip be">BE</span>Định dạng</span>
+          <code>OrderSummaryReadSerializer</code>: mã, trạng thái, <code>version</code>, nông dân (tên sạp, số điện thoại), chợ (tên, địa chỉ, toạ độ), nhãn sạp, ngày giờ nhận, giờ chốt, số món, tổng tiền, ngày đặt; cộng các cờ tính sẵn: <code>is_overdue</code> (PLACED đã tới giờ nhận), <code>is_expiring_soon</code> (PLACED sắp tới giờ nhận), <code>has_pending_change</code>, <code>needs_new_pickup</code>.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Hiển thị</span>
+          Bảng: mã (link C-08), sạp, chợ + vị trí sạp, ngày giờ, số món, tổng, trạng thái kèm nhãn "Change requested", "Pickup soon"; cột đếm ngược tới giờ chốt; cột thao tác.</li>
+      </ol>
+      <div class="note warn"><p><strong>Cột thao tác trong danh sách luôn trống, và chỉ có trang đầu.</strong> <code>OrderActions</code> đọc <code>allowed_actions</code>, nhưng API danh sách dùng <code>OrderSummaryReadSerializer</code> không có trường này, nên nút "Reorder" không bao giờ hiện ở đây (phải vào C-08). Cùng lý do, cột đếm ngược hiện ở cả tab History. Trang không có nút chuyển trang, nên khách có trên 20 đơn trong một tab chỉ thấy 20 đơn đầu.</p></div>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/customer/OrdersPage.jsx</code>, <code>hooks/queries/customer/useCustomerOrders.js</code>, <code>services/customer/ordersApi.js → list</code>, <code>components/customer/orders/OrderActions.jsx</code>, <code>components/common/Countdown.jsx</code></p>
+        <p><strong>Backend:</strong> <code>orders/customer/views_customer.py → CustomerOrdersView.get</code>, <code>orders/customer/serializers_customer.py → CustomerOrderListQuerySerializer, OrderSummaryReadSerializer</code>, <code>orders/selectors.py → customer_orders_queryset</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="c-08" open>
+    <summary>
+      <span class="jid">C-08</span><span class="jt">Chi tiết đơn: dòng thời gian, đếm ngược, yêu cầu sửa đang chờ</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Bấm một mã đơn → <code>/customer/orders/:orderId</code>, hoặc bấm thông báo về đơn.</dd>
+        <dt>Component</dt><dd><code>pages/customer/OrderDetailPage.jsx</code>, <code>ChangeRequestPanel</code>, <code>OrderItemsTable</code>, <code>OrderTimeline</code>, <code>OrderActions</code></dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Query</span>
+          <code>useCustomerOrder(orderId)</code> → <code>GET /api/customer/orders/45/</code>.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>CustomerOrderDetailView.get</span>
+          <code>customer_order_detail(customer, id)</code>: lọc theo id <strong>và</strong> khách; không thấy thì 404 (đơn của người khác cũng là 404). Nạp sẵn các dòng món (kèm sản phẩm và đánh giá của từng dòng), lịch sử trạng thái (kèm người thao tác), đánh giá sạp — tổng cộng vài truy vấn cố định, không phụ thuộc số dòng.
+          <div class="why"><p>Trả 404 thay vì 403 cho đơn của người khác: không xác nhận với người lạ rằng đơn số 45 có tồn tại.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span>Định dạng</span>
+          <code>CustomerOrderDetailReadSerializer</code> = trường của danh sách + <code>pickup_slot_id</code>, <code>note</code>, <code>items</code> (tên, đơn vị, đơn giá, số lượng, thành tiền, ảnh), <code>status_history</code>, <code>pending_change</code>, <code>allowed_actions</code> (bảng ở phần đầu file), <code>review_state</code> (chỉ với đơn COMPLETED: sạp đã được đánh giá chưa, những dòng món nào chưa).
+          <ul>
+            <li><code>status_history</code>: mỗi lần đổi trạng thái gồm từ, tới, mã T, vai trò, tên người làm (tên sạp nếu là nông dân), lý do. Lý do mã hoá của hệ thống được dịch sang câu dễ hiểu (<code>SYSTEM_REASON_TEXT</code>), ví dụ <code>SYSTEM_EXPIRED</code> thành "The order expired because the farmer did not confirm it before pickup."</li>
+            <li><code>pending_change</code> (<code>present_pending_change</code>): các món với số lượng hiện tại → số lượng xin đổi, ngày giờ mới, ghi chú, tổng ước tính, thời điểm gửi, hạn chót (= giờ bắt đầu nhận hàng).</li>
+          </ul></li>
+        <li><span class="st"><span class="chip fe">FE</span>Hiển thị</span>
+          Mã đơn, ngày đặt, nhãn trạng thái. Đơn còn mở: đếm ngược "Edit/cancel until". Đơn bị từ chối: lý do lấy từ lịch sử. Có yêu cầu sửa: khung "Change request — Waiting for the farmer". Khối Pickup: chợ, địa chỉ, vị trí sạp, ngày giờ, tên sạp, nút gọi điện (<code>tel:</code>), nút chỉ đường, ghi chú. Khối Items. Các nút thao tác. Dòng thời gian.</li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/customer/OrderDetailPage.jsx</code>, <code>hooks/queries/customer/useCustomerOrder.js</code>, <code>components/customer/orders/{ChangeRequestPanel,OrderItemsTable,OrderTimeline,OrderActions}.jsx</code></p>
+        <p><strong>Backend:</strong> <code>orders/customer/views_customer.py → CustomerOrderDetailView.get</code>, <code>orders/selectors.py → customer_order_detail</code>, <code>orders/customer/serializers_customer.py → CustomerOrderDetailReadSerializer, customer_allowed_actions, SYSTEM_REASON_TEXT</code>, <code>orders/services/pending_change.py → present_pending_change</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="c-09" open>
+    <summary>
+      <span class="jid">C-09</span><span class="jt">Huỷ đơn</span><span class="jk"><span class="chip write">GHI</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Ở trang chi tiết đơn, bấm "Cancel order" (chỉ hiện khi có <code>CANCEL</code>) → nhập lý do (tuỳ chọn, ≤ 500 ký tự) → "Cancel order".</dd>
+      </dl>
+
+      <div class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant P as OrderDetailPage
+  participant V as CustomerOrderCancelView
+  participant F as transition_order
+  participant DB as MySQL
+  P->>V: POST /customer/orders/45/cancel/ If-Match "3"
+  V->>F: to CANCELLED, vai trò CUSTOMER, version 3
+  F->>DB: SELECT đơn FOR UPDATE
+  F->>F: đúng chủ đơn, cạnh hợp lệ, version khớp
+  alt đơn đang ACCEPTED (T6)
+    F->>DB: khoá sản phẩm, hoàn kho
+  end
+  F->>DB: status CANCELLED, version 4, xoá yêu cầu sửa, ghi lịch sử
+  F->>DB: thông báo cho nông dân
+  V-->>P: 200 chi tiết đơn mới
+</pre>
+      </div>
+
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Gửi</span>
+          <code>useCancelOrder(orderId)</code> → <code>ordersApi.cancel({ orderId, version, reason })</code>:
+<pre class="code">POST /api/customer/orders/45/cancel/
+If-Match: "3"
+{ "reason": "Bận việc đột xuất" }</pre></li>
+        <li><span class="st"><span class="chip be">BE</span>View</span>
+          <code>CustomerOrderCancelView</code>: <code>IsCustomer</code>; <code>parse_if_match</code> (thiếu thì 428, sai thì 400); <code>CancelOrderWriteSerializer</code>; gọi <code>cancel_customer_order</code> trong <code>run_with_deadlock_retry</code>.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>transition_order</span>
+          <code>cancel_customer_order</code> kiểm tra đơn là của khách rồi gọi <code>transition_order(to=CANCELLED, actor_role=CUSTOMER, expected_version=3, reason)</code> (<code>orders/services/fsm.py</code>):
+          <ol class="sub-steps">
+            <li>Khoá dòng đơn (<code>SELECT … FOR UPDATE</code>).</li>
+            <li>Đúng chủ đơn (không thì 404).</li>
+            <li>Cặp (trạng thái hiện tại → CANCELLED) có trong bảng <code>TRANSITIONS</code> và vai trò CUSTOMER được phép: PLACED → CANCELLED là T5; ACCEPTED → CANCELLED là T6. Đơn READY_FOR_PICKUP trở đi: <code>INVALID_STATUS_TRANSITION</code>.</li>
+            <li>Version khớp (không thì 409 <code>RESOURCE_MODIFIED</code>).</li>
+            <li>Điều kiện riêng của khách: chưa qua giờ chốt (<code>CUTOFF_PASSED</code>), trừ khi đơn đang chờ khách chọn giờ mới vì chợ đổi lịch.</li>
+            <li>T6 (đơn đã nhận, kho đã bị trừ): hoàn kho từng món vào <code>products.stock_quantity</code>, có ghi lịch sử sản phẩm. T5: không đụng kho.</li>
+            <li>Ghi <code>status = CANCELLED</code>, <code>version + 1</code>, xoá <code>pending_change</code> nếu có; ghi lịch sử bằng <code>save_with_history</code>; thêm dòng <code>order_status_history</code> kèm lý do và <code>request_id</code>.</li>
+            <li><code>notify</code> nông dân (<code>ORDER_CANCELLED</code>).</li>
+          </ol>
+          <div class="why"><p>Huỷ đơn đi qua cùng hàm <code>transition_order</code> như mọi thay đổi trạng thái khác (nông dân nhận, admin đình chỉ, hệ thống hết hạn). Hoàn kho, lịch sử, thông báo luôn đúng, không có đường tắt nào bỏ sót.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Kết quả</span>
+          Thành công: hook ghi thẳng đơn mới vào cache chi tiết (<code>setQueryData</code>), đánh dấu cũ danh sách đơn và dashboard; đóng hộp thoại. Lỗi: đóng hộp thoại, hiện lỗi đầu trang; 409 thì thêm "Reload the page to see the latest version." Mutation không <code>silent</code> nên toast chung cũng hiện cùng lúc.</li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/customer/OrderDetailPage.jsx → confirmCancel</code>, <code>hooks/queries/customer/useOrderActions.js → useCancelOrder, useOrderMutation</code>, <code>services/customer/ordersApi.js → cancel</code></p>
+        <p><strong>Backend:</strong> <code>orders/customer/views_customer.py → CustomerOrderCancelView</code>, <code>marketlink_core/http.py → parse_if_match</code>, <code>orders/services/customer_order_service.py → cancel_customer_order</code>, <code>orders/services/fsm.py → transition_order, TRANSITIONS</code>, <code>catalog/services/stock.py</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="c-10" open>
+    <summary>
+      <span class="jid">C-10</span><span class="jt">Sửa đơn: món, số lượng, khung giờ, ghi chú</span><span class="jk"><span class="chip write">GHI</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Bấm "Edit order" (đơn PLACED) hoặc "Request a change" (đơn ACCEPTED) → <code>/customer/orders/:orderId/edit</code>: đổi số lượng, bỏ món, chọn khung giờ khác, sửa ghi chú → "Save changes" / "Send change request".</dd>
+        <dt>Component</dt><dd><code>pages/customer/EditOrderPage.jsx</code></dd>
+      </dl>
+      <h3>Cùng một nút, hai kết quả khác nhau</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Đơn đang</th><th>Kết quả khi lưu</th><th>Lý do</th></tr></thead>
+        <tbody>
+          <tr><td>PLACED</td><td>Đơn đổi <strong>ngay</strong></td><td>Nông dân chưa nhận, chưa chuẩn bị gì, kho chưa bị trừ</td></tr>
+          <tr><td>ACCEPTED</td><td>Đơn <strong>giữ nguyên</strong>; tạo một <strong>yêu cầu sửa</strong> (<code>pending_change</code>) chờ nông dân duyệt (F-15, F-16)</td><td>Nông dân đã nhận và đã trừ kho theo nội dung cũ; đổi ngay là đổi điều họ đã cam kết</td></tr>
+        </tbody>
+      </table></div>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Dữ liệu ban đầu</span>
+          Đơn từ <code>useCustomerOrder</code>; lịch nhận từ <code>usePickupOptions(farmer_id, product_ids)</code>. Các thay đổi giữ trong state (<code>lines</code>, <code>note</code>, <code>slot</code>), chưa gửi gì. Tổng mới tính bằng đơn giá đã lưu trong đơn. Bỏ hết món thì nút lưu bị khoá và hiện "An order must contain at least one item…".</li>
+        <li><span class="st"><span class="chip fe">FE</span>Gửi</span>
+          Luôn gửi đủ danh sách món và ghi chú; khung giờ chỉ gửi khi đã chọn:
+<pre class="code">PATCH /api/customer/orders/45/
+If-Match: "3"
+{ "items": [ { "product_id": 3, "quantity": 4 } ], "note": "…",
+  "pickup_slot_id": 22, "pickup_date": "2026-10-11" }</pre></li>
+        <li><span class="st"><span class="chip be">BE</span>View và serializer</span>
+          <code>CustomerOrderDetailView.patch</code>: <code>parse_if_match</code>; <code>CustomerOrderModifySerializer</code> (khung giờ và ngày phải đi cùng nhau; danh sách món không rỗng, không trùng); <code>modify_customer_order</code> kiểm tra đơn là của khách và ngày mới nằm trong khoảng đặt được, rồi gọi <code>modify_order</code>.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>modify_order(): kiểm tra</span>
+          (<code>orders/services/modify.py</code>) Trong transaction, khoá dòng đơn:
+          <ol class="sub-steps">
+            <li>Version khớp (409); đúng chủ đơn; trạng thái là PLACED hoặc ACCEPTED.</li>
+            <li>Chưa qua giờ chốt (<code>CUTOFF_PASSED</code>). Ngoại lệ: đơn đang cần chọn giờ mới vì chợ đổi lịch thì bỏ qua giờ chốt, nhưng <strong>bắt buộc chọn giờ</strong> và <strong>chỉ được đổi giờ</strong>, không được đổi món. Với đơn PLACED, giờ mới áp dụng ngay và cờ "cần chọn giờ mới" được xoá. Với đơn ACCEPTED, giờ mới chỉ thành một yêu cầu sửa: cờ chỉ được xoá khi nông dân duyệt yêu cầu (F-16); tới giờ nhận cũ mà vẫn chưa xong thì đơn bị huỷ (<code>_cancel_unrescheduled</code>).</li>
+            <li>Khung giờ mới: <code>validate_pickup_date</code> với <strong>chợ của đơn</strong> (khung giờ phải thuộc sạp của nông dân ở đúng chợ này).</li>
+            <li>Món: khoá dòng các sản phẩm liên quan (<code>lock_products</code>); mỗi món phải thuộc nông dân; món <strong>tăng</strong> số lượng phải đang bán, ≤ <code>max_per_order</code>, và có đăng ở sạp tại chợ của đơn; món đổi số lượng phải ≥ <code>min_per_order</code>.</li>
+            <li>Tồn kho cho phần tăng, trừ số đang giữ bởi các đơn PLACED <strong>khác</strong>: đơn PLACED thì cả số lượng mới phải đủ; đơn ACCEPTED (kho đã trừ phần cũ) thì chỉ <strong>phần chênh lệch</strong> phải đủ. Thiếu: <code>INSUFFICIENT_STOCK</code>, lỗi theo id sản phẩm.</li>
+            <li>Không có gì thay đổi thật: trả đơn như cũ, không ghi gì.</li>
+          </ol></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>modify_order(): ghi</span>
+          <code>version + 1</code>, rồi:
+          <ul>
+            <li><strong>PLACED</strong>: ghi thẳng vào đơn: ghi chú; ngày, khung giờ, giờ bắt đầu/kết thúc/chốt, nhãn sạp mới; xoá, sửa, thêm dòng <code>order_items</code> (dòng cũ <strong>giữ đơn giá cũ</strong>, dòng mới lấy giá hiện tại); tính lại tổng. Lịch sử: "Customer modified: …".</li>
+            <li><strong>ACCEPTED</strong>: chỉ ghi <code>pending_change</code> (JSON: món kèm đơn giá, ngày, khung giờ, ghi chú, tóm tắt thay đổi, thời điểm gửi). Yêu cầu mới <strong>thay</strong> yêu cầu cũ nếu có. Lịch sử: "Change request submitted: …".</li>
+          </ul>
+          Cả hai: <code>notify</code> nông dân <code>ORDER_MODIFIED</code> kèm tóm tắt, ví dụ "Cà chua 2-&gt;4; rescheduled to 2026-10-11 (06:00–08:00)".
+          <div class="why"><p><strong>Dòng cũ giữ đơn giá cũ:</strong> khách đặt lúc giá 2.00, nông dân tăng lên 2.50; khách chỉ sửa ghi chú thì không thể bị tính lại giá mới. Giá mới chỉ áp cho món thêm vào sau.</p>
+          <p><strong>Yêu cầu sửa tự hết hạn:</strong> nông dân không trả lời trước giờ bắt đầu nhận hàng thì hệ thống xoá yêu cầu và báo khách "change request rejected" (<code>_expire_change_request</code> trong <code>orders/services/expiry.py</code>), đơn giữ nội dung cũ.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Kết quả</span>
+          Thành công: cập nhật cache chi tiết, đánh dấu cũ danh sách và dashboard, quay về trang chi tiết (đơn ACCEPTED sẽ hiện khung "Change request"). Lỗi có khoá <code>items.N.…</code> hiện dưới dòng đó; còn lại hiện đầu trang, kèm toast chung (mutation không <code>silent</code>). Thực tế phần lớn lỗi theo món của <code>modify_order</code> (dưới mức tối thiểu, vượt mức tối đa, thiếu hàng) dùng khoá là <strong>id sản phẩm</strong> (ví dụ <code>"12"</code>), không phải <code>items.N</code>, nên không khớp mẫu và rơi lên đầu trang. Xem Điểm cần lưu ý 11.</li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/customer/EditOrderPage.jsx</code>, <code>hooks/queries/customer/useOrderActions.js → useModifyOrder</code>, <code>services/customer/ordersApi.js → modify</code></p>
+        <p><strong>Backend:</strong> <code>orders/customer/views_customer.py → CustomerOrderDetailView.patch</code>, <code>orders/customer/serializers_customer.py → CustomerOrderModifySerializer</code>, <code>orders/services/customer_order_service.py → modify_customer_order</code>, <code>orders/services/modify.py → modify_order</code>, <code>orders/services/pending_change.py</code>, <code>orders/services/expiry.py → _expire_change_request</code>, <code>catalog/services/stock.py → lock_products</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="c-11" open>
+    <summary>
+      <span class="jid">C-11</span><span class="jt">Đặt lại đơn cũ</span><span class="jk"><span class="chip read">ĐỌC</span><span class="chip local">TRÌNH DUYỆT</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Bấm "Reorder" ở trang chi tiết đơn đã kết thúc, hoặc nút đặt lại đơn gần nhất ở dashboard.</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Gọi xem trước</span>
+          <code>useReorder().mutate(orderId)</code> → <code>GET /api/customer/orders/45/reorder-preview/</code>.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>CustomerOrderReorderPreviewView</span>
+          Chỉ đọc, không tạo gì. Lấy đơn của chính khách (không thì 404). <code>reorder_items(order)</code> chia các dòng thành hai nhóm:
+          <ul>
+            <li>Bỏ qua <code>UNAVAILABLE</code>: sản phẩm không còn hiện công khai hoặc đang tạm ngừng bán.</li>
+            <li>Bỏ qua <code>OUT_OF_STOCK</code>: tồn kho − đang giữ &lt; mức tối thiểu.</li>
+            <li>Giữ lại: số lượng như đơn cũ, kẹp theo min/max hiện tại.</li>
+          </ul>
+          Các món giữ lại được trả dạng thẻ sản phẩm (<code>ProductCardSerializer</code>) với <strong>giá hôm nay</strong>.
+          <div class="why"><p>Dùng cùng điều kiện "còn bán, còn hàng" như checkout, để không đưa vào giỏ món mà lát nữa checkout sẽ từ chối.</p></div></li>
+        <li><span class="st"><span class="chip local">TRÌNH DUYỆT</span>Đưa vào giỏ</span>
+          Mỗi món giữ lại: <code>addItem(toCartLine(product), quantity)</code> (C-01, cộng dồn nếu đã có). Có món bị bỏ: toast "Not added, no longer available: …". Có món được thêm: toast "N item(s) added to your cart at today's prices" và chuyển tới <code>/customer/cart</code>.</li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>hooks/queries/customer/useReorder.js</code>, <code>services/customer/ordersApi.js → reorderPreview</code></p>
+        <p><strong>Backend:</strong> <code>orders/customer/views_customer.py → CustomerOrderReorderPreviewView</code>, <code>orders/selectors.py → reorder_items</code></p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============ ĐÁNH GIÁ ============ -->
+<section class="group" id="nhom-3">
+  <h2><span class="sn">03</span>Đánh giá</h2>
+
+  <details class="j" id="c-12" open>
+    <summary>
+      <span class="jid">C-12</span><span class="jt">Đánh giá từng món trong đơn</span><span class="jk"><span class="chip write">GHI</span><span class="chip ext">AI</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Đơn COMPLETED → "Write a review" → <code>/customer/orders/:orderId/review</code>. Mỗi món chưa đánh giá có một form: chọn 1–5 sao, bình luận (tuỳ chọn, ≤ 1000 ký tự) → "Submit review".</dd>
+        <dt>Component</dt><dd><code>pages/customer/ReviewOrderPage.jsx → ReviewForm</code></dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Chỉ hiện phần còn thiếu</span>
+          Trang đọc <code>review_state</code> của đơn (C-08): chỉ vẽ form cho sạp nếu chưa đánh giá, và cho các dòng trong <code>items_pending_review</code>. Đã đánh giá hết: "Everything in this order has already been reviewed." Nút gửi bị khoá khi chưa chọn sao.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Gửi</span>
+          <code>useReviewItem(orderId)</code> → <code>POST /api/customer/orders/45/items/101/review/</code> với <code>{ "rating": 4, "comment": "Ngọt" }</code> (bình luận rỗng gửi <code>null</code>).</li>
+        <li><span class="st"><span class="chip be">BE</span>View và serializer</span>
+          <code>ProductReviewView</code>: <code>IsCustomer</code>. <code>ReviewWriteSerializer</code>: sao là số nguyên 1–5; bình luận ≤ 1000 ký tự, cắt khoảng trắng, rỗng thành <code>null</code>.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>create_product_review()</span>
+          (<code>reviews/services/review_service.py</code>)
+          <ol class="sub-steps">
+            <li>Đơn phải của khách (404); dòng món phải thuộc đúng đơn trong URL (404).</li>
+            <li>Đơn phải COMPLETED; không thì <code>REVIEW_NOT_ALLOWED</code>.</li>
+            <li>Dòng món chưa có đánh giá; có rồi thì <code>REVIEW_NOT_ALLOWED</code>.</li>
+            <li><code>INSERT product_reviews</code> trong transaction riêng. Ràng buộc một-một giữa <code>product_reviews</code> và <code>order_items</code> trong DB: nếu hai request trùng nhau cùng qua bước 3, request thứ hai bị DB chặn và cũng nhận <code>REVIEW_NOT_ALLOWED</code>.</li>
+            <li><code>check_review_text</code>: sau commit, chạy nền (thread pool) cho AI đọc bình luận; nếu thấy xúc phạm hoặc để lại liên lạc để giao dịch ngoài thì tạo một cờ trong <code>moderation_flags</code> cho admin. Lỗi ở bước này chỉ ghi log (<code>safely</code>).</li>
+            <li>Sao ≤ 2: <code>check_product_low_ratings</code> đếm đánh giá 1–2 sao của sản phẩm trong 30 ngày; đủ 3 thì tạo cờ "có thể không đúng mô tả".</li>
+          </ol>
+          <div class="why">
+            <p><strong>Chỉ đơn COMPLETED được đánh giá:</strong> chỉ người đã thật sự nhận hàng mới được chấm điểm, nên điểm sao khó bị làm giả.</p>
+            <p><strong>AI chạy nền, sau commit:</strong> khách không phải chờ AI; AI hỏng thì đánh giá vẫn được lưu. AI chỉ <strong>gắn cờ</strong>, không tự ẩn đánh giá; quyết định ẩn thuộc về admin (A-44).</p>
+          </div></li>
+        <li><span class="st"><span class="chip be">BE</span>Response</span>
+          201 với đánh giá đã lưu; tên người viết rút gọn ("Nguyen V. A.").</li>
+        <li><span class="st"><span class="chip fe">FE</span>Cập nhật</span>
+          Đánh dấu cũ cache chi tiết đơn → tải lại → <code>review_state</code> mới → form vừa gửi biến mất. Lỗi hiện ở hộp đầu trang.</li>
+      </ol>
+      <h3>Lưu trữ</h3>
+      <p>MySQL <code>product_reviews</code> (ghi), có thể <code>moderation_flags</code> (ghi, nền). Gemini (nền).</p>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/customer/ReviewOrderPage.jsx</code>, <code>components/common/forms/RatingInput.jsx</code>, <code>hooks/queries/customer/useReviews.js → useReviewItem</code>, <code>services/customer/reviewsApi.js → item</code></p>
+        <p><strong>Backend:</strong> <code>reviews/customer/urls_customer.py</code>, <code>reviews/customer/views_customer.py → ProductReviewView</code>, <code>reviews/customer/serializers_customer.py</code>, <code>reviews/services/review_service.py → create_product_review</code>, <code>system/auto_flags.py → check_review_text, check_product_low_ratings, safely</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="c-13" open>
+    <summary>
+      <span class="jid">C-13</span><span class="jt">Đánh giá sạp</span><span class="jk"><span class="chip write">GHI</span><span class="chip ext">AI</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Cùng trang với C-12, form đầu tiên mang tên sạp.</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Gửi</span>
+          <code>useReviewFarmer(orderId)</code> → <code>POST /api/customer/orders/45/farmer-review/</code> với <code>{ rating, comment }</code>.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>create_farmer_review()</span>
+          Giống C-12 bước 4 nhưng: không cần dòng món; mỗi <strong>đơn</strong> chỉ một đánh giá sạp (ràng buộc một-một giữa <code>farmer_reviews</code> và <code>orders</code>); <code>INSERT farmer_reviews</code>; AI đọc bình luận ở nền. Không có bước đếm sao thấp.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Cập nhật</span>Như C-12.</li>
+      </ol>
+      <div class="why"><p>Hai loại đánh giá tách riêng: đánh giá món nói về chất lượng hàng (hiện ở trang sản phẩm, G-07); đánh giá sạp nói về cách phục vụ (đúng giờ, đúng hẹn, hiện ở trang nông dân, G-12). Điểm trung bình của sạp chỉ tính từ <code>farmer_reviews</code>.</p></div>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>hooks/queries/customer/useReviews.js → useReviewFarmer</code>, <code>services/customer/reviewsApi.js → farmer</code></p>
+        <p><strong>Backend:</strong> <code>reviews/customer/views_customer.py → FarmerReviewView</code>, <code>reviews/services/review_service.py → create_farmer_review</code></p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============ YÊU THÍCH ============ -->
+<section class="group" id="nhom-4">
+  <h2><span class="sn">04</span>Yêu thích</h2>
+
+  <details class="j" id="c-14" open>
+    <summary>
+      <span class="jid">C-14</span><span class="jt">Tải danh sách đã thích để tô trái tim</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Không bấm gì. Chạy khi trang có nút trái tim được mở bởi một khách hàng.</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Một query dùng chung</span>
+          Mỗi <code>FavoriteButton</code> gọi <code>useFavorites()</code>; hook chạy query khoá <code>['favorite-ids']</code> (chỉ khi là khách hàng, <code>staleTime</code> 60 giây). Trang có 20 trái tim vẫn chỉ có <strong>một</strong> request:
+<pre class="code">GET /api/customer/favorite-ids/</pre></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>FavoriteIdsView</span>
+          <code>customer_favorite_ids(customer)</code>: ba truy vấn chỉ lấy cột id. Trả <code>{ "farmer_ids": […], "product_ids": […], "market_ids": […] }</code>.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Tô trái tim</span>
+          <code>isFavorite(kind, id)</code> kiểm tra id có trong danh sách. Chưa tải xong thì dùng tạm trường <code>is_favorite</code> có sẵn trong dữ liệu thẻ.</li>
+      </ol>
+      <div class="why"><p>Các danh sách công khai được cache ở server (file 01) nên trường <code>is_favorite</code> trong đó có thể cũ tới 1 phút. Một danh sách id riêng, nhỏ, luôn mới, cập nhật lạc quan (C-15) thì trái tim đổi màu ngay khi bấm, ở mọi nơi cùng lúc.</p></div>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>hooks/queries/customer/useFavorites.js → useFavorites</code>, <code>services/customer/favoritesApi.js → ids</code>, <code>components/common/favorites/FavoriteButton.jsx</code></p>
+        <p><strong>Backend:</strong> <code>favorites/customer/views_customer.py → FavoriteIdsView</code>, <code>favorites/selectors.py → customer_favorite_ids</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="c-15" open>
+    <summary>
+      <span class="jid">C-15</span><span class="jt">Thả tim hoặc bỏ tim nông dân, sản phẩm, chợ</span><span class="jk"><span class="chip write">GHI</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Bấm trái tim trên thẻ hoặc trang chi tiết.</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Đổi màu ngay (lạc quan)</span>
+          <code>toggle({ kind, id, isFavorite })</code>. <code>onMutate</code>: huỷ query id đang chạy, chụp lại danh sách cũ, thêm hoặc bớt id ngay trong cache. Trái tim đổi màu trước khi server trả lời.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Request</span>
+<pre class="code">POST   /api/customer/favorite-products/     { "product_id": 12 }
+DELETE /api/customer/favorite-products/12/</pre>
+          (tương tự <code>favorite-farmers</code> với <code>farmer_id</code>, <code>favorite-markets</code> với <code>market_id</code>)</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>add_favorite / remove_favorite</span>
+          (<code>favorites/services/favorite_service.py</code>)
+          <ul>
+            <li>Thêm: đối tượng phải đang hiện (nông dân APPROVED; sản phẩm không lưu trữ, không ẩn, đã duyệt, nông dân APPROVED; chợ đang mở), không thì 404. Đã thích rồi: không làm gì, vẫn trả 201. <code>INSERT</code> trong transaction; trùng ở DB (hai lần bấm song song) thì bỏ qua.</li>
+            <li>Bỏ: <code>DELETE</code> theo khách + id; không có gì để xoá cũng trả 204.</li>
+          </ul>
+          <div class="why"><p>Cả hai thao tác "làm bao nhiêu lần cũng ra cùng kết quả" (idempotent): bấm nhanh hai lần, mạng gửi lại, hay hai tab cùng bấm đều không sinh lỗi hay dòng trùng.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Kết thúc</span>
+          Lỗi: trả cache về bản đã chụp, toast lỗi. Dù thành công hay lỗi: tải lại danh sách id và danh sách trang yêu thích của loại đó.</li>
+      </ol>
+      <div class="note"><p><strong>Ích lợi phụ của thả tim sản phẩm:</strong> khi sản phẩm hết hàng rồi được nhập lại (tồn kho từ 0 lên &gt; 0), mọi khách đã thả tim nhận thông báo <code>RESTOCK</code> (<code>notify_restock_for_product</code>, hành trình F-22). Thẻ sản phẩm hết hàng nhắc khách điều này.</p></div>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>components/common/favorites/FavoriteButton.jsx</code>, <code>hooks/queries/customer/useFavorites.js → useFavorites (mutation)</code>, <code>services/customer/favoritesApi.js → add, remove</code></p>
+        <p><strong>Backend:</strong> <code>favorites/customer/urls_customer.py</code>, <code>favorites/customer/views_customer.py → _FavoriteAddView, _FavoriteRemoveView</code>, <code>favorites/customer/serializers_customer.py</code>, <code>favorites/services/favorite_service.py</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="c-16" open>
+    <summary>
+      <span class="jid">C-16</span><span class="jt">Trang yêu thích theo tab</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd><code>/customer/favorites</code>: tab Farmers / Products / Markets, nút Previous / Next.</dd>
+        <dt>Component</dt><dd><code>pages/customer/FavoritesPage.jsx → FavoriteList</code></dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Query theo tab</span>
+          Chỉ tab đang mở được vẽ nên chỉ tab đó gọi API. <code>useFavoriteList(kind, page)</code> → <code>GET /api/customer/favorite-products/?page=1</code>. Số trang giữ trong state (mất khi tải lại).</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Dùng lại selector công khai</span>
+          <code>_FavoriteListView.get</code>: lấy đúng queryset công khai của loại đó (<code>public_farmers()</code>, <code>public_products(in_stock=False)</code>, <code>public_markets()</code>), lọc thêm "đã được khách này thích", phân trang 20, định dạng bằng chính serializer của trang công khai.
+          <div class="why"><p>Thứ đã thích hiện y như ở trang công khai. Thứ không còn hiện công khai (sản phẩm bị ẩn, nông dân bị đình chỉ) tự biến khỏi danh sách mà không phải xoá dòng yêu thích; được mở lại thì tự quay về. Sản phẩm hết hàng vẫn hiện (<code>in_stock=False</code>) để khách chờ thông báo có hàng lại.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Hiển thị</span>
+          Lưới <code>FarmerCard</code> / <code>ProductCard</code> / <code>MarketCard</code>. Bỏ tim ngay trên trang (C-15) thì danh sách tải lại và thẻ biến mất.</li>
+      </ol>
+      <div class="note warn"><p><strong>Nút "Add to cart" trên trang này không làm gì.</strong> <code>FavoritesPage</code> vẽ <code>ProductCard</code> mà không truyền <code>onAddToCart</code>; nút gọi <code>onAddToCart?.(product)</code> nên bấm vào không có tác dụng.</p></div>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/customer/FavoritesPage.jsx</code>, <code>hooks/queries/customer/useFavorites.js → useFavoriteList</code>, <code>services/customer/favoritesApi.js → list</code></p>
+        <p><strong>Backend:</strong> <code>favorites/customer/views_customer.py → _FavoriteListView, FavoriteFarmersView, FavoriteProductsView, FavoriteMarketsView</code></p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============ TÀI KHOẢN ============ -->
+<section class="group" id="nhom-5">
+  <h2><span class="sn">05</span>Tài khoản</h2>
+
+  <details class="j" id="c-17" open>
+    <summary>
+      <span class="jid">C-17</span><span class="jt">Dashboard khách hàng</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Mở <code>/customer</code> (tab "Home" ở thanh dưới).</dd>
+        <dt>Component</dt><dd><code>pages/customer/CustomerDashboard.jsx</code></dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Một query cho cả trang</span>
+          <code>useCustomerDashboard()</code> (<code>staleTime</code> 30 giây) → <code>GET /api/customer/dashboard/</code>.
+          <div class="why"><p>Một request trả đủ mọi khối, thay vì 5 request riêng. Trang đầu tiên khách thấy nên phải nhanh.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Dọn đơn quá hạn của chính khách</span>
+          <code>CustomerDashboardView</code>: <code>sweep_farmers_of(customer)</code> tìm nông dân của những đơn PLACED đã tới giờ nhận; <code>expire_overdue_before_checkout</code> chuyển chúng sang EXPIRED.
+          <div class="why"><p>Dashboard đếm đơn đang mở. Không dọn trước thì có thể đếm cả đơn thật ra đã hết hạn nhưng lệnh định kỳ chưa chạy tới. Chỉ dọn đúng nông dân liên quan để không làm việc thừa.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>build_customer_dashboard()</span>
+          (<code>orders/services/customer_dashboard.py</code>)
+          <ul>
+            <li><code>counts</code>: một truy vấn <code>aggregate</code> đếm đơn mở, sẵn sàng nhận, hoàn tất, và hoàn tất mà còn thiếu đánh giá.</li>
+            <li><code>upcoming</code>: 3 đơn mở có giờ nhận gần nhất, chưa bắt đầu.</li>
+            <li><code>favorite_farmers</code>: tối đa 4 nông dân đã thích (chỉ người đang hiện công khai).</li>
+            <li><code>favorite_markets</code>: các chợ đã thích (đang mở).</li>
+            <li><code>last_order_id</code>: đơn mới nhất, cho nút đặt lại.</li>
+            <li><code>recent_notifications</code>: 5 thông báo mới nhất.</li>
+          </ul>
+          Mỗi khối định dạng bằng serializer có sẵn (tóm tắt đơn, thẻ nông dân, thẻ chợ, thông báo).</li>
+        <li><span class="st"><span class="chip fe">FE</span>Hiển thị</span>
+          Ô số liệu (bấm vào dẫn tới danh sách đơn tương ứng; ô "sẵn sàng nhận" được tô nổi khi &gt; 0); "Next pickups"; "Stalls you follow"; "Saved markets"; "Latest updates" kèm link tới trang thông báo. Khách mới chưa có gì: lời mời "Browse products". Nút đặt lại đơn gần nhất chạy C-11.</li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/customer/CustomerDashboard.jsx</code>, <code>hooks/queries/customer/useCustomerDashboard.js</code>, <code>services/customer/customerApi.js → dashboard</code></p>
+        <p><strong>Backend:</strong> <code>accounts/customer/urls_customer.py</code>, <code>accounts/customer/views_customer.py → CustomerDashboardView</code>, <code>orders/services/customer_dashboard.py</code>, <code>orders/services/checkout_service.py → expire_overdue_before_checkout</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="c-18" open>
+    <summary>
+      <span class="jid">C-18</span><span class="jt">Xem hồ sơ</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Mở <code>/customer/profile</code> (tab "Me").</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Query</span>
+          <code>useCustomerProfile()</code> → <code>GET /api/customer/profile/</code>.</li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>CustomerProfileView.get</span>
+          Đọc <code>request.user.customer_profile</code> (không nhận id từ URL: chỉ xem được hồ sơ của chính mình). <code>CustomerProfileReadSerializer</code>: <code>full_name, phone, address, email, image</code> (đường dẫn đầy đủ của ảnh).</li>
+        <li><span class="st"><span class="chip fe">FE</span>Đổ vào form</span>
+          Khi có dữ liệu, <code>reset(toFormValues(profile))</code> điền form; email hiện ở ô chỉ đọc; avatar là ảnh hoặc chữ viết tắt của tên.</li>
+      </ol>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/customer/ProfilePage.jsx</code>, <code>hooks/queries/customer/useCustomerProfile.js</code>, <code>services/customer/customerApi.js → profile</code></p>
+        <p><strong>Backend:</strong> <code>accounts/customer/views_customer.py → CustomerProfileView.get</code>, <code>accounts/customer/serializers_customer.py → CustomerProfileReadSerializer</code></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="j" id="c-19" open>
+    <summary>
+      <span class="jid">C-19</span><span class="jt">Sửa hồ sơ, có ảnh đại diện</span><span class="jk"><span class="chip write">GHI</span></span>
+      <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
+    </summary>
+    <div class="jb">
+      <dl class="meta">
+        <dt>Người dùng</dt><dd>Ở <code>/customer/profile</code>: sửa họ tên, số điện thoại, địa chỉ; "Choose photo" / "Change photo" / "Remove photo" → "Save".</dd>
+      </dl>
+      <ol class="steps">
+        <li><span class="st"><span class="chip fe">FE</span>Kiểm tra</span>
+          <code>profileSchema</code> (<code>services/customer/profile.schemas.js</code>): họ tên 2–100; số điện thoại khớp mẫu số di động Việt Nam; địa chỉ 5–255; ảnh là file JPG/PNG/WEBP ≤ 2 MB (<code>imageFileError</code>). Chọn ảnh thì xem trước ngay bằng URL tạm của trình duyệt (<code>useObjectUrl</code>), chưa tải lên.</li>
+        <li><span class="st"><span class="chip fe">FE</span>Chỉ gửi phần đã đổi</span>
+          Lấy các ô văn bản có trong <code>dirtyFields</code>; có ảnh mới thì thêm <code>image: File</code>; bấm xoá ảnh thì thêm <code>image: null</code>. Không đổi gì thì không gửi. Có file thì gửi <code>multipart/form-data</code>, không thì JSON:
+<pre class="code">PATCH /api/customer/profile/
+{ "phone": "0987654321", "image": null }</pre>
+          <div class="why"><p>Gửi phần đã đổi (PATCH): không vô tình ghi đè trường khác, và không tải lại ảnh cũ mỗi lần sửa một chữ trong địa chỉ.</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span>Serializer</span>
+          <code>CustomerProfileWriteSerializer</code>: các trường đều tuỳ chọn; số điện thoại qua <code>clean_phone</code> (chuẩn hoá như G-13); email không có trong serializer nên gửi lên cũng bị bỏ qua. Ảnh qua <code>validate_image_upload</code> (<code>catalog/services/farmer_product.py</code>):
+          <ul>
+            <li>Đuôi file và loại MIME khai báo phải là JPG/PNG/WEBP; ≤ 2 MB.</li>
+            <li>Pillow đọc phần đầu file để biết định dạng <strong>thật</strong> và số điểm ảnh (≤ 36 triệu); file giả dạng ảnh bị từ chối.</li>
+            <li>Giải mã rồi <strong>lưu lại thành file mới</strong>, đặt tên theo định dạng thật, không dùng tên khách gửi.</li>
+          </ul>
+          <div class="why"><p>Lưu lại thành file mới thì chỉ còn điểm ảnh: mất hết EXIF (ảnh chụp điện thoại có thể chứa toạ độ GPS nhà người chụp) và mọi dữ liệu giấu kèm trong file. Giới hạn số điểm ảnh chặn "bom giải nén" (file nhỏ nhưng giải mã ra hàng GB bộ nhớ).</p></div></li>
+        <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>update_customer_profile()</span>
+          (<code>accounts/services/customer_profile_service.py</code>) Số điện thoại đổi mà đã thuộc khách khác: lỗi ở trường <code>phone</code>. Gán các trường, <code>UPDATE customer_profiles</code> chỉ những cột đã gửi. Ảnh cũ bị thay hoặc bị xoá: file cũ được xoá khỏi ổ đĩa <strong>sau khi commit</strong>.
+          <div class="why"><p>Xoá file sau commit: nếu lưu DB thất bại thì hồ sơ vẫn trỏ tới ảnh cũ, và ảnh cũ vẫn còn trên ổ đĩa.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span>Kết quả</span>
+          Ghi hồ sơ mới vào cache; đánh dấu cũ cache <code>/auth/me/</code> để tên và ảnh trên menu tài khoản đổi theo; toast "Profile saved"; đặt lại form theo dữ liệu mới. Lỗi: gắn vào từng ô hoặc hộp đầu form.</li>
+      </ol>
+      <h3>Lưu trữ</h3>
+      <p>MySQL <code>customer_profiles</code> (ghi). Ổ đĩa <code>media/customers/</code> (ghi ảnh mới, xoá ảnh cũ).</p>
+      <div class="files">
+        <p><strong>Frontend:</strong> <code>pages/customer/ProfilePage.jsx</code>, <code>services/customer/profile.schemas.js</code>, <code>schemas/farmer/product.schema.js → imageFileError, IMAGE_TYPES</code>, <code>hooks/common/useObjectUrl.js</code>, <code>hooks/queries/customer/useCustomerProfile.js → useUpdateCustomerProfile</code>, <code>services/customer/customerApi.js → updateProfile</code></p>
+        <p><strong>Backend:</strong> <code>accounts/customer/views_customer.py → CustomerProfileView.patch</code>, <code>accounts/customer/serializers_customer.py → CustomerProfileWriteSerializer</code>, <code>catalog/services/farmer_product.py → validate_image_upload, _probe_image, _reencode</code>, <code>accounts/services/customer_profile_service.py</code></p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============ LƯU Ý ============ -->
+<section class="group" id="luu-y">
+  <h2><span class="sn">!!</span>Điểm cần lưu ý (phát hiện khi đọc code)</h2>
+  <p class="sub">Những chỗ code hiện tại chạy khác với điều người đọc có thể nghĩ. Ghi lại để không trả lời sai khi bị hỏi, và để quyết định có sửa hay không.</p>
+  <ol class="findings">
+    <li><strong>Lúc đặt hàng không khoá dòng sản phẩm.</strong> <code>place_orders</code> chỉ tính "tồn kho − đang giữ" mà không <code>SELECT … FOR UPDATE</code> sản phẩm. Hai khách có thể cùng đặt món cuối cùng; chỗ chặn thật là lúc nông dân nhận đơn (khoá dòng, kho không được âm). Đây là lựa chọn thiết kế, nhưng cần nói đúng khi bị hỏi.</li>
+    <li><strong>Danh sách đơn không có nút thao tác và không chuyển trang được</strong> (C-07): API danh sách không trả <code>allowed_actions</code>, nên <code>OrderActions</code> luôn trống và cột đếm ngược hiện cả ở tab History; trang không có nút chuyển trang nên chỉ thấy 20 đơn đầu.</li>
+    <li><strong>Trang sửa đơn cho chọn khung giờ ở chợ khác nhưng backend từ chối.</strong> <code>EditOrderPage</code> hiện lịch của mọi chợ, còn <code>modify_order</code> kiểm tra khung giờ theo <strong>chợ của đơn</strong>; chọn giờ ở chợ khác sẽ nhận lỗi <code>SLOT_NOT_AVAILABLE</code>.</li>
+    <li><strong>Trang sửa đơn không thêm được món mới</strong> và không chặn trước min/max của món, dù backend hỗ trợ thêm món và có kiểm tra min/max.</li>
+    <li><strong>Nút "Add to cart" ở trang Yêu thích không làm gì</strong> (C-16).</li>
+    <li><strong>Giỏ hàng không gắn với tài khoản</strong> và không bị xoá khi đăng xuất (C-01, X-04).</li>
+    <li><strong>Hai toast cho một lỗi.</strong> <code>useReorder</code> và <code>useFavorites</code> tự gọi <code>toast.error</code> trong <code>onError</code>, trong khi bộ xử lý lỗi chung của <code>queryClient</code> cũng hiện toast (hai mutation này không đánh dấu <code>silent</code>).</li>
+    <li><strong>Hai cách kiểm tra số điện thoại khác nhau.</strong> Form đăng ký chuẩn hoá trước ("0912 345 678" hợp lệ), form hồ sơ thì không (cùng số đó bị báo sai ở trình duyệt), dù backend chuẩn hoá cả hai.</li>
+    <li><strong>Thêm yêu thích dùng điều kiện "đang hiện" lỏng hơn danh sách.</strong> <code>add_favorite</code> có bộ lọc riêng (không đòi tài khoản nông dân còn hoạt động hay sạp đang bán), khác <code>public_product_base</code>. Có thể thả tim một thứ mà trang Yêu thích không hiện.</li>
+    <li><strong>Đếm ngược "Edit/cancel until" hiện cả khi đơn đã READY_FOR_PICKUP</strong>, lúc khách không còn sửa hay huỷ được nữa.</li>
+    <li><strong>Lỗi theo món ở trang sửa đơn không hiện dưới đúng dòng.</strong> <code>EditOrderPage</code> chỉ nhận khoá dạng <code>items.N.…</code>, còn <code>modify_order</code> trả lỗi dưới mức tối thiểu, vượt mức tối đa, thiếu hàng với khoá là id sản phẩm (<code>{"12": [...]}</code>). Các lỗi này hiện thành câu chung ở đầu trang, không chỉ ra món nào.</li>
+    <li><strong>Đơn READY_FOR_PICKUP bị chợ đổi lịch có nút nhưng không bấm được.</strong> <code>update_market</code> đánh dấu cả đơn READY_FOR_PICKUP chưa tới giờ nhận; <code>customer_allowed_actions</code> khi đó trả <code>MODIFY</code>, <code>RESCHEDULE</code>, <code>CANCEL</code>. Nhưng <code>modify_order</code> chỉ nhận PLACED / ACCEPTED, và bảng <code>TRANSITIONS</code> không cho khách huỷ đơn READY_FOR_PICKUP, nên cả ba nút đều nhận lỗi. Trường hợp này hiếm (nông dân đã bấm "sẵn sàng" mà chợ lại đổi lịch trước giờ nhận).</li>
+    <li><strong>Idempotency-Key chỉ chống trùng trong một lần bấm.</strong> Interceptor sinh key mới cho mỗi request mới. Nó bảo vệ đúng trường hợp axios tự gửi lại (làm mới token, X-02). Nhưng nếu mạng đứt sau khi server đã tạo đơn, khách thấy lỗi, giỏ vẫn còn, và bấm "Place" lần nữa thì đó là key mới: server tạo thêm một bộ đơn. Giới hạn 10 đơn chờ và việc nông dân có thể từ chối là lớp chặn còn lại.</li>
+  </ol>
+</section>
+</main>
+</div>
+
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('details.j'));
+  var q = document.getElementById('q');
+  var count = document.getElementById('count');
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+
+  function applySearch() {
+    var term = (q.value || '').trim().toLowerCase();
+    var shown = 0;
+    cards.forEach(function (card) {
+      var hit = term === '' || card.textContent.toLowerCase().indexOf(term) !== -1;
+      card.hidden = !hit;
+      if (hit) { shown++; if (term) card.open = true; }
+      var link = document.querySelector('.toc a[href="#' + card.id + '"]');
+      if (link) link.classList.toggle('dim', !hit);
+    });
+    count.textContent = term ? shown + ' / ' + cards.length + ' hành trình khớp' : cards.length + ' hành trình';
+  }
+  q.addEventListener('input', applySearch);
+  document.getElementById('open-all').addEventListener('click', function () { cards.forEach(function (c) { c.open = true; }); });
+  document.getElementById('close-all').addEventListener('click', function () { cards.forEach(function (c) { c.open = false; }); });
+  tocLinks.forEach(function (a) {
+    a.addEventListener('click', function () {
+      var target = document.querySelector(a.getAttribute('href'));
+      if (target && target.tagName === 'DETAILS') target.open = true;
+    });
+  });
+  applySearch();
+
+  if ('IntersectionObserver' in window) {
+    var targets = tocLinks.map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        tocLinks.forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id); });
+      });
+    }, { rootMargin: '-15% 0px -75% 0px' });
+    targets.forEach(function (t) { io.observe(t); });
+  }
+
+  // Opened straight from disk (not on claude.ai): load Mermaid ourselves so the diagrams draw.
+  if (location.protocol === 'file:') {
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js';
+    s.onload = function () {
+      var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      window.mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+      window.mermaid.run({ querySelector: 'pre.mermaid' });
+    };
+    document.head.appendChild(s);
+  }
+})();
+</script>

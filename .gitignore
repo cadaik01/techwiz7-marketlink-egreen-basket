@@ -34,5 +34,6 @@ Claude outputs/
 
 # Documentation (local markdown - keep Document/ for push)
 TuDocs/
-docs/
+
+# Windows folder settings
 desktop.ini

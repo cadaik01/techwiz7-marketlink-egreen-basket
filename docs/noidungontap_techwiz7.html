@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>noidungontap_techwiz7.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="nội-dung-ôn-tập-đồ-án-techwiz-7--marketlink">NỘI DUNG ÔN TẬP ĐỒ ÁN TECHWIZ 7 — MARKETLINK</h1>
+<blockquote>
+<p><strong>Tài liệu học nội bộ của nhóm</strong>, không phải tài liệu nộp. Mục tiêu: ai đọc xong cũng giải thích được đồ án làm gì, chạy thế nào, vì sao chọn cách đó.
+ERD, DFD, thiết kế CSDL đã có trong báo cáo đã nộp nên không lặp lại ở đây.
+<strong>Phiên bản:</strong> v0.2 — đã dựng lại bố cục; Phần 2 và mục Khách hàng ở Phần 3 đã viết chi tiết, các phần còn lại đang có khung và nội dung tóm tắt, sẽ bổ sung tiếp.</p>
+</blockquote>
+<p><strong>Cách đọc:</strong> 🟢 = yêu cầu có trong SRS · 🔵 = tính năng mở rộng (phần ăn điểm, luôn có mục <em>Vì sao</em>).</p>
+<hr>
+<h2 id="mục-lục">MỤC LỤC</h2>
+<ul>
+<li><a href="#ph%E1%BA%A7n-0--%C4%91%E1%BB%8Dc-nhanh-trong-5-ph%C3%BAt">PHẦN 0 — Đọc nhanh trong 5 phút</a></li>
+<li><a href="#ph%E1%BA%A7n-1--%C4%91%E1%BB%81-b%C3%A0i-y%C3%AAu-c%E1%BA%A7u-g%C3%AC">PHẦN 1 — Đề bài yêu cầu gì</a></li>
+<li><a href="#ph%E1%BA%A7n-2--h%E1%BB%87-th%E1%BB%91ng-ch%E1%BA%A1y-th%E1%BA%BF-n%C3%A0o-theo-t%E1%BB%ABng-module">PHẦN 2 — Hệ thống chạy thế nào (theo từng module)</a></li>
+<li><a href="#ph%E1%BA%A7n-3--ch%E1%BB%A9c-n%C4%83ng-theo-vai-tr%C3%B2">PHẦN 3 — Chức năng theo vai trò</a></li>
+<li><a href="#ph%E1%BA%A7n-4--c%C3%A1c-l%C3%B5i-nghi%E1%BB%87p-v%E1%BB%A5-xuy%C3%AAn-su%E1%BB%91t">PHẦN 4 — Các lõi nghiệp vụ xuyên suốt</a></li>
+<li><a href="#ph%E1%BA%A7n-5--t%E1%BB%95ng-h%E1%BB%A3p-t%C3%ADnh-n%C4%83ng-m%E1%BB%9F-r%E1%BB%99ng">PHẦN 5 — Tổng hợp tính năng mở rộng</a></li>
+<li><a href="#ph%E1%BA%A7n-6--b%E1%BA%A3o-m%E1%BA%ADt-ki%E1%BB%83m-th%E1%BB%AD-tri%E1%BB%83n-khai">PHẦN 6 — Bảo mật, kiểm thử, triển khai</a></li>
+<li><a href="#ph%E1%BA%A7n-7--chu%E1%BA%A9n-b%E1%BB%8B-b%E1%BA%A3o-v%E1%BB%87">PHẦN 7 — Chuẩn bị bảo vệ</a></li>
+</ul>
+<hr>
+<h2 id="phần-0--đọc-nhanh-trong-5-phút">PHẦN 0 — ĐỌC NHANH TRONG 5 PHÚT</h2>
+<p><strong>MarketLink là gì?</strong> Một website nối nông dân bán ở chợ truyền thống với người mua. Nông dân đăng hàng, giá, số lượng tuần này và khung giờ khách đến lấy. Khách tìm chợ gần, xem sạp trên bản đồ, đặt trước rồi đến sạp nhận hàng và trả tiền mặt. Admin duyệt nông dân, quản lý chợ, kiểm duyệt nội dung và xem báo cáo.</p>
+<p><strong>Bốn vai trò:</strong> Guest (chưa đăng nhập, chỉ xem) · Customer · Farmer · Admin (cổng đăng nhập riêng <code>/admin/login</code>).</p>
+<p><strong>Công nghệ:</strong> React 19 + Vite ở frontend; Django 5.2 + Django REST Framework ở backend; MySQL 8 lưu dữ liệu; Redis cho cache, phiên đăng nhập và realtime; Django Channels + Daphne cho WebSocket; OpenStreetMap + Leaflet cho bản đồ; Google Gemini cho chatbot và kiểm duyệt; Gmail SMTP gửi email. Deploy: Vercel (frontend), Render (backend), Aiven (MySQL), Upstash (Redis).</p>
+<p><strong>Tài khoản demo</strong> (mật khẩu chung <code>Pass@123</code>): <code>admin@marketlink.com</code> · <code>farmer_01</code> → <code>farmer_06@marketlink.com</code> (đã duyệt) · <code>farmer_07</code>, <code>farmer_08</code> (chờ duyệt) · <code>customer_01</code> → <code>customer_20@marketlink.com</code> (<code>customer_19</code>, <code>customer_20</code> có 3 lần không đến lấy hàng).</p>
+<h3 id="những-điều-ai-trong-nhóm-cũng-phải-nói-được">Những điều ai trong nhóm cũng phải nói được</h3>
+<blockquote>
+<p>Mỗi ý có con số và cách hệ thống xử lý cụ thể. Giám khảo hỏi chung chung thì trả lời bằng đúng các con số này.</p>
+</blockquote>
+<p><strong>1. Đề bài không cho làm gì → mình xử lý ra sao</strong></p>
+<ul>
+<li>Không thanh toán online → khách <strong>trả tiền mặt khi đến sạp lấy hàng</strong>.</li>
+<li>Không giao hàng → <strong>chỉ nhận tại chợ</strong>, trong khung giờ nông dân đặt ra.</li>
+<li>Không xác minh giấy phép / chứng nhận → Admin chỉ <strong>duyệt hồ sơ</strong> để cho phép bán, không kiểm tra giấy tờ.</li>
+</ul>
+<p><strong>2. Giỏ hàng nhiều sạp → mỗi sạp một đơn riêng</strong></p>
+<ul>
+<li>Giỏ gom hàng của nhiều sạp, <strong>tối đa 5 sạp mỗi lần đặt</strong>. Bấm đặt thì sinh ra <strong>mỗi sạp một đơn độc lập</strong>, vì mỗi sạp có kho, giờ chốt, khung giờ nhận và chợ khác nhau.</li>
+<li>Mỗi khách có tối đa <strong>10 đơn đang chờ nông dân duyệt</strong> (<code>PLACED</code>) cùng lúc, tính trên toàn hệ thống. Giỏ có 4 sạp mà khách đang có 8 đơn chờ → 8 + 4 = 12 &gt; 10 → bị chặn, báo &quot;đợi nông dân xác nhận bớt rồi đặt tiếp&quot;. Đơn đã được duyệt và đơn đã qua giờ nhận không tính vào con số này.</li>
+<li>Giá luôn lấy từ CSDL lúc đặt và được chụp lại trên đơn; sau này nông dân đổi giá thì đơn cũ không đổi.</li>
+</ul>
+<p><strong>2b. Hết hàng xảy ra ở 2 thời điểm khác nhau — đừng nhầm</strong></p>
+<ul>
+<li><strong>Lúc khách bấm đặt (hệ thống tự kiểm tra):</strong> một lần đặt là <strong>all-or-nothing</strong>. Nếu một món ở bất kỳ sạp nào không đủ hàng, đã ngừng bán, hay khung giờ đã qua giờ chốt → <strong>không đơn nào được tạo</strong>, trang checkout chỉ rõ món nào lỗi và còn bao nhiêu (&quot;Only 3 KG left&quot;) để khách sửa giỏ rồi đặt lại. Vì sao: tránh tình trạng khách tưởng đã đặt đủ mà thật ra chỉ một nửa số đơn được tạo.</li>
+<li><strong>Sau khi đặt, nông dân phát hiện một món hết hàng thật</strong> (đơn còn <code>PLACED</code>):
+<ol>
+<li>Nông dân <strong>gọi điện cho khách trước</strong> (số điện thoại khách hiện trên đơn).</li>
+<li>Nông dân bấm <strong>&quot;Sold out&quot; trên đúng món đó</strong> → món bị bỏ khỏi đơn, tổng tiền tính lại, tồn kho món đó về 0, đơn <strong>vẫn ở trạng thái chờ duyệt</strong>.</li>
+<li>Khách nhận thông báo <em>&quot;[Sạp] đã hết [món], món này đã được bỏ khỏi đơn #…; nông dân sẽ liên hệ với bạn về phần còn lại&quot;</em>.</li>
+<li><strong>Khách quyết định:</strong> đồng ý mua phần còn lại → nông dân bấm duyệt; không muốn mua nữa → khách tự bấm <strong>Cancel</strong> (trước giờ chốt), hoặc báo nông dân để nông dân <strong>Decline</strong> đơn.</li>
+</ol>
+<ul>
+<li>Nếu đơn chỉ còn 1 món thì không bỏ món được → nông dân dùng <strong>Decline</strong> (bắt buộc ghi lý do, khách nhận thông báo kèm lý do).</li>
+<li>Đơn <strong>đã duyệt</strong> mà mới phát hiện hết hàng → nông dân từ chối cả đơn và <strong>bắt buộc khai báo món nào hết</strong>: món hết thì tồn kho về 0, các món còn lại được cộng trả vào kho online.</li>
+<li>Lưu ý: hiện tại khách <strong>không có nút &quot;Đồng ý / Không đồng ý&quot;</strong> riêng trên app; việc đồng ý diễn ra qua điện thoại, còn không đồng ý thì khách dùng nút Cancel có sẵn.</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. Đơn có 8 trạng thái (đề bài chỉ nêu 4)</strong></p>
+<ul>
+<li>Đường chính: <code>PLACED</code> (đã đặt) → <code>ACCEPTED</code> (nông dân duyệt) → <code>READY_FOR_PICKUP</code> (đã soạn hàng) → <code>COMPLETED</code> (khách đã lấy).</li>
+<li>Nhóm thêm 4 trạng thái kết thúc cho tình huống thực tế: <code>DECLINED</code> (nông dân / hệ thống từ chối), <code>CANCELLED</code> (khách hủy hoặc khách bị khóa), <code>NO_SHOW</code> (khách không đến), <code>EXPIRED</code> (nông dân không duyệt kịp trước giờ nhận → tự hết hạn).</li>
+</ul>
+<p><strong>4. Tồn kho: đặt chưa trừ, duyệt mới trừ</strong></p>
+<ul>
+<li>Lúc khách đặt: hệ thống chỉ <strong>kiểm tra</strong> còn đủ hàng không, chưa trừ.</li>
+<li>Lúc nông dân bấm duyệt: hệ thống mới <strong>trừ kho</strong>. Không đủ thì báo thiếu hàng, đơn vẫn chờ.</li>
+<li>Hủy / từ chối / khách không đến: chỉ <strong>cộng trả kho</strong> với đơn đã từng bị trừ.</li>
+<li>Vì sao: nếu trừ ngay lúc đặt, một người có thể đặt hết hàng rồi không đến, nông dân mất khách thật.</li>
+</ul>
+<p><strong>5. Sửa / hủy đơn và giờ chốt (cut-off)</strong></p>
+<ul>
+<li>Mỗi sạp đặt giờ chốt <strong>1–72 giờ</strong> trước khung nhận. Thời điểm chốt được tính và lưu cứng trên từng đơn.</li>
+<li>Trước giờ chốt: đơn <code>PLACED</code> sửa là áp dụng ngay; đơn đã <code>ACCEPTED</code> thì sửa thành <strong>yêu cầu thay đổi</strong>, nông dân chọn chấp nhận / từ chối / hủy cả đơn. Mỗi đơn chỉ một yêu cầu chờ, tới giờ nhận mà chưa xử lý thì yêu cầu tự hủy.</li>
+<li>Sau giờ chốt: khách không sửa / hủy được nữa; nông dân mới được bấm &quot;Ready&quot;.</li>
+<li>Đặt trước được tối đa <strong>7 ngày</strong>.</li>
+</ul>
+<p><strong>6. Người mua spam đơn / đặt ảo thì sao</strong></p>
+<ul>
+<li>Phải <strong>đăng nhập tài khoản khách</strong> mới đặt được; tài khoản nông dân không đặt được.</li>
+<li><strong>Một số điện thoại chỉ một tài khoản</strong> (số được chuẩn hóa trước khi so); đăng ký giới hạn <strong>10 lần / giờ</strong>.</li>
+<li>Mỗi khách tối đa <strong>10 đơn đang chờ duyệt</strong> (<code>PLACED</code>) cùng lúc trên toàn hệ thống; đơn đã được duyệt và đơn đã qua giờ nhận không tính. Không giới hạn số đơn với cùng một sạp.</li>
+<li>Gửi đơn giới hạn <strong>10 lần / giờ</strong>; bấm 2 lần không ra 2 đơn (Idempotency-Key).</li>
+<li>Vì đặt chưa trừ kho nên đơn ảo <strong>không giữ được hàng</strong> của người khác.</li>
+</ul>
+<p><strong>7. Khách không đến lấy hàng (no-show) → bao nhiêu lần thì bị khóa</strong></p>
+<ul>
+<li>Hết khung giờ nhận mà khách không đến, nông dân bấm <strong>No-show</strong> → hàng được cộng trả về kho online.</li>
+<li>Chỉ tính lỗi khi đơn đã ở trạng thái <strong>Ready</strong> (nông dân đã soạn hàng). Đơn hết hạn (<code>EXPIRED</code>) <strong>không tính</strong> vì lỗi không phải của khách.</li>
+<li>Đạt <strong>3 lần no-show trong 30 ngày</strong> → Admin thấy cờ <strong>&quot;At risk&quot;</strong> và hệ thống <strong>tự khóa tài khoản</strong>: hủy mọi đơn đang mở, báo khách lý do kèm số các đơn đã bỏ, ghi nhật ký. Admin mở khóa thì bộ đếm tính lại từ đầu.</li>
+<li>Admin cũng tự khóa tay được, <strong>bắt buộc nhập lý do</strong>. Tài khoản khóa không bị xóa nên email / SĐT đó không đăng ký lại được. Đăng nhập đúng mật khẩu nhưng bị khóa → thấy thông báo kèm lý do.</li>
+</ul>
+<p><strong>8. Nông dân bán ở nhiều chợ thì sao</strong></p>
+<ul>
+<li>Một sạp đăng ký được <strong>nhiều chợ</strong>; mỗi chợ phải được <strong>Admin duyệt</strong> và có <strong>vị trí sạp trong chợ</strong> riêng (ví dụ &quot;Dãy B, sạp 12&quot;).</li>
+<li><strong>Khung giờ nhận đặt riêng cho từng chợ</strong>, và chỉ đặt được vào ngày vừa là ngày chợ họp vừa là ngày nông dân bán, nằm trong giờ mở cửa của chợ.</li>
+<li>Nông dân <strong>chọn sản phẩm nào bán ở chợ nào</strong>; khách đặt món không bán ở chợ đã chọn thì bị báo lỗi.</li>
+<li><strong>Tồn kho là &quot;kho online&quot;</strong>: là số lượng nông dân <strong>dự kiến dành ra để bán đặt trước qua web</strong> trong tuần, <strong>không phải</strong> toàn bộ hàng thật nông dân có. Hàng nông dân bán trực tiếp cho khách vãng lai ngoài chợ không đi qua hệ thống. Ví dụ nông dân có 100 kg cải, nhập &quot;Stock = 30&quot; → web chỉ cho đặt tối đa 30 kg, 70 kg còn lại nông dân bán tại sạp như bình thường. Khi hủy / từ chối / khách không đến, hàng được &quot;cộng trả về kho online&quot; để người khác đặt tiếp.</li>
+<li>Kho online này <strong>dùng chung cho mọi chợ</strong> của sạp (form sản phẩm ghi rõ: <em>&quot;Stock is shared across them&quot;</em>): sạp nhập 30 kg cải, bán ở 2 chợ thì tổng đặt ở cả 2 chợ không vượt 30 kg. Vì sao: nông dân chỉ có một nguồn hàng, chia kho theo từng chợ thì nhập liệu rất mệt và dễ sai.</li>
+<li><strong>Một đơn chỉ thuộc một chợ</strong> (và một khung giờ). Tình huống: khách bỏ vào giỏ 2 món của <strong>cùng một sạp</strong>, món A chỉ bán ở chợ Bình Điền, món B chỉ bán ở chợ Bà Chiểu:
+<ul>
+<li><strong>Giỏ hàng</strong> hiện theo <strong>sạp</strong>: cả 2 món nằm chung một nhóm dưới tên sạp đó (giỏ không chia theo chợ).</li>
+<li><strong>Trang checkout</strong> chỉ đưa ra những chợ / khung giờ mà <strong>mọi món trong nhóm đều bán</strong>. Không có chợ chung nào → hiện thông báo <em>&quot;No pickup window fits all of these items… Some may only be sold at other markets: remove an item, or order it separately&quot;</em> và không cho đặt nhóm đó.</li>
+<li>Khách phải <strong>bỏ bớt một món, đặt món còn lại, rồi đặt món kia ở lần sau</strong> → tạo ra <strong>2 đơn</strong>, mỗi đơn một chợ.</li>
+<li>Nếu 2 món cùng bán ở ít nhất một chợ chung → chọn chợ đó → <strong>1 đơn</strong>.</li>
+</ul>
+</li>
+<li>Chợ A đóng thì chỉ đơn ở chợ A bị ảnh hưởng, sạp vẫn bán bình thường ở chợ B.</li>
+</ul>
+<p><strong>9. Chợ đóng cửa thì hệ thống làm gì (3 trường hợp)</strong></p>
+<ul>
+<li><strong>Đóng tạm theo ngày</strong> (lễ, Tết, thời tiết): Admin khai báo khoảng ngày → những ngày đó khách không chọn làm ngày nhận được, khung giờ tự hoạt động lại sau kỳ nghỉ. Nếu còn đơn mở rơi vào khoảng đó thì <strong>chặn</strong>, không cho tạo. (Nông dân nghỉ bán cũng khai báo y như vậy.)</li>
+<li><strong>Đóng hẳn / khẩn cấp</strong> (ngập, cháy, giải tỏa): Admin nhập lý do và <strong>gõ chữ <code>Confirm</code></strong> để xác nhận. Trong một transaction: chợ ngừng hoạt động, <strong>mọi đơn mở tại chợ bị từ chối</strong> và hoàn kho, mọi khung giờ của chợ bị tắt. Mỗi khách bị ảnh hưởng nhận <strong>một</strong> thông báo gộp (in-app + email), mỗi sạp ở chợ cũng được báo. <strong>Không đình chỉ nông dân</strong> vì họ còn chợ khác. Mở lại chợ thì nông dân tự bật lại khung giờ.</li>
+<li><strong>Đổi lịch / giờ mở cửa</strong>: trước khi lưu, Admin thấy bao nhiêu khung giờ sẽ tắt, bao nhiêu đơn không còn khớp, bao nhiêu khách / sạp bị ảnh hưởng. Xác nhận thì khung giờ ngoài lịch mới tự tắt, đơn bị lệch được đánh dấu cần dời giờ; tới giờ cũ mà chưa dời thì đơn bị hủy và khách được báo.</li>
+</ul>
+<p><strong>10. Admin can thiệp thì đơn hàng ra sao</strong></p>
+<ul>
+<li>Admin <strong>không sửa / hủy từng đơn</strong>; chỉ có các thao tác lớn, hệ thống tự đóng đơn liên quan và hoàn kho:
+<ul>
+<li><strong>Đình chỉ nông dân</strong> → sạp ẩn khỏi web, mọi đơn mở → <code>DECLINED</code>.</li>
+<li><strong>Khóa khách</strong> → mọi đơn mở của khách → <code>CANCELLED</code>, đóng kết nối realtime trên mọi thiết bị.</li>
+<li><strong>Chặn sản phẩm</strong> (vi phạm) → tin ẩn, mọi đơn mở có món đó → <code>DECLINED</code>. Khác với <strong>Ẩn</strong> (đang điều tra) → tin ẩn nhưng đơn cũ giữ nguyên.</li>
+<li><strong>Đóng chợ</strong> → như mục 9.</li>
+</ul>
+</li>
+<li>Mọi thao tác đều có <strong>màn hình xem trước tác động</strong> (bao nhiêu đơn, bao nhiêu người) trước khi xác nhận, và được ghi vào nhật ký an ninh.</li>
+</ul>
+<p><strong>11. Duyệt trước khi lên sàn (2 tầng)</strong></p>
+<ul>
+<li>Nông dân mới đăng ký ở trạng thái <strong>chờ duyệt</strong>: đăng nhập được, hoàn thiện hồ sơ được, nhưng <strong>chưa bán được</strong> cho tới khi Admin duyệt.</li>
+<li><strong>Tin đăng sản phẩm cũng phải được duyệt</strong> mới hiện cho khách. Sửa tên / mô tả / ảnh / danh mục → quay lại chờ duyệt; sửa giá và số lượng thì <strong>không</strong> (để nông dân cập nhật kho không phải chờ).</li>
+</ul>
+<p><strong>12. Gemini làm được gì trong app (4 việc)</strong></p>
+<ul>
+<li><strong>Chatbot cho mọi vai trò:</strong> trả lời giờ chợ, ai bán món gì hôm nào, khung giờ nhận, đơn của tôi tới đâu (khách), sạp tôi có gì cần xử lý (nông dân), hệ thống đang chờ gì (Admin). AI chỉ được gọi <strong>7 hàm chỉ đọc</strong> do nhóm viết theo đúng quyền của người hỏi; không viết SQL, không đặt / sửa / hủy gì, không thấy dữ liệu người khác. Trả lời theo ngôn ngữ người hỏi, tìm được tiếng Việt không dấu. Giới hạn <strong>20 câu / phút</strong>, <strong>30 câu / ngày</strong> cho khách vãng lai (đếm theo IP), <strong>100 câu / ngày</strong> cho người đã đăng nhập (đếm theo tài khoản), reset lúc nửa đêm. <strong>Khi hết lượt</strong>, khung chat hiện đúng câu (tiếng Việt nếu người dùng gõ tiếng Việt, ngược lại tiếng Anh): <em>&quot;Trợ lý đang bận, bạn vui lòng thử lại sau nhé. Trong lúc chờ, bạn vẫn có thể xem Nông sản, Chợ và đơn hàng như bình thường.&quot;</em> Hệ thống <strong>cố ý không nói là &quot;hết lượt&quot;</strong>: hết lượt, AI hết quota hay AI bị lỗi đều hiện cùng một câu, để người ngoài không dò được giới hạn. Chỉ những câu AI trả lời thành công mới bị đếm.</li>
+<li><strong>Duyệt tin đăng sản phẩm:</strong> đọc <strong>chữ và ảnh</strong> để xem có phải nông sản không, đúng danh mục không, có ngôn từ xấu hoặc để lại liên hệ giao dịch ngoài không, ảnh có khớp không. Tin sạch → <strong>tự duyệt lên sàn</strong>; nghi vi phạm → <strong>giữ lại</strong> và báo Admin; không chắc → chờ Admin. Mọi quyết định của AI liệt kê ở trang <strong>AI Decisions</strong> để Admin xác nhận hoặc hoàn tác.</li>
+<li><strong>Duyệt nội dung đánh giá:</strong> sau khi khách gửi đánh giá, Gemini đọc <strong>nghĩa</strong> của câu ở luồng nền (không dùng danh sách từ khóa) và trả lời 3 điều: có ngôn từ xúc phạm không, có để lại liên hệ giao dịch ngoài không, và <strong>có chắc chắn không</strong>.
+<ul>
+<li><strong>Chắc chắn vi phạm</strong> (Ngôn từ xấu rõ ràng, ghi số điện thoại / link / Zalo để mua bán ngoài) → đánh giá <strong>bị ẩn ngay</strong>, lý do ghi &quot;Auto-hidden by AI: …&quot;, ghi nhật ký an ninh, gắn cờ cho Admin. Trang kiểm duyệt hiện nhãn <strong>&quot;Hidden by AI&quot;</strong>. AI ẩn nhầm thì Admin bấm <strong>Restore</strong>.</li>
+<li><strong>Nghi ngờ</strong> (câu mơ hồ, mỉa mai, chữ viết lách không rõ) → <strong>vẫn hiện</strong>, chỉ gắn cờ cho Admin xem.</li>
+<li><strong>Chê thật lòng</strong> (&quot;rau héo, giao thiếu&quot;) → không ẩn, không gắn cờ.</li>
+<li><strong>Câu trả lời của sạp</strong> vi phạm → chỉ gắn cờ (câu trả lời nằm chung dòng với đánh giá của khách, ẩn dòng thì mất luôn lời của khách).</li>
+</ul>
+</li>
+<li><strong>Quét ảnh sản phẩm hàng tuần:</strong> kiểm tra lại ảnh các tin đang bán (phòng nông dân đổi ảnh sau khi được duyệt), chỉ gắn cờ và báo Admin.</li>
+<li><strong>AI không làm:</strong> không đánh giá giá cả và số lượng (việc này do <strong>luật cố định</strong> kiểm tra, vì AI không biết giá chợ hôm nay); không ẩn tin, không khóa tài khoản — những việc đó luôn do Admin.</li>
+<li><strong>Khi không gọi được Gemini</strong> (server chưa cấu hình <code>GEMINI_API_KEY</code>, hết quota miễn phí trong ngày, hoặc Google lỗi) — các tình huống cụ thể:
+<ul>
+<li><em>Nông dân đăng &quot;Rau muống, $1/bó&quot;, ảnh bình thường:</em> lớp luật không thấy gì sai, nhưng AI không trả lời được → kết quả là <strong>&quot;AI check unavailable&quot;</strong>. Tin <strong>không được tự duyệt</strong>, nằm ở hàng chờ <code>/admin/approvals</code> để <strong>Admin duyệt tay</strong> như khi chưa có AI. Hệ thống tự thử gọi AI lại sau 10 phút (lệnh <code>ai_review_pending</code>).</li>
+<li><em>Nông dân đăng &quot;Rau muống, $500/bó&quot;:</em> <strong>lớp luật vẫn chạy</strong> (không cần AI), thấy giá vượt xa khung giá của danh mục → <strong>&quot;Likely violation&quot;</strong> → tin bị <strong>giữ lại</strong> và gắn cờ cho Admin. Tức là các lỗi về giá / số lượng vẫn bắt được khi không có AI.</li>
+<li><em>Khách viết đánh giá có Ngôn từ xấu:</em> <strong>không được AI kiểm tra</strong> (chỉ AI mới đọc được nghĩa của chữ) → không có cờ tự động, Admin phải tự phát hiện. Riêng luật &quot;≥ 3 đánh giá 1–2 sao trong 30 ngày&quot; vẫn tự gắn cờ cho sản phẩm.</li>
+<li><em>Khách hỏi chatbot:</em> nhận câu <em>&quot;Trợ lý đang bận, bạn vui lòng thử lại sau nhé…&quot;</em>; mọi chức năng khác của web chạy bình thường.</li>
+<li>Tóm lại: <strong>mất AI không làm hỏng web</strong>, chỉ là Admin phải làm tay nhiều hơn.</li>
+</ul>
+</li>
+</ul>
+<p><strong>13. Thông báo đi hai kênh</strong></p>
+<ul>
+<li><strong>In-app realtime</strong> qua WebSocket: chuông có số chưa đọc + toast bật lên ngay. Mất kết nối thì tự nối lại, trong lúc đó chuyển sang hỏi định kỳ.</li>
+<li><strong>Email</strong> cho các sự kiện quan trọng: đơn được duyệt, sẵn sàng lấy, bị từ chối, hết hạn, khách hủy, đơn bị hủy do khách bị khóa, chợ đóng cửa.</li>
+<li>Đề bài chỉ yêu cầu một kênh cho 2 sự kiện; đồ án có hơn 25 loại sự kiện.</li>
+</ul>
+<p><strong>14. Bản đồ</strong></p>
+<ul>
+<li><strong>OpenStreetMap + Leaflet</strong> cho bản đồ trong app (miễn phí, không cần API key, vẫn lưu đủ kinh độ / vĩ độ như đề bài yêu cầu).</li>
+<li>Nút <strong>&quot;Near me&quot;</strong> dùng GPS trình duyệt để sắp chợ gần nhất trước.</li>
+<li>Nông dân <strong>không phải nhập tọa độ</strong>: hệ thống tự tra từ địa chỉ (Nominatim), nông dân có thể kéo ghim chỉnh lại.</li>
+<li><strong>Tìm đường bằng Google Maps:</strong> ở trang chợ, trang sạp, chi tiết đơn và trang checkout có nút <strong>&quot;Directions&quot;</strong>. Người mua bấm vào → mở <strong>tab mới sang Google Maps</strong> với điểm đến là tọa độ chợ (<code>https://www.google.com/maps/dir/?api=1&amp;destination=&lt;vĩ độ&gt;,&lt;kinh độ&gt;</code>), Google Maps tự lấy vị trí hiện tại của người mua làm điểm xuất phát và vẽ đường đi. Vì sao không tự vẽ đường trong app: Google Maps chỉ đường tốt nhất, người dùng quen, có cả xe máy / đi bộ / kẹt xe, và <strong>không cần API key</strong> vì chỉ là một đường link.</li>
+<li>Trang <strong>Contact Us</strong> nhúng bản đồ Google Maps (iframe) vị trí văn phòng.</li>
+</ul>
+<p><strong>15. Dùng chung tài khoản gia đình</strong></p>
+<ul>
+<li>Nhiều người đăng nhập cùng tài khoản trên nhiều thiết bị; <strong>mỗi thiết bị một phiên và một giỏ hàng riêng</strong>, dùng chung lịch sử đơn và yêu thích. Đăng xuất máy này không văng máy khác. Không phải xây module quản lý thành viên.</li>
+</ul>
+<hr>
+<h2 id="phần-1--đề-bài-yêu-cầu-gì">PHẦN 1 — ĐỀ BÀI YÊU CẦU GÌ</h2>
+<h3 id="11-bối-cảnh">1.1 Bối cảnh</h3>
+<p>Khách đi chợ nông sản không biết trước nông dân nào bán hôm nào, còn bao nhiêu hàng, giá bao nhiêu. Thông tin chỉ có trên bảng phấn, tờ rơi, truyền miệng, nên khách đến nơi thì hết hàng hoặc nông dân nghỉ. Nông dân thì không có công cụ công khai hàng tồn theo tuần, nhận đơn trước ngày họp chợ, hay giữ khách quen. Đề bài muốn một web full-stack nối hai bên, có dashboard riêng cho từng vai trò, có bản đồ, chatbot AI là tùy chọn.</p>
+<h3 id="12-phạm-vi-loại-trừ-tuyệt-đối-không-làm">1.2 Phạm vi loại trừ (tuyệt đối không làm)</h3>
+<ol>
+<li>Cổng thanh toán online → đồ án: trả tiền mặt tại sạp.</li>
+<li>Giao hàng → đồ án: chỉ nhận tại chợ. Mục &quot;Track Deliveries&quot; trong sơ đồ đề bài được hiểu là theo dõi trạng thái đơn.</li>
+<li>Xác minh pháp lý nông dân → đồ án: không kiểm tra giấy phép; Admin chỉ duyệt hồ sơ để cho phép bán.</li>
+</ol>
+<h3 id="13-danh-sách-yêu-cầu-chức-năng--màn-hình-trong-đồ-án">1.3 Danh sách yêu cầu chức năng → màn hình trong đồ án</h3>
+<p><strong>Khách hàng</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">#</th>
+<th style="text-align:left">Yêu cầu SRS</th>
+<th style="text-align:left">Màn hình</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:left">Đăng ký (họ tên, SĐT, email, địa chỉ), đăng nhập, dashboard; lưu nhiều sạp / sản phẩm yêu thích; dùng chung tài khoản gia đình (tùy chọn)</td>
+<td style="text-align:left"><code>/register</code>, <code>/login</code>, <code>/customer</code>, <code>/customer/favorites</code></td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:left">Xem chợ gần theo vị trí và ngày họp, nông dân ở từng chợ; hồ sơ nông dân; bản đồ có marker + chỉ đường</td>
+<td style="text-align:left"><code>/markets</code>, <code>/markets/:id</code>, <code>/farmers/:id</code></td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:left">Danh mục sản phẩm; lọc theo giá, danh mục, chợ, ngày; chi tiết (giá, đơn vị, còn bao nhiêu, người bán)</td>
+<td style="text-align:left"><code>/products</code>, <code>/products/:id</code></td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:left">Giỏ hàng, đặt trước theo tồn kho; chọn ngày + khung giờ; theo dõi Placed → Accepted → Ready → Completed; sửa / hủy trước cut-off; trả tiền khi nhận</td>
+<td style="text-align:left"><code>/customer/cart</code>, <code>/customer/checkout</code>, <code>/customer/orders/:id</code></td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:left">Xem, sửa, hủy đơn</td>
+<td style="text-align:left"><code>/customer/orders</code>, <code>/customer/orders/:id/edit</code></td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:left">Lịch sử đơn + đặt lại nhanh; yêu thích + báo có hàng lại; lưu chợ ưa thích + chỉ đường</td>
+<td style="text-align:left"><code>/customer/orders</code>, <code>/customer/favorites</code></td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:left">Trợ lý AI (tùy chọn): tìm hàng, trả lời giờ chợ, nông dân có bán không, giờ nhận, chi tiết hàng</td>
+<td style="text-align:left">Widget chat nổi</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:left">Chấm sao + nhận xét sạp và sản phẩm sau khi nhận hàng; xem đánh giá của người khác</td>
+<td style="text-align:left"><code>/customer/orders/:id/review</code>, trang sản phẩm / sạp</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Nông dân</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">#</th>
+<th style="text-align:left">Yêu cầu SRS</th>
+<th style="text-align:left">Màn hình</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:left">Đăng ký (tên sạp, người liên hệ, SĐT, email, địa chỉ); cập nhật chợ tham gia, ngày bán, khung giờ, vị trí trên bản đồ</td>
+<td style="text-align:left"><code>/register/farmer</code>, <code>/farmer/profile</code>, <code>/farmer/markets</code></td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:left">CRUD sản phẩm; mẫu tồn kho lặp lại hàng tuần; đánh dấu Sold out / Temporarily unavailable</td>
+<td style="text-align:left"><code>/farmer/products</code>, <code>/farmer/stock-template</code></td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:left">Xem đơn đến realtime; Accept / Decline; Ready for pickup; đặt giờ chốt và quản lý khung giờ nhận</td>
+<td style="text-align:left"><code>/farmer/orders</code>, <code>/farmer/markets</code></td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:left">Lịch sử bán, sản phẩm bán chạy, tổng đơn, đơn chờ, doanh thu</td>
+<td style="text-align:left"><code>/farmer</code>, <code>/farmer/stats</code></td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:left">Trả lời đánh giá công khai</td>
+<td style="text-align:left"><code>/farmer/reviews</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Admin</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">#</th>
+<th style="text-align:left">Yêu cầu SRS</th>
+<th style="text-align:left">Màn hình</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:left">Trang quản trị đăng nhập riêng; thống kê tổng nông dân, khách, chợ, đơn</td>
+<td style="text-align:left"><code>/admin/login</code>, <code>/admin</code></td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:left">Duyệt / đình chỉ nông dân (chưa duyệt không được bán); kích hoạt / khóa khách</td>
+<td style="text-align:left"><code>/admin/farmers</code>, <code>/admin/approvals</code>, <code>/admin/customers</code></td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:left">Thêm / sửa / xóa chợ: tên, địa chỉ, ngày họp, giờ mở / đóng, tọa độ</td>
+<td style="text-align:left"><code>/admin/markets</code></td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:left">Gỡ tin sản phẩm sai, bình luận thô tục</td>
+<td style="text-align:left"><code>/admin/moderation</code></td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:left">Báo cáo: khối lượng đơn, doanh thu theo chợ, nông dân năng nổ nhất</td>
+<td style="text-align:left"><code>/admin/reports</code></td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:left">Quản lý danh mục gốc; gửi thông báo toàn sàn</td>
+<td style="text-align:left"><code>/admin/categories</code>, <code>/admin/announcements</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tính năng chung:</strong> phân quyền theo vai trò (RBAC) · tìm kiếm / sắp xếp / lọc nhiều tiêu chí, hiển thị trên bản đồ · responsive · thông báo email hoặc in-app khi đơn được duyệt và khi sẵn sàng · trang About Us · trang Contact Us có bản đồ nhúng.</p>
+<h3 id="14-yêu-cầu-phi-chức-năng-tóm-tắt">1.4 Yêu cầu phi chức năng (tóm tắt)</h3>
+<p>An toàn (không mã độc, không tự tải file) · Dễ tiếp cận (font rõ, tương phản tốt) · Dễ dùng cho cả người lớn tuổi · Ổn định · Tải nhanh kể cả danh mục lớn · Chịu tải ngày cao điểm · Bảo mật (mã hóa mật khẩu, bảo vệ dữ liệu cá nhân) · Chạy 24/7 · Tương thích Chrome, Safari, Edge, Firefox. Cách đồ án đáp ứng: xem Phần 6.</p>
+<h3 id="15-quy-định-dùng-ai">1.5 Quy định dùng AI</h3>
+<p>SRS cho phép dùng AI hỗ trợ thiết kế và lập trình, nhưng cấm template giao diện làm sẵn, cấm nộp code AI sinh ra mà không hiểu, và bắt buộc khai báo công cụ AI đã dùng. Thí sinh phải giải thích được mọi quyết định thiết kế. Lưu ý mâu thuẫn với bảng chấm điểm ở Phần 7.</p>
+<hr>
+<h2 id="phần-2--hệ-thống-chạy-thế-nào-theo-từng-module">PHẦN 2 — HỆ THỐNG CHẠY THẾ NÀO (THEO TỪNG MODULE)</h2>
+<h3 id="21-bức-tranh-chung">2.1 Bức tranh chung</h3>
+<p>MarketLink tách làm hai chương trình chạy riêng. <strong>Frontend</strong> là một ứng dụng React (thư mục <code>frontend/</code>). Khi mở web, trình duyệt tải về một trang duy nhất rồi tự đổi màn hình bằng JavaScript, không tải lại trang. <strong>Backend</strong> là một server Django (thư mục <code>backend/</code>): nó không trả về giao diện mà chỉ trả dữ liệu dạng JSON qua các địa chỉ bắt đầu bằng <code>/api/</code>. Hai bên chỉ nói chuyện với nhau qua HTTP (gửi yêu cầu, nhận JSON), riêng thông báo thời gian thực thì đi qua một kết nối WebSocket luôn mở ở địa chỉ <code>/ws/</code>.</p>
+<p><em>Vì sao tách đôi như vậy:</em> giao diện và nghiệp vụ độc lập nhau, hai người có thể làm song song; backend chỉ cần làm đúng &quot;hợp đồng API&quot;; sau này muốn làm app điện thoại thì dùng lại nguyên backend. Đây cũng là đúng mô hình nhiều tầng (client – web server – application server – database) mà đề bài yêu cầu.</p>
+<p>Ở máy cá nhân, frontend chạy bằng Vite ở cổng 5173. File <code>frontend/vite.config.js</code> cấu hình để mọi request <code>/api</code>, <code>/media</code>, <code>/ws</code> được chuyển tiếp sang Django ở cổng 8000, nên trình duyệt tưởng như chỉ nói chuyện với một server (không vướng lỗi CORS khi dev). Khi deploy, frontend nằm trên Vercel, file <code>frontend/vercel.json</code> làm hai việc: chuyển <code>/media/...</code> (ảnh) sang server Render, và trả <code>index.html</code> cho mọi đường dẫn khác để bấm F5 ở trang con không bị lỗi 404.</p>
+<p>Phía backend, file <code>backend/marketlink_core/asgi.py</code> là cửa vào duy nhất: request HTTP thường thì giao cho Django xử lý; request WebSocket thì giao cho Django Channels. Server được chạy bằng <strong>Daphne</strong> (server ASGI) chứ không phải Gunicorn, vì Gunicorn không giữ được kết nối WebSocket.</p>
+<h3 id="22-hành-trình-của-một-request-thông-thường-ví-dụ-khách-xem-danh-sách-sản-phẩm">2.2 Hành trình của một request thông thường (ví dụ: khách xem danh sách sản phẩm)</h3>
+<p>Đi qua từng file theo đúng thứ tự dữ liệu chạy:</p>
+<ol>
+<li><strong>Trang giao diện</strong> <code>frontend/src/pages/guest/ProductsPage.jsx</code> cần dữ liệu, nó không gọi API trực tiếp mà gọi một <strong>hook</strong> trong <code>frontend/src/hooks/queries/guest/usePublicCatalog.js</code>.
+<em>Vì sao:</em> tách phần &quot;lấy dữ liệu&quot; khỏi phần &quot;vẽ giao diện&quot;, nhiều trang dùng chung được một hook.</li>
+<li>Hook dùng <strong>TanStack Query</strong>: nó kiểm tra bộ nhớ đệm, nếu dữ liệu còn mới thì trả ngay, nếu chưa có thì gọi hàm trong <code>frontend/src/api/guest/catalogApi.js</code>. Cấu hình chung nằm ở <code>frontend/src/lib/queryClient.js</code> (lỗi 4xx thì không tự thử lại, lỗi mạng thì thử lại tối đa 2 lần, tự hiện thông báo lỗi).
+<em>Vì sao TanStack Query:</em> đỡ phải tự viết trạng thái loading / error / cache; quay lại trang cũ không phải tải lại; quay lại tab trình duyệt thì tự làm mới.</li>
+<li>File <code>catalogApi.js</code> gọi <strong><code>frontend/src/lib/axiosClient.js</code></strong> — đây là &quot;cổng ra&quot; duy nhất của mọi request. Trước khi gửi, nó tự gắn:
+<ul>
+<li><code>Authorization: Bearer &lt;access token&gt;</code> lấy từ <code>stores/auth.store.js</code>;</li>
+<li><code>If-Match: &quot;&lt;version&gt;&quot;</code> khi sửa / hủy đơn (chống hai người sửa đè nhau);</li>
+<li><code>Idempotency-Key: &lt;uuid&gt;</code> khi đặt hàng (chống tạo đơn trùng khi bấm 2 lần).
+<em>Vì sao gom về một file:</em> mọi quy tắc chung (token, xử lý lỗi, làm mới token) chỉ viết một lần, không trang nào quên.</li>
+</ul>
+</li>
+<li>Request tới backend, <strong><code>backend/marketlink_core/urls.py</code></strong> chia theo tiền tố cho từng app: <code>/api/public/...</code>, <code>/api/customer/...</code>, <code>/api/farmer/...</code>, <code>/api/admin/...</code>, <code>/api/auth/...</code>, <code>/api/chat/...</code>. Middleware <code>marketlink_core/middleware.py</code> gắn cho request một mã <code>X-Request-ID</code> để lần dấu trong log.</li>
+<li><strong>View</strong> (ví dụ <code>backend/catalog/public_portal/views_public.py</code>) nhận request. View chỉ làm 3 việc: kiểm tra quyền (các lớp trong <code>marketlink_core/permissions.py</code>: <code>IsCustomer</code>, <code>IsFarmer</code>, <code>IsAdmin</code>…), đọc tham số, gọi tầng dưới.</li>
+<li><strong>Serializer</strong> kiểm tra dữ liệu đầu vào (kiểu, độ dài, bắt buộc) và định dạng dữ liệu trả ra.</li>
+<li><strong>Service</strong> (ví dụ <code>orders/services/checkout_service.py</code>) chứa luật nghiệp vụ và mở transaction khi cần ghi. <strong>Selector</strong> (ví dụ <code>catalog/selectors.py</code>) chứa các câu truy vấn đọc, có lọc &quot;chỉ hàng đang bán công khai&quot;.
+<em>Vì sao chia View / Serializer / Service / Selector:</em> luật nghiệp vụ nằm một chỗ, dễ test, nhiều view dùng chung (chatbot cũng gọi lại các selector này).</li>
+<li><strong>Model</strong> (ví dụ <code>catalog/models.py</code>) dùng Django ORM để đọc / ghi <strong>MySQL</strong>. ORM luôn dùng tham số hóa nên không bị SQL injection.</li>
+<li>Kết quả đi ngược lên, được bọc trong một <strong>khung phản hồi chung</strong> do <code>marketlink_core/responses.py</code> tạo: <code>success</code>, <code>code</code>, <code>message</code>, <code>data</code>, <code>errors</code>, <code>request_id</code>. Lỗi cũng theo đúng khung này, với mã lỗi cố định (ví dụ <code>INSUFFICIENT_STOCK</code>, <code>CUTOFF_PASSED</code>).
+<em>Vì sao:</em> frontend chỉ cần một cách đọc cho mọi API; lỗi theo từng ô nhập (<code>errors</code>) hiện được ngay dưới ô.</li>
+<li>Về tới <strong><code>axiosClient.js</code></strong>: nó bóc lớp vỏ, trả <code>data</code> cho hook; nếu lỗi thì đổi thành đối tượng <code>ApiError</code> (<code>lib/ApiError.js</code>) để giao diện hiện câu thông báo thân thiện (<code>utils/errorMap.js</code>). Hook lưu vào cache, trang vẽ ra danh sách.</li>
+</ol>
+<h3 id="23-module-xác-thực--phiên-đăng-nhập">2.3 Module Xác thực &amp; phiên đăng nhập</h3>
+<p><strong>Frontend:</strong></p>
+<ul>
+<li>Form đăng nhập <code>pages/auth/LoginForm.jsx</code> → hook <code>hooks/authentication/useAuth.js</code> → <code>api/common/authApi.js</code> gọi <code>POST /api/auth/login/</code> (Admin gọi <code>POST /api/auth/admin/login/</code>).</li>
+<li>Backend trả về cặp token <strong>access</strong> (sống 15 phút) và <strong>refresh</strong> (sống 7 ngày). Hai token được lưu trong <code>stores/auth.store.js</code> (Zustand, ghi xuống <code>localStorage</code>).</li>
+<li>Có <strong>hai kho phiên riêng</strong>: một cho cổng chợ (khách + nông dân), một cho cổng Admin. Đường dẫn bắt đầu bằng <code>/admin</code> thì dùng phiên Admin. <em>Vì sao:</em> đăng nhập Admin và tài khoản khách cùng lúc trên một trình duyệt mà không đá nhau, tiện khi demo.</li>
+<li>Hết hạn access token: <code>axiosClient.js</code> nhận lỗi 401, tự gọi <code>POST /api/auth/refresh/</code> lấy token mới rồi gửi lại request cũ, người dùng không bị đăng xuất. Nhiều request cùng hết hạn một lúc thì chỉ làm mới <strong>một lần</strong>.</li>
+<li>Chặn trang theo vai trò: <code>router/guards.jsx</code> (<code>RequireAuth</code>, <code>RequireRole</code>, <code>GuestOnly</code>, <code>NotForFarmers</code>). Sai vai trò → chuyển tới trang 403.</li>
+</ul>
+<p><strong>Backend:</strong></p>
+<ul>
+<li><code>accounts/auth/views_common.py</code> (<code>LoginView</code>, <code>AdminLoginView</code>, <code>RefreshView</code>, <code>LogoutView</code>, <code>MeView</code>, <code>ChangePasswordView</code>) → <code>accounts/services/auth_service.py</code>.</li>
+<li>Mỗi lần đăng nhập tạo một <strong>phiên riêng (<code>sid</code>) gắn vào token</strong>. <code>accounts/auth/authentication.py</code> kiểm tra mỗi request: phiên đã bị thu hồi chưa (danh sách thu hồi lưu ở Redis, file <code>accounts/auth/sessions.py</code>), mật khẩu đã đổi chưa (token mang &quot;phiên bản mật khẩu&quot;, đổi mật khẩu thì các token cũ vô hiệu).
+<em>Vì sao:</em> đăng xuất ở điện thoại không làm văng máy tính → đó chính là cách đồ án đáp ứng &quot;dùng chung tài khoản gia đình&quot; mà không phải xây module riêng.</li>
+<li>Cổng chợ từ chối tài khoản Admin và ngược lại, đều trả <code>401 INVALID_CREDENTIALS</code> như sai mật khẩu → người ngoài không dò được email nào là Admin.</li>
+<li>Giới hạn tần suất: <code>login 5/phút</code> theo IP, cộng thêm <code>20 lần sai/giờ theo email</code> trên mọi IP (<code>accounts/auth/throttles.py</code>, chỉ đếm lần sai).</li>
+<li>Mỗi lần đăng nhập / đăng nhập sai / đăng xuất / đổi mật khẩu ghi vào nhật ký <code>audit_logs</code>.</li>
+</ul>
+<blockquote>
+<p>⚠️ README đang ghi &quot;HttpOnly Cookie&quot;; code thực tế lưu token ở <code>localStorage</code> và gửi qua header Bearer. Xem Phần 7.</p>
+</blockquote>
+<h3 id="24-module-chợ-sạp-sản-phẩm-công-khai">2.4 Module Chợ, Sạp, Sản phẩm công khai</h3>
+<ul>
+<li><strong>Frontend:</strong> <code>pages/guest/MarketsPage.jsx</code>, <code>MarketDetailPage.jsx</code>, <code>FarmersPage.jsx</code>, <code>FarmerDetailPage.jsx</code>, <code>ProductsPage.jsx</code>, <code>ProductDetailPage.jsx</code> → hook <code>hooks/queries/guest/usePublicCatalog.js</code> → <code>api/guest/catalogApi.js</code>.</li>
+<li><strong>Backend:</strong>
+<ul>
+<li>Chợ: <code>markets/public_portal/views_public.py</code> nhận <code>q</code>, <code>day</code>, <code>lat</code>, <code>lng</code>, <code>ordering=distance</code> → <code>markets/selectors.py</code>.</li>
+<li>Sạp: <code>accounts/public_portal/views_public.py</code> → <code>accounts/selectors.py</code>.</li>
+<li>Sản phẩm: <code>catalog/public_portal/views_public.py</code> nhận <code>q</code> (tên hàng hoặc tên sạp), <code>category</code>, <code>market_id</code>, <code>day</code>, <code>price_min</code>, <code>price_max</code>, <code>in_stock</code>, <code>ordering</code> → <code>catalog/selectors.py</code>.</li>
+</ul>
+</li>
+<li><strong>Điểm quan trọng:</strong> mọi truy vấn công khai đi qua một bộ lọc chung &quot;đang bán&quot; (<code>ON_SALE_FILTER</code> trong <code>catalog/models.py</code>): còn bày bán, chưa lưu trữ, không bị Admin ẩn, <strong>đã được duyệt</strong>, và sạp đang ở trạng thái được duyệt.
+<em>Vì sao:</em> chỉ một chỗ định nghĩa &quot;hàng nào khách được thấy&quot;, không màn hình nào lỡ để lộ hàng chưa duyệt.</li>
+<li>Bộ lọc trên frontend được giữ trên URL (<code>hooks/common/useUrlFilters.js</code>), gõ tìm kiếm có debounce. <em>Vì sao:</em> gửi link cho người khác là thấy đúng kết quả; không gọi API mỗi lần gõ một chữ.</li>
+</ul>
+<h3 id="25-module-giỏ-hàng--đặt-hàng">2.5 Module Giỏ hàng &amp; Đặt hàng</h3>
+<p><strong>Giỏ hàng nằm hoàn toàn ở trình duyệt:</strong> <code>stores/cart.store.js</code> (Zustand, lưu <code>localStorage</code> với tên <code>marketlink-cart</code>). Nút &quot;Add to cart&quot; gọi <code>hooks/common/useAddToCart.js</code>: chưa đăng nhập thì chuyển tới trang đăng nhập; tài khoản nông dân thì từ chối; tự kẹp số lượng trong khoảng tối thiểu / tối đa của sản phẩm. Hàm <code>cartGroups()</code> gom các món theo từng sạp.
+<em>Vì sao không lưu giỏ trên server:</em> giỏ là nháp, không cần CSDL; mỗi thiết bị một giỏ riêng, phù hợp với dùng chung tài khoản gia đình; giảm tải server.</p>
+<p><strong>Giỏ được làm mới với dữ liệu thật</strong> (<code>hooks/queries/customer/useCartRefresh.js</code>): giá, tồn kho, còn bán hay không được cập nhật lại từ server, món hết hàng bị đánh dấu không đặt được.</p>
+<p><strong>Chọn ngày và khung giờ:</strong> <code>pages/customer/CheckoutPage.jsx</code> gọi <code>services/customer/pickupApi.js</code> → <code>GET /api/public/farmers/:id/pickup-options/</code> → <code>orders/services/pickup_service.py</code>. Server chỉ trả những ngày trong 7 ngày tới thỏa mãn đồng thời: chợ họp hôm đó, nông dân bán hôm đó, không rơi vào lịch đóng cửa chợ hay lịch nghỉ của nông dân, và giờ chốt của khung đó chưa qua.
+<em>Vì sao server tính:</em> luật lịch phức tạp, tính một chỗ thì giao diện và lúc đặt đơn luôn khớp nhau.</p>
+<p><strong>Gửi đơn:</strong> <code>hooks/queries/customer/useCheckout.js</code> → <code>services/customer/ordersApi.js</code> gọi <code>POST /api/customer/orders/</code> với danh sách nhóm (mỗi sạp: ngày, khung giờ, các món), có gắn <code>Idempotency-Key</code> → <code>orders/customer/views_customer.py</code> → <code>orders/services/checkout_service.py</code> (<code>place_orders</code>). Trong <strong>một transaction</strong>:</p>
+<ol>
+<li>Khóa dòng khách hàng và các sạp liên quan (<code>select_for_update</code>) để hai lần đặt đồng thời không vượt giới hạn.</li>
+<li>Kiểm tra khách không có quá 10 đơn đang chờ duyệt.</li>
+<li>Kiểm tra từng khung giờ còn hợp lệ, chưa qua giờ chốt.</li>
+<li>Kiểm tra từng món: đúng của sạp đó, đang bán, trong khoảng min / max, đủ hàng khả dụng (= tồn kho − phần đã giữ cho đơn đã duyệt), sản phẩm có bán tại chợ đã chọn.</li>
+<li>Tạo mỗi sạp một đơn, ghi từng món kèm <strong>ảnh chụp tên, đơn vị, đơn giá lúc đặt</strong>, giá lấy từ CSDL chứ không tin giá trình duyệt gửi lên.</li>
+<li>Ghi lịch sử trạng thái, báo nông dân &quot;có đơn mới&quot;.</li>
+</ol>
+<p>Một sạp lỗi thì <strong>cả lần đặt bị hủy</strong> (all-or-nothing). Nếu MySQL gặp deadlock, <code>marketlink_core/services/db_retry.py</code> tự thử lại một lần. Bấm nút 2 lần thì <code>orders/services/idempotency_service.py</code> nhận ra cùng <code>Idempotency-Key</code> và trả lại kết quả lần đầu, không tạo đơn thứ hai (kết quả lưu trong cache Redis 24 giờ).
+<em>Vì sao làm kỹ như vậy:</em> ngày họp chợ nhiều người đặt cùng lúc; mạng điện thoại chập chờn hay khiến bấm 2 lần.</p>
+<p><strong>Sau khi đặt:</strong> <code>useCheckout</code> xóa giỏ, làm mới dashboard và chuyển tới trang <code>/customer/checkout/success</code>.</p>
+<h3 id="26-module-thông-báo--websocket-realtime">2.6 Module Thông báo &amp; WebSocket (realtime)</h3>
+<p>Đi theo một thông báo từ lúc sinh ra tới lúc hiện trên màn hình:</p>
+<ol>
+<li><strong>Phát thông báo:</strong> khi có sự kiện (ví dụ nông dân duyệt đơn), service gọi hàm duy nhất <code>notify()</code> trong <code>backend/notifications/services.py</code>. Hàm này lấy tiêu đề / nội dung từ <code>notifications/messages.py</code> và ghi một dòng vào bảng <code>notifications</code>.
+<em>Vì sao một điểm phát duy nhất:</em> mọi thông báo cùng định dạng; muốn thêm kênh mới chỉ sửa một chỗ.</li>
+<li><strong>Chờ transaction chốt:</strong> việc đẩy realtime và gửi email đều đăng ký bằng <code>transaction.on_commit</code>. <em>Vì sao:</em> nếu thao tác bị lỗi và rollback thì không có thông báo &quot;ma&quot; nào bị gửi đi.</li>
+<li><strong>Đẩy qua Redis:</strong> sau khi chốt, <code>notify()</code> gửi tin vào <strong>channel layer</strong> — kênh trung gian chạy trên Redis — tới nhóm <code>user_&lt;id&gt;</code>.
+<em>Vì sao cần Redis ở giữa:</em> server có thể chạy nhiều tiến trình; tiến trình xử lý request duyệt đơn chưa chắc là tiến trình đang giữ kết nối WebSocket của khách. Redis làm &quot;bưu điện&quot; chung để mọi tiến trình chuyển tin cho nhau.</li>
+<li><strong>Kết nối WebSocket:</strong> khi đăng nhập, hook <code>frontend/src/hooks/common/useNotificationSocket.js</code> (thư viện <code>react-use-websocket</code>):
+<ul>
+<li>gọi <code>POST /api/auth/ws-ticket/</code> (<code>marketlink_core/views.py</code>) để xin một <strong>vé dùng 1 lần</strong>, sống 30 giây, lưu ở Redis (<code>marketlink_core/services/ws_ticket.py</code>);</li>
+<li>mở kết nối tới <code>/ws/notifications/?ticket=...</code>.
+File <code>backend/notifications/consumers.py</code> nhận kết nối, đổi vé ra người dùng (đọc rồi xóa vé ngay bằng lệnh <code>GETDEL</code> của Redis, nên vé không dùng lại được), kiểm tra tài khoản còn hoạt động, rồi cho kết nối vào nhóm <code>user_&lt;id&gt;</code> và nhóm phiên <code>session_&lt;sid&gt;</code>.
+<em>Vì sao dùng vé thay vì gửi thẳng JWT:</em> đường dẫn WebSocket hay bị ghi vào log server / proxy; để token dài hạn trên URL là lộ. Vé chỉ sống 30 giây và dùng một lần nên lộ cũng vô hại.</li>
+</ul>
+</li>
+<li><strong>Hiện lên màn hình:</strong> consumer gửi <code>NEW_NOTIFICATION</code> xuống trình duyệt. Hook hiện một toast có nút &quot;View&quot;, đồng thời báo TanStack Query làm mới đúng những dữ liệu liên quan (ví dụ thông báo về đơn thì tải lại danh sách đơn) theo bảng ánh xạ trong <code>constants/notificationEvents.js</code>. Chuông thông báo <code>components/common/layout/NotificationBell.jsx</code> cập nhật số chưa đọc.</li>
+<li><strong>Khi mất kết nối:</strong> hook tự nối lại, thời gian chờ tăng dần tới tối đa 30 giây. Trong lúc mất kết nối, các truy vấn thông báo chuyển sang <strong>hỏi định kỳ (polling)</strong> (<code>hooks/queries/common/useNotifications.js</code>). <em>Vì sao:</em> WebSocket hỏng (mạng, proxy chặn) thì người dùng vẫn nhận được thông báo, chỉ chậm hơn.</li>
+<li><strong>Đóng kết nối có chủ đích:</strong> đăng xuất → đóng socket của đúng thiết bị đó (nhóm <code>session_&lt;sid&gt;</code>); Admin khóa khách → đóng socket trên mọi thiết bị (nhóm <code>user_&lt;id&gt;</code>), mã đóng <code>4401</code>, frontend thấy mã này thì không nối lại.</li>
+<li><strong>Email:</strong> nếu loại thông báo có mẫu email (<code>backend/templates/emails/</code>), <code>notify()</code> dựng nội dung HTML + text rồi gửi qua Gmail SMTP trong một luồng nền (<code>ThreadPoolExecutor</code>, 2 luồng). <em>Vì sao gửi nền:</em> gửi SMTP mất vài giây, không bắt người dùng chờ; lỗi email không làm hỏng thao tác chính.</li>
+</ol>
+<p>Khi chạy máy cá nhân không bật Redis (<code>USE_REDIS=False</code>), channel layer chuyển sang bộ nhớ trong tiến trình — vẫn chạy được khi chỉ có một tiến trình.</p>
+<h3 id="27-module-gemini-ai">2.7 Module Gemini (AI)</h3>
+<p><strong>Phần dùng chung — <code>backend/marketlink_core/gemini.py</code>:</strong> cả chatbot lẫn kiểm duyệt đều gọi Gemini qua đây.</p>
+<ul>
+<li><code>make_client()</code>: tạo client từ <code>GEMINI_API_KEY</code>; không có key thì báo &quot;AI không khả dụng&quot;.</li>
+<li><code>model_chain()</code>: danh sách model <strong>chính + dự phòng</strong> (mặc định <code>gemini-3.1-flash-lite</code>, dự phòng <code>gemini-3.5-flash-lite</code>, đổi được qua biến môi trường).</li>
+<li><code>call_with_fallback()</code> + <code>classify_error()</code>: gọi model đầu tiên; hết quota trong ngày → chuyển model kế; bị giới hạn theo phút → chờ đúng số giây Gemini yêu cầu rồi thử lại; lỗi server → thử lại vài lần; quá hạn thời gian → dừng.
+<em>Vì sao:</em> gói miễn phí của Gemini có quota riêng cho từng model; xoay vòng model giúp demo không chết giữa chừng. Viết một lần, hai tính năng dùng chung.
+<em>Vì sao chọn dòng Flash / Flash-Lite:</em> nhanh, rẻ, có gói miễn phí, đủ cho câu hỏi ngắn và phân loại nội dung.</li>
+</ul>
+<p><strong>Chatbot — luồng một câu hỏi:</strong></p>
+<ol>
+<li>Widget <code>frontend/src/components/common/chat/AIChatWidget.jsx</code> (kéo đi được, nhớ vị trí nhờ <code>hooks/useDraggableDock.js</code>) → <code>hooks/queries/common/useAIChat.js</code> gửi <strong>tối đa vài tin nhắn gần nhất</strong> qua <code>api/common/chatApi.js</code> → <code>POST /api/chat/messages/</code>.
+<em>Vì sao gửi lại lịch sử mỗi lần:</em> server không lưu cuộc trò chuyện → không phải lưu dữ liệu cá nhân, server không có trạng thái.</li>
+<li><code>backend/chat_bot/views.py</code>: ai cũng gọi được (kể cả Guest); kiểm tra giới hạn <code>20/phút</code> và giới hạn theo ngày (<code>chat_bot/limits.py</code>: khách vãng lai 30 câu theo IP, người đăng nhập 100 câu, đếm trong Redis, reset lúc nửa đêm).</li>
+<li><code>backend/chat_bot/services.py</code> (<code>answer</code>) dựng <strong>system prompt theo vai trò</strong> từ <code>chat_bot/prompts.py</code> (luật trả lời, các sự thật về nền tảng, những điều cấm), gửi kèm <strong>danh sách công cụ</strong> mà vai trò đó được dùng.</li>
+<li>Gemini đọc câu hỏi và quyết định cần gọi công cụ nào, ví dụ <code>search_products(query=&quot;dưa leo&quot;, ...)</code>. Server chạy hàm tương ứng trong <code>chat_bot/ai_chatbot.py</code>. Các hàm này gọi lại <strong>chính các selector công khai</strong> của web, kết quả bị giới hạn số dòng, chỉ gồm trường công khai hoặc dữ liệu của chính người hỏi. Kết quả gửi lại Gemini; tối đa 3 vòng gọi công cụ rồi bắt buộc trả lời.</li>
+<li>Câu trả lời trả về widget kèm danh sách công cụ đã dùng.</li>
+</ol>
+<p>Bảy công cụ: <code>search_products</code>, <code>get_market_info</code>, <code>get_farmer_availability</code> (ai cũng có); <code>get_my_orders</code> (khách); <code>get_my_stall_overview</code>, <code>get_my_products</code> (nông dân); <code>get_admin_overview</code> (Admin, chỉ số đếm).
+<em>Vì sao function calling thay vì cho AI viết SQL:</em> AI không bao giờ chạm thẳng CSDL, không thể đọc dữ liệu người khác, không thể sửa / xóa gì; câu trả lời dựa trên dữ liệu thật nên không bịa giá hay tồn kho.
+<em>Vì sao có giới hạn và trả lời &quot;đang bận&quot; giống nhau cho mọi lỗi:</em> tránh tốn quota; không tiết lộ cho người ngoài là đang bị giới hạn hay đang hỏng.
+Ngoài ra: trả lời theo ngôn ngữ của câu hỏi; tìm được tiếng Việt không dấu (&quot;rau muong&quot; khớp &quot;rau muống&quot;); prompt dặn coi tin nhắn người dùng là dữ liệu, bỏ qua mọi yêu cầu đổi luật (chống prompt injection). <strong>Không có key Gemini thì chatbot báo đang bận</strong> (không có câu trả lời dự phòng).</p>
+<p><strong>Kiểm duyệt tin đăng — luồng:</strong> nông dân lưu sản phẩm → sau khi transaction chốt, <code>catalog/ai_review/service.py</code> (<code>schedule_listing_review</code>) đưa việc kiểm tra vào luồng nền → chạy <strong>lớp luật</strong> <code>catalog/ai_review/rules.py</code> (giá so với khung giá danh mục, so với trung vị các sạp khác, tồn kho bất thường, tên viết hoa…) → nếu luật chưa thấy vi phạm rõ thì gọi <strong>lớp Gemini</strong> <code>catalog/ai_review/gemini.py</code> (đọc chữ + ảnh, trả JSON theo schema cố định) → lưu kết quả vào <code>ProductAIReview</code> → tin sạch thì tự duyệt, tin vi phạm thì giữ lại và báo Admin. Chi tiết và lý do: Phần 5, mục C2.
+Đánh giá của khách và câu trả lời của sạp cũng được Gemini đọc nền để phát hiện ngôn từ xấu (<code>system/auto_flags.py</code>).</p>
+<h3 id="28-module-bản-đồ--định-vị">2.8 Module Bản đồ &amp; định vị</h3>
+<ul>
+<li><strong>Hiển thị bản đồ:</strong> <code>components/common/maps/MarketsMap.jsx</code> dùng <strong>Leaflet + React-Leaflet</strong>, nền bản đồ lấy từ OpenStreetMap; marker cho chợ và sạp. Chọn vị trí bằng cách kéo ghim: <code>components/common/maps/MapPicker.jsx</code>.</li>
+<li><strong>&quot;Gần tôi&quot;:</strong> <code>hooks/useGeolocation.js</code> xin vị trí GPS của trình duyệt, gửi <code>lat</code>, <code>lng</code> lên API chợ; server tính khoảng cách và sắp xếp gần nhất trước (<code>ordering=distance</code>).</li>
+<li><strong>Chỉ đường:</strong> <code>components/common/maps/DirectionsButton.jsx</code> mở Google Maps với điểm đến là tọa độ chợ.</li>
+<li><strong>Tự tra tọa độ từ địa chỉ:</strong> khi nông dân đăng ký hoặc đổi địa chỉ, <code>backend/accounts/geocoding.py</code> gọi <strong>Nominatim</strong> của OpenStreetMap (ngoài transaction, chờ tối đa 5 giây, tối đa 1 lượt/giây theo luật của Nominatim, có User-Agent riêng). Lỗi thì để trống, không chặn đăng ký. Admin cũng có nút tra tọa độ khi tạo chợ.
+<em>Vì sao OSM thay vì Google Maps API:</em> miễn phí, không cần thẻ tín dụng hay API key, đề bài cho phép chọn một trong hai; Google Maps chỉ dùng cho việc nó làm tốt nhất là chỉ đường.</li>
+</ul>
+<h3 id="29-redis-được-dùng-vào-những-việc-gì">2.9 Redis được dùng vào những việc gì</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Việc</th>
+<th style="text-align:left">File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Kênh trung gian cho WebSocket (channel layer)</td>
+<td style="text-align:left"><code>settings.py</code> (<code>CHANNEL_LAYERS</code>)</td>
+</tr>
+<tr>
+<td style="text-align:left">Vé WebSocket dùng 1 lần</td>
+<td style="text-align:left"><code>marketlink_core/services/ws_ticket.py</code></td>
+</tr>
+<tr>
+<td style="text-align:left">Danh sách phiên bị thu hồi, refresh token đã dùng</td>
+<td style="text-align:left"><code>accounts/auth/sessions.py</code> (cache <code>blacklist</code>)</td>
+</tr>
+<tr>
+<td style="text-align:left">Bộ đếm giới hạn tần suất (đăng nhập, đặt hàng, chat…)</td>
+<td style="text-align:left">DRF throttling, <code>accounts/auth/throttles.py</code></td>
+</tr>
+<tr>
+<td style="text-align:left">Kết quả đặt hàng theo Idempotency-Key</td>
+<td style="text-align:left"><code>orders/services/idempotency_service.py</code></td>
+</tr>
+<tr>
+<td style="text-align:left">Số câu chatbot mỗi ngày</td>
+<td style="text-align:left"><code>chat_bot/limits.py</code></td>
+</tr>
+<tr>
+<td style="text-align:left">Nhịp gọi Nominatim 1 lượt/giây</td>
+<td style="text-align:left"><code>accounts/geocoding.py</code></td>
+</tr>
+</tbody>
+</table>
+<p><em>Vì sao Redis:</em> những dữ liệu này ngắn hạn, đọc / ghi liên tục, cần chung giữa nhiều tiến trình — để trong MySQL thì chậm và làm bẩn CSDL. Không bật Redis thì tự chuyển sang bộ nhớ trong tiến trình để chạy ở máy cá nhân.</p>
+<hr>
+<h2 id="phần-3--chức-năng-theo-vai-trò">PHẦN 3 — CHỨC NĂNG THEO VAI TRÒ</h2>
+<blockquote>
+<p>Khuôn cho mỗi chức năng: <strong>① Yêu cầu</strong> · <strong>② Người dùng làm gì</strong> · <strong>③ Hệ thống làm gì</strong> · <strong>④ Luật &amp; tình huống đặc biệt</strong> · <strong>⑤ Công nghệ &amp; vì sao</strong> · <strong>⑥ File chính</strong> · <strong>⑦ Câu có thể bị hỏi</strong>.</p>
+</blockquote>
+<h3 id="31-guest-khách-vãng-lai">3.1 Guest (khách vãng lai)</h3>
+<p><em>(Sẽ viết chi tiết ở vòng sau.)</em> Guest xem được trang chủ, chợ, sạp, sản phẩm, đánh giá, About, Contact, Sitemap, Privacy và dùng chatbot với công cụ công khai. Bấm thêm vào giỏ → chuyển sang trang đăng nhập.</p>
+<h3 id="32-customer-khách-hàng">3.2 Customer (khách hàng)</h3>
+<h4 id="c-01-đăng-ký-đăng-nhập-dùng-chung-tài-khoản-gia-đình--">C-01. Đăng ký, đăng nhập, dùng chung tài khoản gia đình 🟢 (+🔵)</h4>
+<ul>
+<li><strong>① Yêu cầu:</strong> đăng ký với họ tên, SĐT, email, địa chỉ; đăng nhập an toàn; cho phép dùng chung tài khoản trong gia đình (tùy chọn).</li>
+<li><strong>② Người dùng:</strong> vào <code>/register</code> điền form → đăng nhập ở <code>/login</code> → vào dashboard <code>/customer</code>. Nhiều người trong nhà đăng nhập cùng một tài khoản trên nhiều máy.</li>
+<li><strong>③ Hệ thống:</strong> <code>accounts/services/customer_registration_service.py</code> tạo tài khoản; mật khẩu được băm bằng bộ băm của Django; số điện thoại được chuẩn hóa (<code>+84 90 123 4567</code> → <code>0901234567</code>) rồi kiểm tra trùng. Đăng nhập trả cặp token, mỗi thiết bị một phiên riêng.</li>
+<li><strong>④ Luật:</strong> một SĐT chỉ gắn một tài khoản khách; tài khoản bị khóa không bị xóa nên email / SĐT đó không đăng ký lại được; đúng mật khẩu nhưng tài khoản bị khóa → báo <code>ACCOUNT_LOCKED</code> kèm lý do; sai mật khẩu → chỉ báo sai (không lộ trạng thái khóa). Giới hạn <code>register 10/giờ</code>.</li>
+<li><strong>⑤ Công nghệ &amp; vì sao:</strong> JWT (SimpleJWT) — server không phải lưu session, dễ chạy nhiều tiến trình. 🔵 Phiên theo thiết bị (<code>sid</code>) — đăng xuất máy này không văng máy khác, đáp ứng &quot;dùng chung gia đình&quot; mà không phải xây module quản lý thành viên; mỗi máy một giỏ hàng riêng, dùng chung lịch sử đơn và yêu thích.</li>
+<li><strong>⑥ File:</strong> <code>pages/auth/RegisterForms.jsx</code>, <code>components/common/forms/RegisterCustomerForm.jsx</code>, <code>hooks/authentication/useAuth.js</code>, <code>backend/accounts/auth/</code>, <code>backend/accounts/phone.py</code>.</li>
+<li><strong>⑦ Hỏi:</strong> <em>&quot;Dùng chung gia đình làm thế nào?&quot;</em> → nhiều thiết bị cùng đăng nhập, mỗi thiết bị một phiên và một giỏ, thu hồi từng thiết bị được. <em>&quot;Mật khẩu lưu thế nào?&quot;</em> → băm một chiều, không lưu bản gốc.</li>
+</ul>
+<h4 id="c-02-tìm-chợ-gần-bản-đồ-chỉ-đường-">C-02. Tìm chợ gần, bản đồ, chỉ đường 🟢</h4>
+<ul>
+<li><strong>① Yêu cầu:</strong> xem chợ gần theo vị trí và ngày họp; bản đồ có marker và chỉ đường tới điểm nhận.</li>
+<li><strong>② Người dùng:</strong> vào <code>/markets</code>, bấm &quot;Near me&quot; (trình duyệt hỏi quyền vị trí), lọc theo thứ trong tuần, xem chợ trên bản đồ; vào chi tiết chợ thấy giờ mở cửa, danh sách sạp, bấm chỉ đường.</li>
+<li><strong>③ Hệ thống:</strong> API chợ nhận <code>lat</code>, <code>lng</code>, tính khoảng cách (công thức Haversine trên mặt cầu) và sắp xếp; lọc theo <code>day</code> dựa trên bảng ngày họp của chợ.</li>
+<li><strong>④ Luật:</strong> chỉ hiện chợ đang hoạt động; chợ có lịch đóng cửa tạm thời vẫn hiện nhưng những ngày đó không đặt được.</li>
+<li><strong>⑤ Công nghệ &amp; vì sao:</strong> Leaflet + OSM (miễn phí, không key); Geolocation API của trình duyệt; nút chỉ đường mở Google Maps vì người dùng quen và chỉ đường tốt.</li>
+<li><strong>⑥ File:</strong> <code>pages/guest/MarketsPage.jsx</code>, <code>MarketDetailPage.jsx</code>, <code>components/common/maps/</code>, <code>hooks/useGeolocation.js</code>, <code>backend/markets/public_portal/views_public.py</code>, <code>markets/selectors.py</code>.</li>
+<li><strong>⑦ Hỏi:</strong> <em>&quot;Sao không dùng Google Maps API?&quot;</em> → cần API key và thẻ thanh toán; đề bài cho chọn OSM; vẫn lưu đủ kinh độ / vĩ độ như yêu cầu.</li>
+</ul>
+<h4 id="c-03-xem-hồ-sơ-nông-dân-">C-03. Xem hồ sơ nông dân 🟢</h4>
+<ul>
+<li><strong>① Yêu cầu:</strong> tên sạp, vị trí, ngày bán, hàng trong tuần.</li>
+<li><strong>② Người dùng:</strong> <code>/farmers</code> → <code>/farmers/:id</code>: thấy chợ sạp bán và vị trí sạp trong chợ, ngày bán, khung giờ nhận, danh sách hàng đang bán, đánh giá; bấm yêu thích.</li>
+<li><strong>③ Hệ thống:</strong> chỉ hiện sạp đã được duyệt và hàng đang bán công khai.</li>
+<li><strong>⑤ Vì sao:</strong> ngày bán của nông dân là dữ liệu riêng (không suy từ khung giờ) để khách biết chắc hôm nào có mặt.</li>
+<li><strong>⑥ File:</strong> <code>pages/guest/FarmersPage.jsx</code>, <code>FarmerDetailPage.jsx</code>, <code>backend/accounts/public_portal/</code>, <code>accounts/selectors.py</code>.</li>
+</ul>
+<h4 id="c-04-tìm-lọc-xem-chi-tiết-sản-phẩm-">C-04. Tìm, lọc, xem chi tiết sản phẩm 🟢</h4>
+<ul>
+<li><strong>① Yêu cầu:</strong> danh mục; lọc theo giá, danh mục, chợ, ngày họp; chi tiết giá, đơn vị, còn bao nhiêu, người bán.</li>
+<li><strong>② Người dùng:</strong> <code>/products</code>: gõ tìm (theo tên hàng hoặc tên sạp), chọn danh mục, khoảng giá, chợ, thứ, chỉ hàng còn; sắp xếp; vào <code>/products/:id</code> xem chi tiết, đánh giá, sạp bán ở chợ nào.</li>
+<li><strong>③ Hệ thống:</strong> <code>catalog/selectors.py</code> ghép các điều kiện lọc; có phân trang; dùng <code>select_related</code> / <code>prefetch_related</code> để không truy vấn lặp (N+1).</li>
+<li><strong>④ Luật:</strong> chỉ hàng đã duyệt, đang bán, sạp đang hoạt động; số lượng hiển thị là số <strong>còn đặt được</strong>.</li>
+<li><strong>⑤ Vì sao:</strong> lọc giữ trên URL → chia sẻ link được; debounce khi gõ → không gọi API liên tục.</li>
+<li><strong>⑥ File:</strong> <code>pages/guest/ProductsPage.jsx</code>, <code>ProductDetailPage.jsx</code>, <code>hooks/common/useUrlFilters.js</code>, <code>backend/catalog/public_portal/views_public.py</code>.</li>
+</ul>
+<h4 id="c-05-giỏ-hàng-nhiều-sạp--">C-05. Giỏ hàng nhiều sạp 🟢 (+🔵)</h4>
+<ul>
+<li><strong>① Yêu cầu:</strong> thêm sản phẩm vào giỏ và đặt trước theo tồn kho.</li>
+<li><strong>② Người dùng:</strong> bấm &quot;Add to cart&quot; ở bất kỳ đâu; giỏ <code>/customer/cart</code> hiện theo từng sạp; mini cart trượt ra bên cạnh.</li>
+<li><strong>③ Hệ thống:</strong> giỏ nằm trong trình duyệt; khi mở giỏ thì làm mới giá / tồn kho từ server; món hết hàng hoặc ngừng bán bị đánh dấu.</li>
+<li><strong>④ Luật:</strong> phải đăng nhập bằng tài khoản khách; số lượng tự kẹp theo 🔵 min / max mỗi đơn của sản phẩm; tối đa 5 sạp trong một lần đặt.</li>
+<li><strong>⑤ Vì sao:</strong> không lưu giỏ trên server → không cần bảng, mỗi thiết bị một giỏ; vẫn làm mới với dữ liệu thật để không đặt theo giá cũ.</li>
+<li><strong>⑥ File:</strong> <code>stores/cart.store.js</code>, <code>hooks/common/useAddToCart.js</code>, <code>hooks/queries/customer/useCartRefresh.js</code>, <code>pages/customer/CartPage.jsx</code>, <code>components/customer/cart/</code>.</li>
+</ul>
+<h4 id="c-06-đặt-hàng-chọn-ngày--khung-giờ-nhận--">C-06. Đặt hàng: chọn ngày &amp; khung giờ nhận 🟢 (+🔵)</h4>
+<ul>
+<li><strong>① Yêu cầu:</strong> chọn ngày nhận và khung giờ trong các khung nông dân đặt; đặt theo tồn kho khả dụng; trả tiền khi nhận.</li>
+<li><strong>② Người dùng:</strong> <code>/customer/checkout</code>: với mỗi sạp chọn ngày (chỉ hiện ngày hợp lệ) và khung giờ, ghi chú; bấm đặt → trang thành công liệt kê các đơn đã tạo.</li>
+<li><strong>③ Hệ thống:</strong> xem mục 2.5 — khóa dòng, kiểm tra giới hạn 10 đơn chờ, kiểm tra khung giờ / giờ chốt, kiểm tra từng món, tạo mỗi sạp một đơn, chụp lại giá lúc đặt, báo nông dân.</li>
+<li><strong>④ Luật:</strong> đặt trước tối đa 7 ngày; khung đã qua giờ chốt không chọn được; ngày nghỉ / chợ đóng không chọn được; <strong>đặt đơn chưa trừ kho</strong> (trừ khi nông dân duyệt).</li>
+<li><strong>⑤ Công nghệ &amp; vì sao:</strong> 🔵 Idempotency-Key (bấm 2 lần không ra 2 đơn); 🔵 transaction all-or-nothing; 🔵 tự thử lại khi deadlock; 🔵 giới hạn 10 đơn chờ + <code>orders 10/giờ</code> để chống đặt ảo.</li>
+<li><strong>⑥ File:</strong> <code>pages/customer/CheckoutPage.jsx</code>, <code>hooks/queries/customer/useCheckout.js</code>, <code>services/customer/ordersApi.js</code>, <code>services/customer/pickupApi.js</code>, <code>backend/orders/services/checkout_service.py</code>, <code>pickup_service.py</code>, <code>idempotency_service.py</code>.</li>
+<li><strong>⑦ Hỏi:</strong> <em>&quot;Hai khách cùng đặt món cuối cùng thì sao?&quot;</em> → cả hai đặt được vì đặt chưa trừ kho; nông dân duyệt đơn nào trước thì đơn đó lấy hàng; đơn sau duyệt sẽ báo thiếu hàng. <em>&quot;Sao không trừ kho lúc đặt?&quot;</em> → chống người đặt ảo giữ hàng rồi không đến.</li>
+</ul>
+<h4 id="c-07-theo-dõi-trạng-thái-đơn--">C-07. Theo dõi trạng thái đơn 🟢 (+🔵)</h4>
+<ul>
+<li><strong>① Yêu cầu:</strong> theo dõi Placed → Accepted → Ready for pickup → Completed.</li>
+<li><strong>② Người dùng:</strong> <code>/customer/orders</code> có các tab đơn đang mở / đã xong; <code>/customer/orders/:id</code> hiện timeline trạng thái, sạp, vị trí sạp trong chợ, <strong>số điện thoại nông dân kèm nút gọi</strong>, giờ nhận, giờ chốt (có đồng hồ đếm ngược), nút chỉ đường.</li>
+<li><strong>③ Hệ thống:</strong> mọi lần đổi trạng thái được ghi trong <code>order_status_history</code> (ai đổi, lúc nào, lý do).</li>
+<li><strong>④ Luật:</strong> 🔵 ngoài 4 trạng thái đề bài, đơn còn có thể <code>DECLINED</code> (nông dân từ chối), <code>CANCELLED</code> (khách hủy), <code>NO_SHOW</code> (khách không đến), <code>EXPIRED</code> (nông dân không duyệt kịp trước giờ nhận).</li>
+<li><strong>⑤ Vì sao:</strong> realtime qua WebSocket → khách thấy trạng thái đổi ngay mà không phải tải lại trang.</li>
+<li><strong>⑥ File:</strong> <code>pages/customer/OrdersPage.jsx</code>, <code>OrderDetailPage.jsx</code>, <code>components/common/OrderTimeline.jsx</code>, <code>components/common/Countdown.jsx</code>, <code>backend/orders/services/fsm.py</code>.</li>
+</ul>
+<h4 id="c-08-sửa-đơn--yêu-cầu-thay-đổi--">C-08. Sửa đơn &amp; yêu cầu thay đổi 🟢 (+🔵)</h4>
+<ul>
+<li><strong>① Yêu cầu:</strong> sửa đơn trước giờ chốt của nông dân.</li>
+<li><strong>② Người dùng:</strong> <code>/customer/orders/:id/edit</code>: đổi số lượng, thêm / bớt món, đổi ngày hoặc khung giờ, sửa ghi chú.
+<ul>
+<li>Đơn còn <code>PLACED</code> → lưu là áp dụng ngay.</li>
+<li>🔵 Đơn đã <code>ACCEPTED</code> → lưu thành <strong>yêu cầu thay đổi</strong>; đơn giữ nội dung cũ cho tới khi nông dân chấp nhận / từ chối; khách nhận thông báo kết quả.</li>
+</ul>
+</li>
+<li><strong>③ Hệ thống:</strong> <code>orders/services/modify.py</code> khóa dòng đơn, so <code>version</code> với header <code>If-Match</code> (người khác vừa sửa → báo tải lại), kiểm tra đúng chủ đơn, đúng trạng thái, chưa qua giờ chốt, đủ hàng cho phần tăng thêm.</li>
+<li><strong>④ Luật:</strong> món thêm mới hoặc tăng số lượng phải đang bán; món đã ngừng bán chỉ được giữ hoặc giảm; mỗi đơn chỉ một yêu cầu chờ (gửi mới thì thay cái cũ); tới giờ nhận mà nông dân chưa xử lý thì yêu cầu tự hủy.</li>
+<li><strong>⑤ Vì sao:</strong> nông dân có thể đã soạn hàng sau khi duyệt → sửa thẳng sẽ gây sai lệch; khóa lạc quan (<code>version</code>) tránh hai người cùng sửa đè nhau.</li>
+<li><strong>⑥ File:</strong> <code>pages/customer/EditOrderPage.jsx</code>, <code>components/customer/orders/ChangeRequestPanel.jsx</code>, <code>backend/orders/services/modify.py</code>, <code>pending_change.py</code>.</li>
+</ul>
+<h4 id="c-09-hủy-đơn-">C-09. Hủy đơn 🟢</h4>
+<ul>
+<li><strong>② Người dùng:</strong> nút Cancel trên chi tiết đơn, có hộp xác nhận.</li>
+<li><strong>③ Hệ thống:</strong> <code>orders/services/customer_order_service.py</code> → lõi FSM chuyển <code>CANCELLED</code>; nếu đơn đã được duyệt (đã trừ kho) thì cộng trả kho; báo nông dân (in-app + email).</li>
+<li><strong>④ Luật:</strong> chỉ trước giờ chốt, chỉ đơn <code>PLACED</code> hoặc <code>ACCEPTED</code>, phải kèm <code>If-Match</code>.</li>
+</ul>
+<h4 id="c-10-lịch-sử-đơn--đặt-lại-nhanh-">C-10. Lịch sử đơn &amp; đặt lại nhanh 🟢</h4>
+<ul>
+<li><strong>② Người dùng:</strong> bấm &quot;Reorder&quot; trên đơn cũ → các món còn bán được nạp vào giỏ theo <strong>giá hôm nay</strong>, món không còn bán được liệt kê là bỏ qua.</li>
+<li><strong>③ Hệ thống:</strong> <code>GET /api/customer/orders/:id/reorder-preview/</code> trả danh sách món còn đặt được và món bị bỏ; frontend nạp vào giỏ.</li>
+<li><strong>⑤ Vì sao:</strong> không tạo đơn ngay mà đưa vào giỏ → khách vẫn chọn lại ngày / khung giờ và xem giá mới trước khi đặt.</li>
+<li><strong>⑥ File:</strong> <code>hooks/queries/customer/useReorder.js</code>, <code>backend/orders/customer/views_customer.py</code>.</li>
+</ul>
+<h4 id="c-11-yêu-thích--báo-có-hàng-lại-">C-11. Yêu thích &amp; báo có hàng lại 🟢</h4>
+<ul>
+<li><strong>② Người dùng:</strong> bấm trái tim trên sạp, sản phẩm, chợ; xem tại <code>/customer/favorites</code>; khi món yêu thích có hàng lại thì nhận thông báo <code>RESTOCK</code>.</li>
+<li><strong>③ Hệ thống:</strong> 3 bảng yêu thích riêng (sạp, sản phẩm, chợ); thêm / bỏ là idempotent (bấm lại không lỗi).</li>
+<li><strong>④ Luật:</strong> chỉ báo có hàng lại khi <strong>nông dân chủ động nhập thêm hàng</strong> làm tồn kho từ 0 lên &gt; 0 (sửa tồn kho hoặc áp mẫu tuần); không báo khi hàng quay lại do đơn bị hủy. Chỉ báo in-app, không email.</li>
+<li><strong>⑤ Vì sao:</strong> tránh báo &quot;ảo&quot; khi hàng chỉ quay lại vài phút do một đơn bị hủy.</li>
+<li><strong>⑥ File:</strong> <code>components/common/favorites/FavoriteButton.jsx</code>, <code>hooks/queries/customer/useFavorites.js</code>, <code>backend/favorites/</code>.</li>
+</ul>
+<h4 id="c-12-đánh-giá-sạp-và-sản-phẩm--">C-12. Đánh giá sạp và sản phẩm 🟢 (+🔵)</h4>
+<ul>
+<li><strong>② Người dùng:</strong> đơn <code>COMPLETED</code> có nút Review → <code>/customer/orders/:id/review</code>: chấm sao 1–5 và nhận xét cho sạp và cho từng món.</li>
+<li><strong>③ Hệ thống:</strong> <code>reviews/services/review_service.py</code> kiểm tra đúng chủ đơn, đơn đã hoàn tất, chưa đánh giá lần nào. 🔵 Sau khi lưu, Gemini đọc nhận xét ở luồng nền; thấy ngôn từ xấu hoặc để lại liên hệ giao dịch ngoài thì gắn cờ cho Admin. 🔵 Một sản phẩm có ≥ 3 đánh giá 1–2 sao trong 30 ngày cũng tự gắn cờ.</li>
+<li><strong>④ Luật:</strong> mỗi đơn đánh giá sạp 1 lần, mỗi món đánh giá 1 lần → chỉ người đã mua thật mới đánh giá được. Admin ẩn đánh giá vi phạm chứ không xóa.</li>
+<li><strong>⑥ File:</strong> <code>pages/customer/ReviewOrderPage.jsx</code>, <code>backend/reviews/</code>, <code>backend/system/auto_flags.py</code>.</li>
+</ul>
+<h4 id="c-13-nhận-thông-báo--">C-13. Nhận thông báo 🟢 (+🔵)</h4>
+<ul>
+<li><strong>① Yêu cầu:</strong> email hoặc in-app khi đơn được duyệt và khi sẵn sàng lấy.</li>
+<li><strong>② Người dùng:</strong> toast bật lên ngay, chuông có số chưa đọc, trang <code>/customer/notifications</code> xem tất cả, đánh dấu đã đọc; email cho các sự kiện quan trọng.</li>
+<li><strong>③ Hệ thống:</strong> xem mục 2.6.</li>
+<li><strong>⑤ Vì sao:</strong> 🔵 làm cả hai kênh; realtime giúp khách biết ngay khi đơn sẵn sàng để đi lấy.</li>
+<li><strong>⑥ File:</strong> <code>components/common/layout/NotificationBell.jsx</code>, <code>pages/customer/NotificationsPage.jsx</code>, <code>hooks/common/useNotificationSocket.js</code>.</li>
+</ul>
+<h4 id="c-14-hỏi-trợ-lý-ai--tùy-chọn--">C-14. Hỏi trợ lý AI 🟢 (tùy chọn) + 🔵</h4>
+<ul>
+<li><strong>② Người dùng:</strong> hỏi &quot;chợ Bà Chiểu mấy giờ mở?&quot;, &quot;ai bán dưa leo thứ 7?&quot;, &quot;đơn của tôi tới đâu rồi?&quot;.</li>
+<li><strong>③ Hệ thống:</strong> xem mục 2.7; khách đã đăng nhập được thêm công cụ <code>get_my_orders</code> (chỉ đơn của chính mình).</li>
+<li><strong>④ Luật:</strong> AI không đặt / sửa / hủy đơn — chỉ chỉ chỗ trong app để làm.</li>
+<li><strong>⑥ File:</strong> <code>components/common/chat/AIChatWidget.jsx</code>, <code>backend/chat_bot/</code>.</li>
+</ul>
+<h4 id="c-15-dashboard-hồ-sơ-đổi-mật-khẩu-">C-15. Dashboard, hồ sơ, đổi mật khẩu 🟢</h4>
+<ul>
+<li><strong>② Người dùng:</strong> <code>/customer</code>: số đơn đang mở, các lần nhận sắp tới (gần nhất trước), lối tắt sạp và chợ yêu thích; <code>/customer/profile</code> sửa thông tin, ảnh đại diện; <code>/customer/password</code> đổi mật khẩu.</li>
+<li><strong>③ Hệ thống:</strong> <code>orders/services/customer_dashboard.py</code>; khi mở dashboard, hệ thống quét và cho hết hạn các đơn quá giờ của những sạp liên quan (quét lười). Đổi mật khẩu → các phiên khác bị vô hiệu.</li>
+<li><strong>⑥ File:</strong> <code>pages/customer/CustomerDashboard.jsx</code>, <code>ProfilePage.jsx</code>, <code>ChangePasswordPage.jsx</code>.</li>
+</ul>
+<h3 id="33-farmer-nông-dân">3.3 Farmer (nông dân)</h3>
+<p><em>(Sẽ viết chi tiết theo khuôn 7 bước ở vòng sau.)</em> Danh sách chức năng:</p>
+<ul>
+<li>F-01 Đăng ký &amp; chờ duyệt (khu vực tạm cho sạp chưa duyệt) 🟢</li>
+<li>F-02 Hồ sơ sạp, ngày hoạt động, tự tra tọa độ 🟢 + 🔵</li>
+<li>F-03 Đăng ký bán ở chợ (chờ Admin duyệt), vị trí sạp trong chợ 🟢 + 🔵</li>
+<li>F-04 Khung giờ nhận hàng, giờ chốt 1–72 giờ, lịch nghỉ 🟢 + 🔵</li>
+<li>F-05 CRUD sản phẩm, ảnh, danh mục, đơn vị, min / max mỗi đơn, chọn chợ bán 🟢 + 🔵</li>
+<li>F-06 Kiểm tra trước khi đăng (precheck), tin chờ duyệt 🔵</li>
+<li>F-07 Mẫu tồn kho hàng tuần + áp dụng cho tuần này 🟢</li>
+<li>F-08 Sold out / tạm ngừng, thao tác hàng loạt 🟢 + 🔵</li>
+<li>F-09 Xử lý đơn: duyệt (trừ kho), từ chối, đánh dấu món hết, sẵn sàng, hoàn tất, khách không đến 🟢 + 🔵</li>
+<li>F-10 Xử lý yêu cầu thay đổi của khách 🔵</li>
+<li>F-11 Danh sách soạn hàng theo ngày, đơn gom theo khách 🔵</li>
+<li>F-12 Dashboard &amp; thống kê (bán chạy, doanh thu, ngày đông khách) 🟢</li>
+<li>F-13 Trả lời đánh giá 🟢</li>
+<li>F-14 Thông báo, chatbot cho nông dân 🟢 + 🔵</li>
+</ul>
+<h3 id="34-admin">3.4 Admin</h3>
+<p><em>(Sẽ viết chi tiết theo khuôn 7 bước ở vòng sau.)</em> Danh sách chức năng:</p>
+<ul>
+<li>A-01 Cổng đăng nhập riêng, dashboard + hàng việc cần làm 🟢 + 🔵</li>
+<li>A-02 Duyệt / từ chối / đình chỉ / khôi phục nông dân, xem trước tác động 🟢 + 🔵</li>
+<li>A-03 Khóa / mở khóa khách (bắt buộc lý do), cờ At-risk 🟢 + 🔵</li>
+<li>A-04 Hàng chờ duyệt: tin đăng sản phẩm, đăng ký chợ của sạp 🔵</li>
+<li>A-05 CRUD chợ, đổi lịch có xem trước tác động, lịch đóng cửa, đóng chợ khẩn cấp 🟢 + 🔵</li>
+<li>A-06 Kiểm duyệt: ẩn / chặn sản phẩm, ẩn đánh giá, hàng đợi cờ 🟢 + 🔵</li>
+<li>A-07 Quyết định của AI, thống kê độ tin cậy AI 🔵</li>
+<li>A-08 Khung giá theo danh mục 🔵</li>
+<li>A-09 Danh mục (icon, kéo thả sắp xếp) 🟢 + 🔵</li>
+<li>A-10 Báo cáo, xuất Excel / CSV 🟢 + 🔵</li>
+<li>A-11 Thông báo toàn sàn 🟢</li>
+<li>A-12 Nhật ký an ninh, lịch sử thay đổi, trang xem đơn chỉ đọc, trang Limits 🔵</li>
+</ul>
+<hr>
+<h2 id="phần-4--các-lõi-nghiệp-vụ-xuyên-suốt">PHẦN 4 — CÁC LÕI NGHIỆP VỤ XUYÊN SUỐT</h2>
+<p><em>(Sẽ viết chi tiết ở vòng sau; dưới đây là ý chính để học trước.)</em></p>
+<h3 id="41-vòng-đời-đơn-hàng">4.1 Vòng đời đơn hàng</h3>
+<ul>
+<li>3 trạng thái mở: <code>PLACED</code> → <code>ACCEPTED</code> → <code>READY_FOR_PICKUP</code>. 5 trạng thái kết thúc: <code>COMPLETED</code>, <code>CANCELLED</code>, <code>DECLINED</code>, <code>NO_SHOW</code>, <code>EXPIRED</code>.</li>
+<li>13 cạnh chuyển T1–T14 (T7 đã bỏ): T1 đặt · T2 duyệt · T3 / T4 từ chối · T5 / T6 khách hủy · T8 hết hạn · T9 sẵn sàng · T10 hoàn tất · T11 / T14 không đến · T12 Admin đình chỉ sạp · T13 Admin khóa khách.</li>
+<li>Mỗi lần chuyển kiểm tra 3 lớp (vai trò, trạng thái hiện tại, thời gian) và ghi lịch sử trong cùng transaction (<code>orders/services/fsm.py</code>).</li>
+</ul>
+<h3 id="42-tồn-kho">4.2 Tồn kho</h3>
+<ul>
+<li>Đặt: chỉ kiểm tra, không trừ. Duyệt: khóa sản phẩm theo <code>id</code> tăng dần rồi trừ. Hủy / từ chối / không đến: chỉ cộng trả nếu đơn đã từng bị trừ.</li>
+<li>Mẫu tuần: tồn kho mới = max(số mẫu − số đang giữ cho đơn đã duyệt, 0).</li>
+</ul>
+<h3 id="43-thời-gian">4.3 Thời gian</h3>
+<ul>
+<li>Ngày nhận hợp lệ = ngày chợ họp ∩ ngày nông dân bán − lịch đóng chợ − lịch nghỉ; trong 7 ngày tới.</li>
+<li>Giờ chốt <code>cutoff_at</code> = giờ bắt đầu khung − số giờ chốt của sạp (1–72), lưu cứng trên đơn.</li>
+<li>Nông dân chỉ bấm &quot;Ready&quot; sau giờ chốt; chỉ bấm &quot;No-show&quot; sau khi hết khung nhận.</li>
+</ul>
+<h3 id="44-tác-động-dây-chuyền-của-admin">4.4 Tác động dây chuyền của Admin</h3>
+<ul>
+<li>Đình chỉ sạp → đơn mở <code>DECLINED</code>. Khóa khách → đơn mở <code>CANCELLED</code>. Đóng chợ → đơn mở tại chợ <code>DECLINED</code>, mỗi khách một thông báo gộp. Chặn sản phẩm → đơn mở chứa món đó <code>DECLINED</code>. Tất cả đều hoàn kho và có màn hình xem trước tác động.</li>
+</ul>
+<h3 id="45-kiểm-duyệt-nội-dung">4.5 Kiểm duyệt nội dung</h3>
+<ul>
+<li>Sạp phải được duyệt → tin đăng phải được duyệt → AI 2 lớp hỗ trợ → hàng đợi cờ cho những gì còn cần Admin quyết.</li>
+</ul>
+<hr>
+<h2 id="phần-5--tổng-hợp-tính-năng-mở-rộng">PHẦN 5 — TỔNG HỢP TÍNH NĂNG MỞ RỘNG</h2>
+<blockquote>
+<p>Đây là phần ăn điểm. Mỗi mục có: <strong>Vì sao làm</strong> · <strong>Làm thế nào</strong> · <strong>Công nghệ / file</strong>. Khi giám khảo hỏi &quot;điểm khác biệt của nhóm&quot;, lấy từ đây.</p>
+</blockquote>
+<h3 id="nhóm-a--đơn-hàng">NHÓM A — Đơn hàng</h3>
+<p><strong>A1. Vòng đời đơn 8 trạng thái, 13 cạnh chuyển</strong></p>
+<ul>
+<li><em>Vì sao:</em> đề bài chỉ có đường đi &quot;suôn sẻ&quot;; thực tế có khách hủy, nông dân từ chối, khách không đến, nông dân quên duyệt. Không có các trạng thái này thì đơn treo mãi, kho sai, báo cáo sai.</li>
+<li><em>Làm thế nào:</em> một service FSM duy nhất quyết định mọi chuyển trạng thái; kiểm tra vai trò + trạng thái + thời gian; ghi lịch sử cùng transaction; khóa lạc quan bằng <code>version</code> + <code>If-Match</code>.</li>
+<li><em>File:</em> <code>orders/models.py</code>, <code>orders/services/fsm.py</code>.</li>
+</ul>
+<p><strong>A2. Trừ kho khi duyệt + 4 chốt chặn đặt ảo</strong></p>
+<ul>
+<li><em>Vì sao:</em> trừ kho lúc đặt thì một người có thể đặt hết hàng rồi không đến, nông dân mất khách thật.</li>
+<li><em>Làm thế nào:</em> đặt chỉ kiểm tra; duyệt mới trừ, khóa dòng theo thứ tự <code>id</code> để không deadlock. Chốt chặn: bắt buộc đăng nhập, tối đa 10 đơn chờ / khách, <code>orders 10/giờ</code>, Admin khóa tài khoản vi phạm.</li>
+<li><em>File:</em> <code>orders/services/checkout_service.py</code>, <code>catalog/services/stock.py</code>.</li>
+</ul>
+<p><strong>A3. Yêu cầu thay đổi cho đơn đã duyệt</strong></p>
+<ul>
+<li><em>Vì sao:</em> sau khi duyệt, nông dân có thể đã soạn hàng; khách sửa thẳng sẽ làm lệch kho và gây tranh cãi.</li>
+<li><em>Làm thế nào:</em> lưu yêu cầu trong cột JSON <code>orders.pending_change</code> (không thêm bảng); nông dân chọn Chấp nhận / Từ chối / Hủy cả đơn; tự hủy khi tới giờ nhận.</li>
+<li><em>File:</em> <code>orders/services/modify.py</code>, <code>pending_change.py</code>, <code>farmer_change_request.py</code>.</li>
+</ul>
+<p><strong>A4. Đơn quá hạn tự <code>EXPIRED</code> bằng quét lười</strong></p>
+<ul>
+<li><em>Vì sao:</em> đơn nông dân không duyệt trước giờ nhận không thể treo mãi; nhưng chạy cron / Celery cần thêm server worker, tốn tiền trên gói miễn phí.</li>
+<li><em>Làm thế nào:</em> hàm <code>expire_overdue_orders</code> chạy ngay trước những thao tác cần dữ liệu đúng: đặt hàng, áp mẫu tuần, mở dashboard. Lỗi một đơn không làm hỏng request. Có lệnh <code>expire_orders</code> chạy tay.</li>
+<li><em>File:</em> <code>orders/services/expiry.py</code>.</li>
+</ul>
+<p><strong>A5. Đánh dấu hết hàng từng món trong đơn</strong></p>
+<ul>
+<li><em>Vì sao:</em> thực tế hay hết một món chứ không phải cả đơn; từ chối cả đơn thì khách mất hết.</li>
+<li><em>Làm thế nào:</em> bỏ món khỏi đơn, tính lại tổng, đặt tồn kho món đó = 0, báo khách; khi từ chối đơn đã duyệt bắt buộc khai báo món nào hết để kho cuối đúng.</li>
+<li><em>File:</em> <code>orders/services/farmer_order_items.py</code>.</li>
+</ul>
+<p><strong>A6. Khách không đến, cờ At-risk, tự khóa sau 3 lần</strong></p>
+<ul>
+<li><em>Vì sao:</em> đặt trước mà không đến là thiệt hại trực tiếp cho nông dân (hàng đã soạn).</li>
+<li><em>Làm thế nào:</em> chỉ đếm khi đơn đã ở trạng thái Sẵn sàng (nông dân đã soạn hàng); không đếm đơn hết hạn. Đạt 3 lần trong 30 ngày → hệ thống khóa, hủy đơn mở, báo khách, ghi nhật ký; Admin mở khóa thì đếm lại từ đầu.</li>
+<li><em>File:</em> <code>accounts/services/no_show_lock.py</code>.</li>
+</ul>
+<p><strong>A7. Danh sách soạn hàng &amp; đơn gom theo khách</strong></p>
+<ul>
+<li><em>Vì sao:</em> sáng ngày họp chợ, nông dân cần biết tổng phải chuẩn bị bao nhiêu kg mỗi món, chứ không mở từng đơn.</li>
+<li><em>File:</em> <code>orders/farmer/views_farmer.py</code> (<code>picking-list</code>, <code>grouped-by-customer</code>).</li>
+</ul>
+<p><strong>A8. Số lượng tối thiểu / tối đa mỗi đơn</strong></p>
+<ul>
+<li><em>Vì sao:</em> có món chỉ bán từ 2 kg, có món giới hạn để chia đều cho nhiều khách.</li>
+<li><em>File:</em> <code>catalog/models.py</code>, <code>stores/cart.store.js</code>, <code>checkout_service.py</code>.</li>
+</ul>
+<p><strong>A9. Đặt hàng chống trùng &amp; chịu tải</strong></p>
+<ul>
+<li><em>Vì sao:</em> mạng di động chập chờn, người dùng bấm lại; ngày cao điểm nhiều người đặt cùng lúc.</li>
+<li><em>Làm thế nào:</em> Idempotency-Key, all-or-nothing, khóa dòng, tự thử lại khi deadlock, giá luôn lấy từ CSDL.</li>
+<li><em>File:</em> <code>idempotency_service.py</code>, <code>marketlink_core/services/db_retry.py</code>.</li>
+</ul>
+<h3 id="nhóm-b--chợ-lịch-định-vị">NHÓM B — Chợ, lịch, định vị</h3>
+<p><strong>B1. Sạp đăng ký chợ phải được Admin duyệt</strong></p>
+<ul>
+<li><em>Vì sao:</em> tránh sạp tự nhận bán ở chợ mà thực tế không có chỗ; Admin kiểm soát danh sách sạp ở từng chợ.</li>
+<li><em>File:</em> <code>markets/models.py</code> (<code>FarmerMarket.status</code>), <code>markets/admin_portal/</code> (<code>market-requests</code>).</li>
+</ul>
+<p><strong>B2. Lịch đóng cửa chợ &amp; lịch nghỉ nông dân</strong></p>
+<ul>
+<li><em>Vì sao:</em> đề bài nhắc nông dân &quot;nghỉ tuần đó&quot; là vấn đề thật nhưng không có chức năng; lễ Tết, mưa bão chợ cũng đóng.</li>
+<li><em>Làm thế nào:</em> khai báo theo khoảng ngày; những ngày đó không đặt được; chặn tạo kỳ nghỉ nếu còn đơn mở trong khoảng.</li>
+<li><em>File:</em> <code>markets/models.py</code> (<code>MarketClosure</code>, <code>FarmerClosure</code>).</li>
+</ul>
+<p><strong>B3. Đổi lịch chợ có xem trước tác động</strong></p>
+<ul>
+<li><em>Vì sao:</em> đổi giờ chợ có thể làm hàng chục đơn không còn hợp lệ; Admin phải biết trước khi bấm.</li>
+<li><em>Làm thế nào:</em> tính trước số khung giờ sẽ tắt, số đơn lệch, số khách / sạp bị ảnh hưởng; xác nhận mới lưu; đơn lệch được đánh dấu cần dời giờ, không dời kịp thì hủy và báo khách.</li>
+<li><em>File:</em> <code>markets/services/market_service.py</code>.</li>
+</ul>
+<p><strong>B4. Đóng chợ khẩn cấp, xác nhận bằng gõ chữ &quot;Confirm&quot;</strong></p>
+<ul>
+<li><em>Vì sao:</em> chợ đóng đột xuất (ngập, cháy) thì phải báo ngay cho mọi người có đơn; thao tác nguy hiểm nên chống bấm nhầm.</li>
+<li><em>Làm thế nào:</em> một transaction tắt chợ, từ chối đơn mở, hoàn kho, tắt khung giờ; mỗi khách chỉ nhận một thông báo gộp; không đình chỉ sạp vì sạp có thể bán chợ khác.</li>
+</ul>
+<p><strong>B5. Ngày hoạt động của nông dân &amp; tự tra tọa độ</strong></p>
+<ul>
+<li><em>Vì sao:</em> nông dân lớn tuổi không biết kinh độ / vĩ độ là gì; ngày bán cần rõ ràng để khách không đến nhầm hôm.</li>
+<li><em>File:</em> <code>accounts/geocoding.py</code>, <code>accounts/operating_days.py</code>.</li>
+</ul>
+<p><strong>B6. Chọn chợ bán cho từng sản phẩm</strong></p>
+<ul>
+<li><em>Vì sao:</em> sạp bán nhiều chợ nhưng không mang mọi món tới mọi chợ.</li>
+<li><em>File:</em> <code>catalog/models.py</code> (<code>ProductMarket</code>).</li>
+</ul>
+<h3 id="nhóm-c--kiểm-duyệt--ai">NHÓM C — Kiểm duyệt &amp; AI</h3>
+<p><strong>C1. Duyệt tin đăng trước khi lên sàn</strong></p>
+<ul>
+<li><em>Vì sao:</em> đề bài chỉ cho gỡ tin sai <strong>sau khi</strong> đã hiện trước mặt khách — quá muộn.</li>
+<li><em>Làm thế nào:</em> tin mới ở trạng thái chờ duyệt; sửa tên / mô tả / ảnh / danh mục thì quay lại hàng chờ, còn sửa giá và tồn kho thì không (để nông dân cập nhật kho không phải chờ).</li>
+<li><em>File:</em> <code>catalog/services/product_moderation_service.py</code>.</li>
+</ul>
+<p><strong>C2. AI kiểm duyệt 2 lớp, tự duyệt tin sạch</strong></p>
+<ul>
+<li><em>Vì sao:</em> Admin không thể đọc hết mọi tin; nhưng giao hẳn cho AI thì rủi ro.</li>
+<li><em>Làm thế nào:</em>
+<ul>
+<li>Lớp luật kiểm tra con số (giá so với khung giá danh mục, lệch xa trung vị sạp khác, tồn kho bất thường) — vì AI không biết giá chợ hôm nay và mỗi lần trả lời một khác.</li>
+<li>Lớp Gemini đọc ý nghĩa chữ và ảnh (có phải nông sản, đúng danh mục, ngôn từ xấu, để lại liên hệ, ảnh có khớp) — việc luật cứng làm không được. Câu trả lời ép theo JSON schema để tin đăng không &quot;nói chuyện&quot; lừa được AI.</li>
+<li>Luật đã thấy vi phạm rõ thì không gọi AI (tiết kiệm quota); băm nội dung để không kiểm tra lại cùng một nội dung.</li>
+<li>Chạy nền sau khi lưu, nông dân không phải chờ.</li>
+<li>Mọi quyết định tự động liệt kê ở trang AI Decisions để Admin xác nhận / hoàn tác; có thống kê tỉ lệ AI và Admin đồng ý với nhau, số lần bắt đúng / bỏ sót / báo nhầm → biết khi nào tin được AI.</li>
+<li>Không có key → chỉ chạy lớp luật, tin chờ Admin duyệt tay như bình thường.</li>
+</ul>
+</li>
+<li><em>File:</em> <code>catalog/ai_review/</code> (<code>service.py</code>, <code>rules.py</code>, <code>gemini.py</code>, <code>stats.py</code>), <code>pages/admin/AdminAIDecisionsPage.jsx</code>.</li>
+</ul>
+<p><strong>C3. Kiểm tra ngay trên form (precheck)</strong></p>
+<ul>
+<li><em>Vì sao:</em> nông dân biết lỗi trước khi gửi, đỡ bị từ chối.</li>
+<li><em>File:</em> <code>catalog/farmer/views_farmer.py</code> (<code>precheck</code>), <code>components/farmer/ListingPrecheck.jsx</code>.</li>
+</ul>
+<p><strong>C4. Khung giá &amp; tồn kho theo danh mục</strong></p>
+<ul>
+<li><em>Vì sao:</em> cho lớp luật một mốc so sánh do Admin chỉnh; ngoài khung không bị cấm, chỉ cần xem lại.</li>
+<li><em>File:</em> <code>PriceGuideline</code> trong <code>catalog/models.py</code>, <code>pages/admin/AdminPriceGuidelinesPage.jsx</code>.</li>
+</ul>
+<p><strong>C5. Quét ảnh hàng tuần bằng AI</strong></p>
+<ul>
+<li><em>Vì sao:</em> nông dân có thể đổi ảnh sau khi được duyệt.</li>
+<li><em>File:</em> <code>catalog/management/commands/ai_scan_product_images.py</code>.</li>
+</ul>
+<p><strong>C6. Hàng đợi cờ &amp; cờ tự động</strong></p>
+<ul>
+<li><em>Vì sao:</em> &quot;ẩn&quot; là quyết định đã đưa ra; &quot;cờ&quot; là ghi nhớ còn nợ một quyết định — Admin không phải đọc lại toàn bộ danh mục mỗi ngày.</li>
+<li><em>Làm thế nào:</em> cờ tự động cho đánh giá có ngôn từ xấu (AI đọc), sản phẩm nhiều đánh giá thấp, khách vượt ngưỡng không đến; mỗi đối tượng một cờ mở; lỗi khi gắn cờ không làm hỏng thao tác gốc.</li>
+<li><em>File:</em> <code>system/flags.py</code>, <code>system/auto_flags.py</code>.</li>
+</ul>
+<p><strong>C7. Ẩn và Chặn sản phẩm là hai việc khác nhau</strong></p>
+<ul>
+<li><em>Vì sao:</em> đang nghi ngờ (ẩn, giữ đơn) khác với đã xác định vi phạm (chặn, hủy đơn, hoàn kho).</li>
+<li><em>File:</em> <code>catalog/services/product_moderation_service.py</code>.</li>
+</ul>
+<h3 id="nhóm-d--quản-trị--giám-sát">NHÓM D — Quản trị &amp; giám sát</h3>
+<p><strong>D1. Nhật ký an ninh &amp; lịch sử thay đổi</strong> — <em>Vì sao:</em> biết ai làm gì, lúc nào, từ IP nào khi có sự cố; xem được ai đã sửa hồ sơ / sản phẩm / chợ. <em>File:</em> <code>system/models.py</code> (<code>AuditLog</code>), <code>django-simple-history</code>.</p>
+<p><strong>D2. Xem trước tác động khi đình chỉ sạp / khóa khách</strong> — <em>Vì sao:</em> Admin cần biết bao nhiêu đơn và khách bị ảnh hưởng trước khi bấm.</p>
+<p><strong>D3. Trang xem đơn chỉ đọc</strong> — <em>Vì sao:</em> hỗ trợ tra cứu khi có khiếu nại mà không cho Admin sửa đơn của người khác.</p>
+<p><strong>D4. Trang Limits</strong> — <em>Vì sao:</em> Admin mới biết hệ thống đang áp những giới hạn nào mà không phải &quot;đụng&quot; vào mới biết.</p>
+<p><strong>D5. Dashboard có hàng việc cần làm và biểu đồ theo tháng</strong> — <em>Vì sao:</em> con số tổng không giúp Admin làm việc; &quot;việc chờ xử lý hôm nay&quot; thì giúp.</p>
+<p><strong>D6. Xuất Excel an toàn &amp; CSV</strong> — <em>Vì sao:</em> tên do người dùng đặt bắt đầu bằng <code>=</code> có thể thành công thức độc khi mở Excel; ghi mọi ô chữ dạng chuỗi để chặn.</p>
+<p><strong>D7. Dọn tài khoản không dùng</strong> — <em>Vì sao:</em> tài khoản rác làm phình dữ liệu; mặc định chỉ liệt kê, phải thêm <code>--apply</code> mới xóa.</p>
+<p><strong>D8. Danh mục: icon không trùng, kéo thả sắp xếp</strong> — <em>Vì sao:</em> hai danh mục cùng icon làm khách nhầm; Admin sắp thứ tự hiển thị trực quan.</p>
+<h3 id="nhóm-e--trợ-lý-ai-theo-vai-trò">NHÓM E — Trợ lý AI theo vai trò</h3>
+<p>Xem mục 2.7. <em>Vì sao vượt mức &quot;tùy chọn&quot;:</em> trả lời bằng dữ liệu thật qua function calling, đúng quyền từng vai trò, an toàn (chỉ đọc), đa ngôn ngữ, có giới hạn chống tốn quota.</p>
+<h3 id="nhóm-f--thông-báo-realtime-đa-kênh">NHÓM F — Thông báo realtime đa kênh</h3>
+<p>Xem mục 2.6. <em>Vì sao:</em> đề bài chỉ cần một kênh cho 2 sự kiện; đồ án có hai kênh, hơn 25 loại sự kiện, realtime, có polling dự phòng, vé WebSocket an toàn.</p>
+<h3 id="nhóm-g--bảo-mật-tăng-cường">NHÓM G — Bảo mật tăng cường</h3>
+<p>Xem Phần 6.</p>
+<h3 id="nhóm-h--trải-nghiệm-giao-diện">NHÓM H — Trải nghiệm giao diện</h3>
+<p>Sáng / tối · đếm ngược giờ chốt · mini cart · skeleton khi tải · chặn rời trang khi form chưa lưu · bộ lọc trên URL · trang Sitemap, Privacy, 403, 404 · tách code theo vai trò (lazy route) để tải nhanh.</p>
+<hr>
+<h2 id="phần-6--bảo-mật-kiểm-thử-triển-khai">PHẦN 6 — BẢO MẬT, KIỂM THỬ, TRIỂN KHAI</h2>
+<h3 id="61-bảo-mật">6.1 Bảo mật</h3>
+<ul>
+<li><strong>Đăng nhập:</strong> JWT access 15 phút / refresh 7 ngày, xoay vòng refresh, phát hiện refresh token bị dùng lại; phiên theo thiết bị; đổi mật khẩu vô hiệu các phiên cũ.</li>
+<li><strong>Chống dò mật khẩu:</strong> <code>5/phút</code> theo IP + <code>20 lần sai/giờ</code> theo email; không tiết lộ tài khoản Admin hay trạng thái khóa.</li>
+<li><strong>Phân quyền hai lớp:</strong> frontend chặn trang (<code>router/guards.jsx</code>) chỉ để trải nghiệm; <strong>backend mới là lớp bảo vệ thật</strong> (permission theo vai trò + lọc dữ liệu theo chủ sở hữu, truy cập đơn người khác trả 404).</li>
+<li><strong>Dữ liệu vào:</strong> serializer kiểm tra mọi ô; ORM chống SQL injection; React tự escape chống XSS.</li>
+<li><strong>Ảnh upload:</strong> kiểm tra đuôi, MIME, ≤ 2MB, ≤ 36 megapixel, đổi tên UUID, mã hóa lại ảnh để xóa EXIF / GPS.</li>
+<li><strong>Cấu hình:</strong> thiếu <code>DEBUG</code> coi là tắt; production thiếu <code>SECRET_KEY</code> thì không chạy; bật HTTPS / HSTS; CORS chỉ cho domain frontend; chỉ tin IP do proxy của hệ thống gắn (<code>NUM_PROXIES</code>).</li>
+<li><strong>Một SĐT một tài khoản</strong>, tài khoản khóa không xóa nên không đăng ký lại được.</li>
+</ul>
+<h3 id="62-hiệu-năng--chịu-tải">6.2 Hiệu năng &amp; chịu tải</h3>
+<p>Phân trang 20 dòng · index CSDL · <code>select_related</code> / <code>prefetch_related</code> · cache TanStack Query · debounce · ảnh lazy · lazy route theo vai trò · backend không lưu trạng thái (JWT) nên chạy nhiều tiến trình được · Redis cho dữ liệu nóng.</p>
+<h3 id="63-kiểm-thử">6.3 Kiểm thử</h3>
+<p>pytest + pytest-django, khoảng 90 file test: FSM đơn hàng, checkout, sửa đơn, hết hạn, đồng thời tồn kho, vé WebSocket, throttle đăng nhập, thu hồi phiên, phân quyền Admin, AI review, cờ tự động, báo cáo Excel… Có Swagger tại <code>/api/docs/</code>.</p>
+<h3 id="64-triển-khai">6.4 Triển khai</h3>
+<p>Vercel (frontend) · Render chạy Daphne (backend + WebSocket) · Aiven MySQL (bắt buộc SSL) · Upstash Redis (<code>rediss://</code>). <code>DEPLOYMENT_GUIDE.md</code> ghi 7 lỗi thực tế đã gặp: SSL Aiven, chứng chỉ Upstash, CORS / CSRF giữa Vercel và Render, mất ảnh khi tắt DEBUG, F5 bị 404, seed trùng khi build, WebSocket không chạy trên Gunicorn. Dữ liệu mẫu: <code>python manage.py seed_real_data</code>. Kiểm tra sống: <code>/api/health/</code> (kiểm tra CSDL và cache).</p>
+<hr>
+<h2 id="phần-7--chuẩn-bị-bảo-vệ">PHẦN 7 — CHUẨN BỊ BẢO VỆ</h2>
+<h3 id="71-kịch-bản-demo">7.1 Kịch bản demo</h3>
+<p><em>(Sẽ viết ở vòng sau: thứ tự màn hình theo từng tài khoản demo, ai thao tác phần nào.)</em></p>
+<h3 id="72-câu-hỏi-thường-gặp--trả-lời-mẫu">7.2 Câu hỏi thường gặp &amp; trả lời mẫu</h3>
+<p><em>(Sẽ viết ở vòng sau.)</em></p>
+<h3 id="73-điểm-cần-cả-nhóm-thống-nhất">7.3 Điểm cần cả nhóm thống nhất</h3>
+<ol>
+<li><strong>Quy định AI mâu thuẫn:</strong> SRS cho dùng trợ lý lập trình, bảng chấm điểm ghi AI chỉ được dùng để tạo ảnh; README khai có dùng AI coding assistant. → Thống nhất cách trình bày, chuẩn bị giải thích phần code mình tự hiểu.</li>
+<li><strong>Lưu token:</strong> README ghi &quot;HttpOnly Cookie&quot;, code thực tế lưu token ở <code>localStorage</code> và gửi Bearer. → Sửa README hoặc chuẩn bị trả lời (lý do thường gặp: SPA và API khác domain khi deploy Vercel / Render; rủi ro XSS được giảm vì React tự escape và không dùng <code>dangerouslySetInnerHTML</code>).</li>
+<li><strong>Chatbot khi không có key:</strong> README ghi có &quot;dự phòng bằng CSDL&quot;, code thực tế trả lời &quot;đang bận&quot;. (Kiểm duyệt tin đăng thì đúng là còn lớp luật.) → Sửa README.</li>
+<li><strong>Tự khóa khi không đến lấy hàng:</strong> tài liệu phân tích D-028 ghi &quot;Admin quyết định khóa&quot;, code hiện tại tự khóa sau 3 lần. → Chốt theo code.</li>
+<li><strong>Tên model Gemini:</strong> README ghi <code>gemini-2.5-flash</code> và <code>gemini-3.1-flash</code>; <code>settings.py</code> dùng <code>gemini-3.1-flash-lite</code> (dự phòng <code>gemini-3.5-flash-lite</code>). → Sửa README.</li>
+<li><strong>Tailwind:</strong> README ghi có Tailwind, <code>package.json</code> không có; thực tế dùng CSS3 thuần + design tokens. → Sửa README.</li>
+<li><strong>Bảng chấm điểm có nhắc Opera</strong> → test thêm trên Opera trước buổi bảo vệ.</li>
+</ol>
+<h3 id="74-đã-sửa-ai-duyệt-đánh-giá-tự-ẩn-khi-chắc-chắn-vi-phạm">7.4 Đã sửa: AI duyệt đánh giá tự ẩn khi chắc chắn vi phạm</h3>
+<p>Trước đây AI chỉ gắn cờ, đánh giá thô tục vẫn hiện công khai cho tới khi Admin ẩn tay. Nay đã sửa (chỉ đụng tới tính năng duyệt đánh giá):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">File</th>
+<th style="text-align:left">Thay đổi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>backend/catalog/ai_review/gemini.py</code></td>
+<td style="text-align:left">Prompt hỏi thêm <code>certain</code> (chắc chắn hay chỉ nghi ngờ); hàm mới <code>assess_review</code> trả về <code>ReviewVerdict(problems, certain)</code>; hàm cũ <code>ask_about_review</code> giữ nguyên cách dùng. Câu trả lời thiếu hoặc lạ ở ô <code>certain</code> luôn bị coi là &quot;nghi ngờ&quot; (an toàn: chỉ gắn cờ, không ẩn).</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>backend/system/auto_flags.py</code></td>
+<td style="text-align:left">Đánh giá của khách mà AI chắc chắn vi phạm → ẩn + ghi audit log <code>REVIEW_HIDDEN</code> (người làm = hệ thống) + gắn cờ, tất cả trong một transaction (gắn cờ lỗi thì không ẩn). Đánh giá đã bị ẩn sẵn thì không đụng tới. Câu trả lời của sạp vẫn chỉ gắn cờ.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>backend/reviews/services/review_moderation_service.py</code></td>
+<td style="text-align:left">Thêm hằng <code>AI_HIDE_PREFIX</code> và hàm <code>hidden_by_ai()</code>.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>backend/reviews/admin_portal/serializers_admin.py</code></td>
+<td style="text-align:left">API danh sách đánh giá cho Admin trả thêm <code>hidden_by_ai</code>.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>frontend/src/pages/admin/AdminModerationPage.jsx</code></td>
+<td style="text-align:left">Nhãn &quot;Hidden by AI: …&quot; thay cho &quot;Hidden: …&quot; khi AI ẩn.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>backend/system/test_auto_flags.py</code></td>
+<td style="text-align:left">Sửa test cũ cho hành vi mới, thêm test: chắc chắn → ẩn; nghi ngờ → chỉ cờ; chê thật lòng → không gì cả; Admin khôi phục được; Admin thấy nhãn AI; đọc câu trả lời của model an toàn.</td>
+</tr>
+</tbody>
+</table>
+<p>Không cần migration (dùng lại các cột ẩn đánh giá đã có). Việc còn lại có thể làm thêm: cột ẩn riêng cho câu trả lời của sạp.</p>
+
+</body>
+</html>
