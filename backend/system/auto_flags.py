@@ -116,8 +116,7 @@ def _ai_text_check(
     note = f"{who} contains {'; '.join(verdict.problems)}."
     if not (hide_when_certain and verdict.certain):
         return _raise_once(target_type, target_id, note)
-    # Hide and queue together: if the flag cannot be written the review stays visible, so a
-    # hidden review always has an entry in the admin's queue.
+    
     with transaction.atomic():
         if _hide_review_for_ai(target_type, target_id, "; ".join(verdict.problems)):
             note = f"{note[:-1]}. Hidden automatically until an admin checks it."
