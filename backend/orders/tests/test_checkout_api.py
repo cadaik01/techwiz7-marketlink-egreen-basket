@@ -129,7 +129,8 @@ class TestCheckoutApi:
 
     @pytest.mark.parametrize("mutate, error_key", [
         (lambda body: body.update(groups=[]), "groups"),
-        (lambda body: body["groups"][1].update(farmer_id=body["groups"][0]["farmer_id"]), "groups"),
+        (lambda body: body["groups"][1].update({k: body["groups"][0][k] for k in ("farmer_id", "pickup_slot_id")}),
+         "groups"),
         (lambda body: body["groups"][0]["items"][0].update(quantity=0), "groups.0.items.0.quantity"),
         (lambda body: body["groups"][0]["items"].append(dict(body["groups"][0]["items"][0])), "groups.0.items"),
     ])
@@ -141,6 +142,34 @@ class TestCheckoutApi:
 
         assert (response.status_code, response.json()["code"]) == (400, "VALIDATION_ERROR")
         assert any(key.startswith(error_key) for key in response.json()["errors"])
+
+    def test_one_stall_can_send_each_item_to_a_different_market(self, shop):
+        papaya = make_product(farmer=shop.farmer_a)
+        other = make_slot(farmer=shop.farmer_a, market=make_market(), day_of_week=shop.slot_a.day_of_week)
+        body = {"groups": [
+            {"farmer_id": shop.farmer_a.pk, "pickup_slot_id": slot.pk, "pickup_date": shop.date,
+             "items": [{"product_id": product.pk, "quantity": 1}]}
+            for slot, product in ((shop.slot_a, shop.tomato), (other, papaya))
+        ]}
+
+        response = _post(shop.customer, body)
+
+        assert response.status_code == 201
+        markets = {order["market"]["id"] for order in response.json()["data"]["orders"]}
+        assert markets == {shop.slot_a.farmer_market.market_id, other.farmer_market.market_id}
+
+    def test_one_item_cannot_be_split_across_markets(self, shop):
+        other = make_slot(farmer=shop.farmer_a, market=make_market(), day_of_week=shop.slot_a.day_of_week)
+        body = {"groups": [
+            {"farmer_id": shop.farmer_a.pk, "pickup_slot_id": slot.pk, "pickup_date": shop.date,
+             "items": [{"product_id": shop.tomato.pk, "quantity": 1}]}
+            for slot in (shop.slot_a, other)
+        ]}
+
+        response = _post(shop.customer, body)
+
+        assert (response.status_code, response.json()["code"]) == (400, "VALIDATION_ERROR")
+        assert not Order.objects.exists()
 
     def test_farmer_cannot_place_orders(self, shop):
         response = _post(shop.farmer_a.user, _body(shop))

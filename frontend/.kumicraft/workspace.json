@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 2,
+  "id": "WPibGjOu4f",
+  "name": "frontend",
+  "createdAt": "2026-10-26T11:26:45.932Z",
+  "framework": "vite-react",
+  "sourceDir": "src",
+  "backends": [],
+  "responsiveMode": "desktop-first",
+  "frames": [
+    {
+      "id": "desktop",
+      "label": "Desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "tablet",
+      "label": "Tablet",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "id": "mobile",
+      "label": "Mobile",
+      "width": 375,
+      "height": 812
+    }
+  ],
+  "primaryFrameId": "desktop"
+}

@@ -35,9 +35,12 @@ class CheckoutWriteSerializer(serializers.Serializer):
     groups = CheckoutGroupWriteSerializer(many=True, allow_empty=False, max_length=5)
 
     def validate_groups(self, groups):
-        farmer_ids = [group["farmer_id"] for group in groups]
-        if len(farmer_ids) != len(set(farmer_ids)):
-            raise serializers.ValidationError("Each farmer can appear only once")
+        pickups = [(group["farmer_id"], group["pickup_slot_id"], group["pickup_date"]) for group in groups]
+        if len(pickups) != len(set(pickups)):
+            raise serializers.ValidationError("Items for the same stall, pickup window and date must be in one order")
+        product_ids = [item["product_id"] for group in groups for item in group["items"]]
+        if len(product_ids) != len(set(product_ids)):
+            raise serializers.ValidationError("Each product can be picked up at one market per checkout")
         return groups
 
 

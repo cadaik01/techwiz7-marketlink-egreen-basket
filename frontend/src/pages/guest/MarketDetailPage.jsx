@@ -113,7 +113,7 @@ function MarketFarmers({ market, onRequireSignIn }) {
         ) : null}
       </div>
 
-      <div className="page-primitive__actions-row" role="group" aria-label="Show stalls open on">
+      <div className="page-primitive__actions-row page-primitive__actions-row-5nrg" role="group" aria-label="Show stalls open on">
         <Button size="sm" variant={day === 0 ? 'default' : 'outline'} aria-pressed={day === 0} onClick={() => setFilters({ day: 0 })}>
           Any day
         </Button>

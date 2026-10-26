@@ -387,3 +387,7 @@
   height: 8rem;
   border-radius: var(--radius-2xl);
 }
+
+.page-primitive__actions-row-5nrg {
+  padding-bottom: 10px;
+}
