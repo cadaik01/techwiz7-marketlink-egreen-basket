@@ -286,7 +286,7 @@ export default function FarmerDetailPage() {
             </Avatar>
             <div className="farmer-detail-page__profile-copy">
               <h1 className="farmer-detail-page__name">{farmer.stall_name}</h1>
-              {farmer.contact_person ? <p className="farmer-detail-page__contact">{farmer.contact_person}</p> : null}
+              {farmer.contact_person ? <p className="farmer-detail-page__contact farmer-detail-page__contact-ow8m">{farmer.contact_person}</p> : null}
               <div className="farmer-detail-page__rating-wrap">
                 <RatingStars value={farmer.rating_avg} count={farmer.rating_count} size="md" />
                 {typeof farmer.distance_km === 'number' ? (

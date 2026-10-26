@@ -59,7 +59,15 @@
 }
 
 .edit-order__line-name {
+  display: flex;
+  flex-direction: column;
   font-weight: var(--weight-medium);
+}
+
+.edit-order__line-hint {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-normal);
+  color: var(--color-muted-foreground);
 }
 
 .edit-order__line-price {

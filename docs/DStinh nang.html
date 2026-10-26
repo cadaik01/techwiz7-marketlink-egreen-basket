@@ -1,0 +1,2959 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DStinh nang.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="marketlink--danh-sách-đầy-đủ-tính-năng">MarketLink — Danh sách đầy đủ tính năng</h1>
+<p>Oct 26, 2026 · @LongNguyen</p>
+<p>Bản liệt kê đầy đủ, <strong>mỗi dòng một tính năng</strong>, không gom. Phần I là yêu cầu của đề bài (SRS), tách đúng từng ý trong SRS mục 1.5–1.7. Phần II là tính năng mở rộng nhóm làm thêm, mỗi dòng có lý do. Cột <strong>Quyết định</strong> để nhóm chọn Giữ / Gộp / Chỉ nói khi hỏi / Bỏ. Bản cũ &quot;MarketLink — Khung thuyết trình bảo vệ&quot; vẫn giữ nguyên.</p>
+<h2 id="phần-i1--yêu-cầu-đề-bài-khách-hàng">Phần I.1 — Yêu cầu đề bài: Khách hàng</h2>
+<h3 id="đăng-ký-và-đăng-nhập-srs-user-registration-and-login">Đăng ký và đăng nhập (SRS: User Registration and Login)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>K1</td>
+<td>Đăng ký tài khoản khách</td>
+<td>Form đăng ký, kiểm tra trùng email / SĐT</td>
+<td>/register</td>
+<td></td>
+</tr>
+<tr>
+<td>K2</td>
+<td>Bắt buộc nhập họ tên, SĐT, email, địa chỉ khi đăng ký</td>
+<td>Kiểm tra cả ở form và server; SĐT chuẩn hóa về dạng 0xxxxxxxxx</td>
+<td>/register</td>
+<td></td>
+</tr>
+<tr>
+<td>K3</td>
+<td>Đăng nhập an toàn</td>
+<td>JWT, mật khẩu băm PBKDF2, giới hạn số lần thử</td>
+<td>/login</td>
+<td></td>
+</tr>
+<tr>
+<td>K4</td>
+<td>Vào dashboard cá nhân</td>
+<td>Số đơn đang mở, lần nhận sắp tới, sạp yêu thích</td>
+<td>/customer</td>
+<td></td>
+</tr>
+<tr>
+<td>K5</td>
+<td>Lưu nhiều sạp yêu thích</td>
+<td>Nút trái tim trên sạp</td>
+<td>/customer/favorites</td>
+<td></td>
+</tr>
+<tr>
+<td>K6</td>
+<td>Lưu nhiều sản phẩm yêu thích</td>
+<td>Nút trái tim trên sản phẩm</td>
+<td>/customer/favorites</td>
+<td></td>
+</tr>
+<tr>
+<td>K7</td>
+<td>Dùng chung tài khoản trong gia đình (tùy chọn)</td>
+<td>Nhiều thiết bị cùng đăng nhập, mỗi máy một phiên và một giỏ</td>
+<td>—</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="duyệt-chợ-và-nông-dân-srs-browse-markets-and-farmers">Duyệt chợ và nông dân (SRS: Browse Markets and Farmers)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>K8</td>
+<td>Xem chợ gần mình theo vị trí</td>
+<td>Nút Near me lấy GPS, sắp chợ gần nhất trước</td>
+<td>/markets</td>
+<td></td>
+</tr>
+<tr>
+<td>K9</td>
+<td>Lọc chợ theo ngày họp</td>
+<td>Chọn thứ trong tuần</td>
+<td>/markets</td>
+<td></td>
+</tr>
+<tr>
+<td>K10</td>
+<td>Xem danh sách nông dân có mặt ở từng chợ</td>
+<td>Trang chi tiết chợ liệt kê sạp, có lọc theo ngày</td>
+<td>/markets/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>K11</td>
+<td>Xem hồ sơ nông dân: tên sạp, vị trí</td>
+<td>Trang sạp có bản đồ và vị trí sạp trong chợ</td>
+<td>/farmers/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>K12</td>
+<td>Xem ngày bán của nông dân</td>
+<td>Hiện các thứ sạp có mặt</td>
+<td>/farmers/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>K13</td>
+<td>Xem hàng trong tuần của nông dân</td>
+<td>Danh sách sản phẩm đang bán của sạp</td>
+<td>/farmers/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>K14</td>
+<td>Bản đồ nhúng hiện chợ và sạp</td>
+<td>Leaflet + OpenStreetMap</td>
+<td>/markets, /farmers/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>K15</td>
+<td>Marker vị trí trên bản đồ</td>
+<td>Mỗi chợ / sạp một marker có popup</td>
+<td>/markets</td>
+<td></td>
+</tr>
+<tr>
+<td>K16</td>
+<td>Chỉ đường tới điểm nhận đã chọn</td>
+<td>Nút Directions mở Google Maps</td>
+<td>/markets/:id, /customer/orders/:id</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="tìm-duyệt-lọc-sản-phẩm-srs-search-browse-and-filter-products">Tìm, duyệt, lọc sản phẩm (SRS: Search, Browse, and Filter Products)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>K17</td>
+<td>Duyệt danh mục sản phẩm (rau, trái cây, sữa, bánh…)</td>
+<td>Danh mục do Admin quản lý, có icon</td>
+<td>/products</td>
+<td></td>
+</tr>
+<tr>
+<td>K18</td>
+<td>Lọc theo giá</td>
+<td>Thanh khoảng giá</td>
+<td>/products</td>
+<td></td>
+</tr>
+<tr>
+<td>K19</td>
+<td>Lọc theo danh mục</td>
+<td>Chọn danh mục</td>
+<td>/products</td>
+<td></td>
+</tr>
+<tr>
+<td>K20</td>
+<td>Lọc theo chợ</td>
+<td>Chọn chợ</td>
+<td>/products</td>
+<td></td>
+</tr>
+<tr>
+<td>K21</td>
+<td>Lọc theo ngày</td>
+<td>Chọn thứ trong tuần</td>
+<td>/products</td>
+<td></td>
+</tr>
+<tr>
+<td>K22</td>
+<td>Xem chi tiết sản phẩm: giá</td>
+<td>Trang chi tiết</td>
+<td>/products/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>K23</td>
+<td>Xem chi tiết sản phẩm: đơn vị tính</td>
+<td>KG, bó, cái, túi, hộp, gói</td>
+<td>/products/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>K24</td>
+<td>Xem chi tiết sản phẩm: số lượng còn</td>
+<td>Hiện số kho</td>
+<td>/products/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>K25</td>
+<td>Xem chi tiết sản phẩm: nông dân bán</td>
+<td>Link sang trang sạp</td>
+<td>/products/:id</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="đặt-trước-để-nhận-tại-chợ-srs-place-pre-orders-for-pickup">Đặt trước để nhận tại chợ (SRS: Place Pre-Orders for Pickup)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>K26</td>
+<td>Thêm sản phẩm vào giỏ</td>
+<td>Nút Add to cart ở mọi nơi; giỏ lưu ở trình duyệt</td>
+<td>/customer/cart</td>
+<td></td>
+</tr>
+<tr>
+<td>K27</td>
+<td>Đặt trước theo số hàng nông dân còn</td>
+<td>Server kiểm tra kho khi đặt</td>
+<td>/customer/checkout</td>
+<td></td>
+</tr>
+<tr>
+<td>K28</td>
+<td>Chọn ngày nhận</td>
+<td>Chỉ hiện ngày hợp lệ</td>
+<td>/customer/checkout</td>
+<td></td>
+</tr>
+<tr>
+<td>K29</td>
+<td>Chọn khung giờ nhận trong khung nông dân đặt</td>
+<td>Danh sách khung giờ của sạp tại chợ đã chọn</td>
+<td>/customer/checkout</td>
+<td></td>
+</tr>
+<tr>
+<td>K30</td>
+<td>Xem trạng thái đơn: placed, accepted, ready for pickup, completed</td>
+<td>Timeline trạng thái trên chi tiết đơn</td>
+<td>/customer/orders/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>K31</td>
+<td>Hủy đơn trước giờ chốt của nông dân</td>
+<td>Nút Cancel có hộp xác nhận</td>
+<td>/customer/orders/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>K32</td>
+<td>Sửa đơn trước giờ chốt của nông dân</td>
+<td>Đổi số lượng, thêm / bớt món, đổi ngày / khung giờ</td>
+<td>/customer/orders/:id/edit</td>
+<td></td>
+</tr>
+<tr>
+<td>K33</td>
+<td>Không thanh toán online, trả tiền khi nhận</td>
+<td>Đơn ghi tổng tiền, trả tại sạp</td>
+<td>—</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="quản-lý-đơn-srs-manage-orders">Quản lý đơn (SRS: Manage Orders)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>K34</td>
+<td>Xem đơn</td>
+<td>Danh sách đơn chia tab đang mở / đã xong</td>
+<td>/customer/orders</td>
+<td></td>
+</tr>
+<tr>
+<td>K35</td>
+<td>Sửa đơn</td>
+<td>Trùng ý với dòng &quot;Sửa đơn trước giờ chốt&quot; ở trên</td>
+<td>/customer/orders/:id/edit</td>
+<td></td>
+</tr>
+<tr>
+<td>K36</td>
+<td>Hủy đơn</td>
+<td>Trùng ý với dòng &quot;Hủy đơn trước giờ chốt&quot; ở trên</td>
+<td>/customer/orders/:id</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="lịch-sử-đơn-và-yêu-thích-srs-order-history-and-favorites">Lịch sử đơn và yêu thích (SRS: Order History and Favorites)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>K37</td>
+<td>Xem các đơn đã đặt trước đây</td>
+<td>Tab đơn đã xong</td>
+<td>/customer/orders</td>
+<td></td>
+</tr>
+<tr>
+<td>K38</td>
+<td>Đặt lại nhanh món đã mua</td>
+<td>Nút Reorder nạp lại món vào giỏ</td>
+<td>/customer/orders</td>
+<td></td>
+</tr>
+<tr>
+<td>K39</td>
+<td>Đánh dấu yêu thích để vào nhanh</td>
+<td>Trang yêu thích gom sạp, sản phẩm, chợ</td>
+<td>/customer/favorites</td>
+<td></td>
+</tr>
+<tr>
+<td>K40</td>
+<td>Báo khi món yêu thích có hàng lại</td>
+<td>Thông báo RESTOCK khi nông dân nhập thêm hàng</td>
+<td>Chuông thông báo</td>
+<td></td>
+</tr>
+<tr>
+<td>K41</td>
+<td>Lưu chợ ưa thích</td>
+<td>Trái tim trên chợ</td>
+<td>/customer/favorites</td>
+<td></td>
+</tr>
+<tr>
+<td>K42</td>
+<td>Nhận thông tin nhận hàng kèm chỉ đường</td>
+<td>Chi tiết đơn có chợ, vị trí sạp, nút chỉ đường</td>
+<td>/customer/orders/:id</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="trợ-lý-ai-srs-ai-assistant--tùy-chọn">Trợ lý AI (SRS: AI Assistant — tùy chọn)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>K43</td>
+<td>Chatbot giúp tìm món ở các chợ và sạp</td>
+<td>Gemini gọi công cụ tìm sản phẩm</td>
+<td>Widget chat</td>
+<td></td>
+</tr>
+<tr>
+<td>K44</td>
+<td>Trả lời giờ họp chợ</td>
+<td>Công cụ thông tin chợ</td>
+<td>Widget chat</td>
+<td></td>
+</tr>
+<tr>
+<td>K45</td>
+<td>Trả lời nông dân có bán không</td>
+<td>Công cụ lịch của sạp</td>
+<td>Widget chat</td>
+<td></td>
+</tr>
+<tr>
+<td>K46</td>
+<td>Trả lời khung giờ nhận hàng</td>
+<td>Công cụ lịch của sạp</td>
+<td>Widget chat</td>
+<td></td>
+</tr>
+<tr>
+<td>K47</td>
+<td>Trả lời chi tiết sản phẩm</td>
+<td>Công cụ tìm sản phẩm</td>
+<td>Widget chat</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="đánh-giá-srs-reviews-and-ratings">Đánh giá (SRS: Reviews and Ratings)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>K48</td>
+<td>Chấm sao và nhận xét nông dân sau khi đơn hoàn tất</td>
+<td>Chỉ đơn Completed mới có nút Review</td>
+<td>/customer/orders/:id/review</td>
+<td></td>
+</tr>
+<tr>
+<td>K49</td>
+<td>Chấm sao và nhận xét từng sản phẩm sau khi đơn hoàn tất</td>
+<td>Mỗi món một đánh giá</td>
+<td>/customer/orders/:id/review</td>
+<td></td>
+</tr>
+<tr>
+<td>K50</td>
+<td>Xem đánh giá của khách khác trước khi đặt</td>
+<td>Đánh giá trên trang sản phẩm và trang sạp</td>
+<td>/products/:id, /farmers/:id</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="phần-i2--yêu-cầu-đề-bài-nông-dân">Phần I.2 — Yêu cầu đề bài: Nông dân</h2>
+<h3 id="đăng-ký-và-hồ-sơ-srs-farmer-registration-and-profile-management">Đăng ký và hồ sơ (SRS: Farmer Registration and Profile Management)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>N1</td>
+<td>Đăng ký với tên sạp / cơ sở</td>
+<td>Form đăng ký nông dân</td>
+<td>/register/farmer</td>
+<td></td>
+</tr>
+<tr>
+<td>N2</td>
+<td>Đăng ký với người liên hệ</td>
+<td>Form đăng ký nông dân</td>
+<td>/register/farmer</td>
+<td></td>
+</tr>
+<tr>
+<td>N3</td>
+<td>Đăng ký với SĐT, email, địa chỉ</td>
+<td>Kiểm tra trùng SĐT / email</td>
+<td>/register/farmer</td>
+<td></td>
+</tr>
+<tr>
+<td>N4</td>
+<td>Bổ sung hồ sơ: các chợ đang bán</td>
+<td>Xin vào chợ, nhập vị trí sạp trong chợ</td>
+<td>/farmer/markets</td>
+<td></td>
+</tr>
+<tr>
+<td>N5</td>
+<td>Bổ sung hồ sơ: ngày bán trong tuần</td>
+<td>Chọn các thứ bán</td>
+<td>/farmer/profile</td>
+<td></td>
+</tr>
+<tr>
+<td>N6</td>
+<td>Bổ sung hồ sơ: khung giờ nhận hàng</td>
+<td>Tạo khung giờ cho từng chợ</td>
+<td>/farmer/markets</td>
+<td></td>
+</tr>
+<tr>
+<td>N7</td>
+<td>Bổ sung hồ sơ: địa chỉ</td>
+<td>Sửa địa chỉ</td>
+<td>/farmer/profile</td>
+<td></td>
+</tr>
+<tr>
+<td>N8</td>
+<td>Bổ sung hồ sơ: ghim bản đồ</td>
+<td>Kéo ghim trên bản đồ</td>
+<td>/farmer/profile</td>
+<td></td>
+</tr>
+<tr>
+<td>N9</td>
+<td>Bổ sung hồ sơ: vĩ độ, kinh độ</td>
+<td>Lưu theo ghim hoặc tự tra từ địa chỉ</td>
+<td>/farmer/profile</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="quản-lý-hàng-tuần-và-giá-srs-manage-weekly-stock-and-pricing">Quản lý hàng tuần và giá (SRS: Manage Weekly Stock and Pricing)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>N10</td>
+<td>Thêm sản phẩm: tên, danh mục, giá, đơn vị, số lượng, mô tả, ảnh</td>
+<td>Form sản phẩm</td>
+<td>/farmer/products/new</td>
+<td></td>
+</tr>
+<tr>
+<td>N11</td>
+<td>Sửa sản phẩm</td>
+<td>Form sản phẩm</td>
+<td>/farmer/products/:id/edit</td>
+<td></td>
+</tr>
+<tr>
+<td>N12</td>
+<td>Xem sản phẩm</td>
+<td>Danh sách có tìm và lọc theo trạng thái</td>
+<td>/farmer/products</td>
+<td></td>
+</tr>
+<tr>
+<td>N13</td>
+<td>Xóa sản phẩm</td>
+<td>Lưu trữ (xóa mềm) để giữ lịch sử đơn</td>
+<td>/farmer/products</td>
+<td></td>
+</tr>
+<tr>
+<td>N14</td>
+<td>Lập mẫu tồn kho lặp lại hàng tuần</td>
+<td>Mức mặc định mỗi tuần cho từng sản phẩm</td>
+<td>/farmer/stock-template</td>
+<td></td>
+</tr>
+<tr>
+<td>N15</td>
+<td>Điều chỉnh mẫu khi nguồn hàng thay đổi</td>
+<td>Sửa mức mẫu, áp lại cho tuần</td>
+<td>/farmer/stock-template</td>
+<td></td>
+</tr>
+<tr>
+<td>N16</td>
+<td>Đánh dấu hết hàng (sold out)</td>
+<td>Nút Sold out đưa kho về 0</td>
+<td>/farmer/products</td>
+<td></td>
+</tr>
+<tr>
+<td>N17</td>
+<td>Đánh dấu tạm ngừng bán (temporarily unavailable)</td>
+<td>Nút Pause / Resume</td>
+<td>/farmer/products</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="quản-lý-đơn-đặt-trước-srs-manage-pre-orders">Quản lý đơn đặt trước (SRS: Manage pre-orders)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>N18</td>
+<td>Xem đơn đến</td>
+<td>Danh sách đơn chia tab theo trạng thái</td>
+<td>/farmer/orders</td>
+<td></td>
+</tr>
+<tr>
+<td>N19</td>
+<td>Chấp nhận đơn</td>
+<td>Nút Accept</td>
+<td>/farmer/orders/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>N20</td>
+<td>Từ chối đơn</td>
+<td>Nút Decline, nhập lý do</td>
+<td>/farmer/orders/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>N21</td>
+<td>Đánh dấu đơn sẵn sàng để nhận</td>
+<td>Nút Ready</td>
+<td>/farmer/orders/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>N22</td>
+<td>Đặt giờ chốt nhận đơn</td>
+<td>Số giờ chốt trong hồ sơ</td>
+<td>/farmer/profile</td>
+<td></td>
+</tr>
+<tr>
+<td>N23</td>
+<td>Quản lý khung giờ nhận hàng</td>
+<td>Thêm / bật / tắt / xóa khung giờ</td>
+<td>/farmer/markets</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="lịch-sử-bán-và-số-liệu-srs-view-order-history-and-insights">Lịch sử bán và số liệu (SRS: View Order History and Insights)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>N24</td>
+<td>Xem doanh số đã bán</td>
+<td>Doanh thu theo ngày</td>
+<td>/farmer, /farmer/stats</td>
+<td></td>
+</tr>
+<tr>
+<td>N25</td>
+<td>Xem lịch sử đơn</td>
+<td>Tab đơn đã xong</td>
+<td>/farmer/orders</td>
+<td></td>
+</tr>
+<tr>
+<td>N26</td>
+<td>Xem sản phẩm bán chạy</td>
+<td>Top sản phẩm</td>
+<td>/farmer, /farmer/stats</td>
+<td></td>
+</tr>
+<tr>
+<td>N27</td>
+<td>Xem tổng số đơn</td>
+<td>Thẻ số liệu</td>
+<td>/farmer</td>
+<td></td>
+</tr>
+<tr>
+<td>N28</td>
+<td>Xem số đơn đang chờ</td>
+<td>Thẻ số liệu</td>
+<td>/farmer</td>
+<td></td>
+</tr>
+<tr>
+<td>N29</td>
+<td>Xem tóm tắt doanh thu</td>
+<td>Thẻ số liệu + biểu đồ</td>
+<td>/farmer, /farmer/stats</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="trả-lời-đánh-giá-srs-respond-to-reviews">Trả lời đánh giá (SRS: Respond to Reviews)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>N30</td>
+<td>Xem đánh giá của khách về sản phẩm</td>
+<td>Danh sách đánh giá, mới nhất trước</td>
+<td>/farmer/reviews</td>
+<td></td>
+</tr>
+<tr>
+<td>N31</td>
+<td>Trả lời đánh giá (không bắt buộc)</td>
+<td>Trả lời công khai một lần</td>
+<td>/farmer/reviews</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="phần-i3--yêu-cầu-đề-bài-admin">Phần I.3 — Yêu cầu đề bài: Admin</h2>
+<h3 id="đăng-nhập-và-dashboard-srs-admin-login-and-dashboard">Đăng nhập và dashboard (SRS: Admin Login and Dashboard)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A1</td>
+<td>Đăng nhập an toàn ở cổng riêng</td>
+<td>Cổng /admin/login, phiên riêng</td>
+<td>/admin/login</td>
+<td></td>
+</tr>
+<tr>
+<td>A2</td>
+<td>Dashboard tách khỏi giao diện khách và nông dân</td>
+<td>Layout Admin riêng</td>
+<td>/admin</td>
+<td></td>
+</tr>
+<tr>
+<td>A3</td>
+<td>Tổng số nông dân</td>
+<td>Thẻ số liệu</td>
+<td>/admin</td>
+<td></td>
+</tr>
+<tr>
+<td>A4</td>
+<td>Tổng số khách hàng</td>
+<td>Thẻ số liệu</td>
+<td>/admin</td>
+<td></td>
+</tr>
+<tr>
+<td>A5</td>
+<td>Tổng số chợ</td>
+<td>Thẻ số liệu</td>
+<td>/admin</td>
+<td></td>
+</tr>
+<tr>
+<td>A6</td>
+<td>Tổng số đơn</td>
+<td>Thẻ số liệu</td>
+<td>/admin</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="quản-lý-nông-dân-và-khách-srs-manage-farmers-and-customers">Quản lý nông dân và khách (SRS: Manage Farmers and Customers)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A7</td>
+<td>Xem hồ sơ nông dân đăng ký</td>
+<td>Danh sách + chi tiết</td>
+<td>/admin/farmers</td>
+<td></td>
+</tr>
+<tr>
+<td>A8</td>
+<td>Duyệt nông dân trước khi được đăng bán</td>
+<td>Nút Approve</td>
+<td>/admin/farmers/:id, /admin/approvals</td>
+<td></td>
+</tr>
+<tr>
+<td>A9</td>
+<td>Đình chỉ nông dân</td>
+<td>Nút Suspend, nhập lý do</td>
+<td>/admin/farmers/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>A10</td>
+<td>Xem tài khoản khách</td>
+<td>Danh sách + chi tiết</td>
+<td>/admin/customers</td>
+<td></td>
+</tr>
+<tr>
+<td>A11</td>
+<td>Kích hoạt tài khoản khách</td>
+<td>Nút Activate</td>
+<td>/admin/customers/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>A12</td>
+<td>Khóa tài khoản khách vi phạm</td>
+<td>Nút Deactivate, nhập lý do</td>
+<td>/admin/customers/:id</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="quản-lý-chợ-srs-manage-markets">Quản lý chợ (SRS: Manage Markets)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A13</td>
+<td>Thêm chợ: tên, địa chỉ, ngày họp, giờ mở / đóng, tọa độ</td>
+<td>Form chợ có bản đồ</td>
+<td>/admin/markets/new</td>
+<td></td>
+</tr>
+<tr>
+<td>A14</td>
+<td>Sửa chợ</td>
+<td>Form chợ</td>
+<td>/admin/markets/:id/edit</td>
+<td></td>
+</tr>
+<tr>
+<td>A15</td>
+<td>Xóa chợ</td>
+<td>Đóng chợ (ngừng hoạt động) thay cho xóa cứng</td>
+<td>/admin/markets</td>
+<td></td>
+</tr>
+<tr>
+<td>A16</td>
+<td>Tọa độ hoặc bản đồ nhúng của chợ</td>
+<td>Tra tọa độ từ địa chỉ, kéo ghim</td>
+<td>/admin/markets/new</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="kiểm-duyệt-nội-dung-srs-content-moderation">Kiểm duyệt nội dung (SRS: Content Moderation)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A17</td>
+<td>Xem tin sản phẩm vi phạm</td>
+<td>Tab Products</td>
+<td>/admin/moderation</td>
+<td></td>
+</tr>
+<tr>
+<td>A18</td>
+<td>Gỡ tin sản phẩm vi phạm</td>
+<td>Hide / Block</td>
+<td>/admin/moderation</td>
+<td></td>
+</tr>
+<tr>
+<td>A19</td>
+<td>Xem đánh giá vi phạm</td>
+<td>Tab Reviews</td>
+<td>/admin/moderation</td>
+<td></td>
+</tr>
+<tr>
+<td>A20</td>
+<td>Gỡ đánh giá vi phạm</td>
+<td>Hide có lý do</td>
+<td>/admin/moderation</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="báo-cáo-srs-reports-and-analytics">Báo cáo (SRS: Reports and Analytics)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A21</td>
+<td>Báo cáo tổng số đơn</td>
+<td>Chọn khoảng ngày, chợ</td>
+<td>/admin/reports</td>
+<td></td>
+</tr>
+<tr>
+<td>A22</td>
+<td>Tóm tắt doanh thu theo chợ</td>
+<td>Bảng doanh thu từng chợ</td>
+<td>/admin/reports</td>
+<td></td>
+</tr>
+<tr>
+<td>A23</td>
+<td>Nông dân năng nổ nhất</td>
+<td>Top nông dân theo doanh thu</td>
+<td>/admin/reports</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="cấu-hình-hệ-thống-srs-system-configuration">Cấu hình hệ thống (SRS: System Configuration)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A24</td>
+<td>Quản lý danh mục sản phẩm</td>
+<td>Thêm / sửa / ẩn danh mục</td>
+<td>/admin/categories</td>
+<td></td>
+</tr>
+<tr>
+<td>A25</td>
+<td>Đăng thông báo toàn sàn</td>
+<td>Soạn và bật / tắt thông báo</td>
+<td>/admin/announcements</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="phần-i4--tính-năng-chung-ràng-buộc-phi-chức-năng">Phần I.4 — Tính năng chung, ràng buộc, phi chức năng</h2>
+<h3 id="tính-năng-chung-srs-other-features">Tính năng chung (SRS: Other Features)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C1</td>
+<td>Phân quyền theo vai trò</td>
+<td>Chặn trang ở giao diện; server kiểm tra quyền ở mọi API</td>
+<td>Mọi trang</td>
+<td></td>
+</tr>
+<tr>
+<td>C2</td>
+<td>Tìm chợ</td>
+<td>Ô tìm ở trang chợ</td>
+<td>/markets</td>
+<td></td>
+</tr>
+<tr>
+<td>C3</td>
+<td>Tìm nông dân</td>
+<td>Ô tìm ở trang sạp</td>
+<td>/farmers</td>
+<td></td>
+</tr>
+<tr>
+<td>C4</td>
+<td>Tìm sản phẩm</td>
+<td>Ô tìm theo tên hàng hoặc tên sạp</td>
+<td>/products</td>
+<td></td>
+</tr>
+<tr>
+<td>C5</td>
+<td>Lọc theo vị trí</td>
+<td>Near me</td>
+<td>/markets, /farmers</td>
+<td></td>
+</tr>
+<tr>
+<td>C6</td>
+<td>Lọc theo danh mục, giá, ngày họp chợ</td>
+<td>Thanh lọc</td>
+<td>/products</td>
+<td></td>
+</tr>
+<tr>
+<td>C7</td>
+<td>Hiện kết quả trên bản đồ khi tìm theo vị trí</td>
+<td>Bản đồ chợ</td>
+<td>/markets</td>
+<td></td>
+</tr>
+<tr>
+<td>C8</td>
+<td>Giao diện thân thiện điện thoại</td>
+<td>Responsive, thanh tab dưới đáy cho khách</td>
+<td>Mọi trang</td>
+<td></td>
+</tr>
+<tr>
+<td>C9</td>
+<td>Email / in-app khi đơn được xác nhận</td>
+<td>Thông báo ORDER_ACCEPTED</td>
+<td>Chuông, email</td>
+<td></td>
+</tr>
+<tr>
+<td>C10</td>
+<td>Email / in-app khi đơn sẵn sàng để nhận</td>
+<td>Thông báo ORDER_READY</td>
+<td>Chuông, email</td>
+<td></td>
+</tr>
+<tr>
+<td>C11</td>
+<td>Chấm sao nông dân hoặc sản phẩm và để lại bình luận</td>
+<td>Trùng với phần Đánh giá của khách</td>
+<td>/customer/orders/:id/review</td>
+<td></td>
+</tr>
+<tr>
+<td>C12</td>
+<td>Trang About Us: thông tin đội và nền tảng</td>
+<td>Câu chuyện, đội ngũ, FAQ</td>
+<td>/about</td>
+<td></td>
+</tr>
+<tr>
+<td>C13</td>
+<td>Trang Contact Us: thông tin liên hệ + Google Maps</td>
+<td>Bản đồ Google Maps nhúng</td>
+<td>/contact</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ràng-buộc-srs-15">Ràng buộc (SRS 1.5)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C14</td>
+<td>Tương thích các trình duyệt phổ biến</td>
+<td>Chạy trên Chrome, Edge, Firefox, Safari</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td>C15</td>
+<td>Không có cổng thanh toán</td>
+<td>Trả tiền mặt khi nhận</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td>C16</td>
+<td>Không giao hàng, chỉ nhận tại chợ</td>
+<td>Chọn chợ và khung giờ nhận</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td>C17</td>
+<td>Không xác minh danh tính, giấy phép, chứng nhận nông dân</td>
+<td>Admin chỉ duyệt hồ sơ</td>
+<td>—</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="yêu-cầu-phi-chức-năng-srs-17">Yêu cầu phi chức năng (SRS 1.7)</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Yêu cầu</th>
+<th>Trong MarketLink</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C18</td>
+<td>An toàn: không tải file độc hay file thừa</td>
+<td>Không có tải file tự động; ảnh upload được kiểm tra và mã hóa lại</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td>C19</td>
+<td>Dễ tiếp cận: font, giao diện, menu rõ ràng</td>
+<td>Font Inter, tương phản tốt, có điều khiển bàn phím</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td>C20</td>
+<td>Dễ dùng: menu rõ, dễ hiểu</td>
+<td>Menu theo vai trò, trạng thái rỗng có hướng dẫn</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td>C21</td>
+<td>Vận hành ổn định, hiệu quả</td>
+<td>Transaction, xử lý lỗi thống nhất</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td>C22</td>
+<td>Hiệu năng: tải nhanh cả khi danh mục lớn</td>
+<td>Phân trang, index, cache, lazy load</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td>C23</td>
+<td>Mở rộng: chịu được ngày chợ cao điểm</td>
+<td>Server không giữ trạng thái, Redis, chạy nhiều tiến trình</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td>C24</td>
+<td>Bảo mật: xác thực, chỉ người đã đăng ký mới dùng tính năng riêng</td>
+<td>JWT, phân quyền ở server</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td>C25</td>
+<td>Sẵn sàng 24/7</td>
+<td>Deploy Vercel + Render + Aiven + Upstash</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td>C26</td>
+<td>Tương thích trình duyệt và thiết bị mới</td>
+<td>Responsive, thử trên nhiều trình duyệt</td>
+<td>—</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="phần-ii1--tính-năng-mở-rộng-khách-hàng--guest">Phần II.1 — Tính năng mở rộng: Khách hàng / Guest</h2>
+<h3 id="đặt-hàng-và-kho">Đặt hàng và kho</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MK1</td>
+<td>Đặt hàng thì tạm giữ hàng, nông dân duyệt mới trừ kho thật</td>
+<td>Không bán vượt số hàng có; đơn bị từ chối / hết hạn thì hàng tự nhả</td>
+<td></td>
+</tr>
+<tr>
+<td>MK2</td>
+<td>Báo rõ món nào thiếu và còn bao nhiêu (&quot;Only 10 KG left&quot;)</td>
+<td>Khách sửa giỏ và đặt được phần còn lại ngay</td>
+<td></td>
+</tr>
+<tr>
+<td>MK3</td>
+<td>Một giỏ nhiều sạp → mỗi sạp tách thành một đơn riêng</td>
+<td>Mỗi sạp có kho, giờ chốt, khung giờ riêng và tự duyệt đơn của mình</td>
+<td></td>
+</tr>
+<tr>
+<td>MK4</td>
+<td>Tối đa 5 sạp mỗi lần đặt</td>
+<td>Giới hạn tải một lần đặt</td>
+<td></td>
+</tr>
+<tr>
+<td>MK5</td>
+<td>Đặt kiểu all-or-nothing: tạo đủ mọi đơn hoặc không đơn nào</td>
+<td>Không có chuyện khách tưởng đã đặt đủ mà chỉ được một nửa</td>
+<td></td>
+</tr>
+<tr>
+<td>MK6</td>
+<td>Checkout chỉ hiện chợ / khung giờ mà mọi món trong nhóm đều bán</td>
+<td>Sạp không mang mọi món tới mọi chợ</td>
+<td></td>
+</tr>
+<tr>
+<td>MK7</td>
+<td>Một đơn chỉ thuộc một chợ và một khung giờ</td>
+<td>Nông dân biết rõ mang hàng tới đâu, lúc nào</td>
+<td></td>
+</tr>
+<tr>
+<td>MK8</td>
+<td>Ngày nhận chỉ trong 7 ngày tới, ẩn ngày chợ đóng / nông dân nghỉ</td>
+<td>Khách chỉ chọn được ngày chắc chắn có thể lấy</td>
+<td></td>
+</tr>
+<tr>
+<td>MK9</td>
+<td>Khung giờ đã qua giờ chốt tự bị khóa trên checkout</td>
+<td>Không đặt vào khung không còn hợp lệ</td>
+<td></td>
+</tr>
+<tr>
+<td>MK10</td>
+<td>Giá luôn lấy từ CSDL, chụp lại trên đơn lúc đặt</td>
+<td>Nông dân đổi giá sau đó không ảnh hưởng đơn cũ</td>
+<td></td>
+</tr>
+<tr>
+<td>MK11</td>
+<td>Số lượng tối thiểu / tối đa mỗi đơn, giỏ tự kẹp số lượng</td>
+<td>Có món bán từ 2 kg; có món cần chia đều cho nhiều khách</td>
+<td></td>
+</tr>
+<tr>
+<td>MK12</td>
+<td>Giỏ tự làm mới giá, kho, trạng thái từ server</td>
+<td>Không đặt theo giá cũ hay món đã ngừng bán</td>
+<td></td>
+</tr>
+<tr>
+<td>MK13</td>
+<td>Bấm đặt 2 lần không ra 2 đơn (Idempotency-Key)</td>
+<td>Mạng điện thoại chập chờn, trình duyệt tự gửi lại</td>
+<td></td>
+</tr>
+<tr>
+<td>MK14</td>
+<td>Tối đa 10 đơn đang chờ duyệt mỗi khách</td>
+<td>Chống đặt ảo</td>
+<td></td>
+</tr>
+<tr>
+<td>MK15</td>
+<td>Tối đa 10 lần gửi đơn mỗi giờ</td>
+<td>Chống spam</td>
+<td></td>
+</tr>
+<tr>
+<td>MK16</td>
+<td>Tài khoản nông dân không đặt hàng được</td>
+<td>Tránh tự đặt đơn ảo cho sạp mình</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sau-khi-đặt">Sau khi đặt</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MK17</td>
+<td>Yêu cầu thay đổi cho đơn đã được duyệt</td>
+<td>Nông dân có thể đã soạn hàng; sửa thẳng gây lệch kho</td>
+<td></td>
+</tr>
+<tr>
+<td>MK18</td>
+<td>Mỗi đơn chỉ một yêu cầu thay đổi, tự hủy khi tới giờ nhận</td>
+<td>Tránh yêu cầu treo, nông dân không phải xử lý chồng chéo</td>
+<td></td>
+</tr>
+<tr>
+<td>MK19</td>
+<td>Đơn có thêm 4 trạng thái: bị từ chối, đã hủy, không đến, hết hạn — kèm lý do</td>
+<td>Khách biết rõ vì sao đơn kết thúc</td>
+<td></td>
+</tr>
+<tr>
+<td>MK20</td>
+<td>Đồng hồ đếm ngược tới giờ chốt</td>
+<td>Biết còn bao lâu để sửa / hủy</td>
+<td></td>
+</tr>
+<tr>
+<td>MK21</td>
+<td>SĐT nông dân kèm nút gọi trên đơn</td>
+<td>Liên lạc nhanh khi cần</td>
+<td></td>
+</tr>
+<tr>
+<td>MK22</td>
+<td>Vị trí sạp trong chợ ghi trên đơn (ví dụ &quot;Dãy B, sạp 12&quot;)</td>
+<td>Tìm đúng sạp khi tới chợ</td>
+<td></td>
+</tr>
+<tr>
+<td>MK23</td>
+<td>Nút chỉ đường Google Maps ở trang chợ, sạp, đơn, checkout</td>
+<td>Chỉ đường tốt nhất, quen thuộc, không cần API key</td>
+<td></td>
+</tr>
+<tr>
+<td>MK24</td>
+<td>Thông báo khi nông dân bỏ một món hết hàng khỏi đơn</td>
+<td>Khách quyết định mua phần còn lại hay hủy</td>
+<td></td>
+</tr>
+<tr>
+<td>MK25</td>
+<td>Đặt lại nhanh: xem trước món còn bán / món bị bỏ, theo giá hôm nay</td>
+<td>Không tạo đơn sai; khách chọn lại ngày, khung giờ</td>
+<td></td>
+</tr>
+<tr>
+<td>MK26</td>
+<td>Chỉ báo có hàng lại khi nông dân chủ động nhập thêm hàng</td>
+<td>Tránh báo &quot;ảo&quot; khi hàng chỉ quay lại vài phút do đơn bị hủy</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="tài-khoản-và-giao-diện">Tài khoản và giao diện</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MK27</td>
+<td>Mỗi thiết bị một phiên đăng nhập, đăng xuất máy này không văng máy khác</td>
+<td>Cách làm &quot;dùng chung tài khoản gia đình&quot; mà không cần module thành viên</td>
+<td></td>
+</tr>
+<tr>
+<td>MK28</td>
+<td>Mỗi thiết bị một giỏ hàng riêng</td>
+<td>Người trong nhà không giẫm giỏ của nhau</td>
+<td></td>
+</tr>
+<tr>
+<td>MK29</td>
+<td>Đăng nhập xong quay về đúng trang đang xem</td>
+<td>Không phải tìm lại sản phẩm</td>
+<td></td>
+</tr>
+<tr>
+<td>MK30</td>
+<td>Thanh tab dưới đáy kiểu app trên điện thoại</td>
+<td>Dễ dùng một tay trên điện thoại</td>
+<td></td>
+</tr>
+<tr>
+<td>MK31</td>
+<td>Bộ lọc lưu trên URL, gửi link là thấy đúng kết quả</td>
+<td>Chia sẻ, bấm Back không mất bộ lọc</td>
+<td></td>
+</tr>
+<tr>
+<td>MK32</td>
+<td>Danh sách chợ, sạp, đánh giá có nút &quot;Load more&quot;</td>
+<td>Trang nhẹ, tải dần</td>
+<td></td>
+</tr>
+<tr>
+<td>MK33</td>
+<td>Tên người đánh giá được rút gọn (Nguyen V. A.)</td>
+<td>Bảo vệ thông tin cá nhân</td>
+<td></td>
+</tr>
+<tr>
+<td>MK34</td>
+<td>Banner thông báo toàn sàn, đóng được</td>
+<td>Khách biết tin quan trọng, không bị làm phiền lặp lại</td>
+<td></td>
+</tr>
+<tr>
+<td>MK35</td>
+<td>FAQ trên trang About</td>
+<td>Trả lời sẵn câu hỏi thường gặp</td>
+<td></td>
+</tr>
+<tr>
+<td>MK36</td>
+<td>Trang Privacy Policy</td>
+<td>Nói rõ dữ liệu thu thập, kể cả vị trí và câu hỏi chatbot</td>
+<td></td>
+</tr>
+<tr>
+<td>MK37</td>
+<td>Trang Sitemap</td>
+<td>Đủ trang của một web thật</td>
+<td></td>
+</tr>
+<tr>
+<td>MK38</td>
+<td>Trang lỗi 403 và 404</td>
+<td>Báo rõ khi vào sai trang</td>
+<td></td>
+</tr>
+<tr>
+<td>MK39</td>
+<td>Giao diện sáng / tối</td>
+<td>Dễ nhìn ban đêm</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="phần-ii2--tính-năng-mở-rộng-nông-dân">Phần II.2 — Tính năng mở rộng: Nông dân</h2>
+<h3 id="xử-lý-đơn">Xử lý đơn</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MN1</td>
+<td>Bỏ từng món hết hàng khỏi đơn (Sold out một món), tính lại tiền</td>
+<td>Thường chỉ hết một món; từ chối cả đơn thì khách mất hết</td>
+<td></td>
+</tr>
+<tr>
+<td>MN2</td>
+<td>Từ chối đơn đã duyệt phải khai món nào hết hàng</td>
+<td>Kho cuối cùng đúng: món hết về 0, món khác trả lại</td>
+<td></td>
+</tr>
+<tr>
+<td>MN3</td>
+<td>Bắt buộc ghi lý do khi từ chối (5–500 ký tự)</td>
+<td>Khách biết vì sao bị từ chối</td>
+<td></td>
+</tr>
+<tr>
+<td>MN4</td>
+<td>Bảng so sánh cũ / mới khi khách xin đổi đơn</td>
+<td>Nông dân thấy ngay khác gì</td>
+<td></td>
+</tr>
+<tr>
+<td>MN5</td>
+<td>3 lựa chọn với yêu cầu thay đổi: chấp nhận, từ chối, hủy cả đơn</td>
+<td>Linh hoạt theo hàng thực tế</td>
+<td></td>
+</tr>
+<tr>
+<td>MN6</td>
+<td>Đánh dấu khách không đến (No-show), hàng trả về kho</td>
+<td>Hàng đã soạn bán lại cho người khác</td>
+<td></td>
+</tr>
+<tr>
+<td>MN7</td>
+<td>Chỉ bấm Ready được sau giờ chốt</td>
+<td>Trước giờ chốt khách còn quyền sửa / hủy</td>
+<td></td>
+</tr>
+<tr>
+<td>MN8</td>
+<td>Danh sách soạn hàng: tổng từng món theo ngày nhận</td>
+<td>Sáng ngày chợ biết phải mang bao nhiêu kg</td>
+<td></td>
+</tr>
+<tr>
+<td>MN9</td>
+<td>Đơn gom theo khách</td>
+<td>Một khách nhiều đơn soạn một lần</td>
+<td></td>
+</tr>
+<tr>
+<td>MN10</td>
+<td>Tab đơn theo trạng thái có số đếm, lọc theo chợ và ngày</td>
+<td>Tìm nhanh đơn cần xử lý</td>
+<td></td>
+</tr>
+<tr>
+<td>MN11</td>
+<td>Toast bật lên ngay khi có đơn mới (realtime)</td>
+<td>Không bỏ lỡ đơn</td>
+<td></td>
+</tr>
+<tr>
+<td>MN12</td>
+<td>Cảnh báo đơn quá hạn trên dashboard</td>
+<td>Nhắc xử lý trước khi đơn tự hết hạn</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="lịch-và-chợ">Lịch và chợ</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MN13</td>
+<td>Lịch nghỉ (Time off) theo khoảng ngày</td>
+<td>Đề bài nhắc &quot;nông dân nghỉ tuần đó&quot; là vấn đề thật</td>
+<td></td>
+</tr>
+<tr>
+<td>MN14</td>
+<td>Lịch nghỉ bị chặn nếu còn đơn mở trong khoảng đó</td>
+<td>Không bỏ rơi khách đã đặt</td>
+<td></td>
+</tr>
+<tr>
+<td>MN15</td>
+<td>Bỏ một ngày bán bị chặn nếu còn đơn mở rơi vào thứ đó</td>
+<td>Không bỏ rơi khách đã đặt</td>
+<td></td>
+</tr>
+<tr>
+<td>MN16</td>
+<td>Bán ở nhiều chợ, mỗi chợ phải được Admin duyệt</td>
+<td>Admin kiểm soát sạp nào thật sự có chỗ ở chợ nào</td>
+<td></td>
+</tr>
+<tr>
+<td>MN17</td>
+<td>Vị trí sạp trong chợ cho từng chợ</td>
+<td>Khách tìm đúng sạp</td>
+<td></td>
+</tr>
+<tr>
+<td>MN18</td>
+<td>Rời chợ bị chặn khi còn đơn mở ở chợ đó</td>
+<td>Không bỏ rơi khách đã đặt</td>
+<td></td>
+</tr>
+<tr>
+<td>MN19</td>
+<td>Khung giờ chỉ tạo được trong ngày chợ họp, ngày nông dân bán, giờ chợ mở</td>
+<td>Khách không chọn được giờ chợ đóng cửa</td>
+<td></td>
+</tr>
+<tr>
+<td>MN20</td>
+<td>Xóa khung giờ đang có đơn bị chặn, gợi ý tắt thay vì xóa</td>
+<td>Không mất đơn đã đặt</td>
+<td></td>
+</tr>
+<tr>
+<td>MN21</td>
+<td>Chọn chợ bán cho từng sản phẩm</td>
+<td>Không mang mọi món tới mọi chợ</td>
+<td></td>
+</tr>
+<tr>
+<td>MN22</td>
+<td>Kho dùng chung cho mọi chợ</td>
+<td>Không phải nhập kho riêng từng chợ</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sản-phẩm">Sản phẩm</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MN23</td>
+<td>Kiểm tra tin đăng ngay khi gõ (precheck)</td>
+<td>Sửa trước khi gửi, ít bị từ chối</td>
+<td></td>
+</tr>
+<tr>
+<td>MN24</td>
+<td>Sửa tên / mô tả / ảnh / danh mục thì duyệt lại, sửa giá / kho thì không</td>
+<td>Cập nhật kho không phải chờ duyệt</td>
+<td></td>
+</tr>
+<tr>
+<td>MN25</td>
+<td>Thao tác hàng loạt: hết hàng, tạm ngừng, mở bán, đổi chợ bán</td>
+<td>Sạp nhiều sản phẩm không phải bấm từng cái</td>
+<td></td>
+</tr>
+<tr>
+<td>MN26</td>
+<td>Áp mẫu tuần có xem trước, trừ phần đã hứa cho đơn đã duyệt</td>
+<td>Không bán vượt hàng thật</td>
+<td></td>
+</tr>
+<tr>
+<td>MN27</td>
+<td>Nhập thêm hàng tự báo khách đã yêu thích món đó</td>
+<td>Kéo khách quay lại</td>
+<td></td>
+</tr>
+<tr>
+<td>MN28</td>
+<td>Ảnh upload được mã hóa lại, xóa GPS trong ảnh</td>
+<td>Ảnh chụp tại nhà không lộ tọa độ nhà</td>
+<td></td>
+</tr>
+<tr>
+<td>MN29</td>
+<td>Chặn rời trang khi form chưa lưu</td>
+<td>Không mất dữ liệu đang nhập</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="tài-khoản-và-số-liệu">Tài khoản và số liệu</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MN30</td>
+<td>Sạp chờ duyệt vẫn đăng nhập, chuẩn bị hồ sơ, chợ, khung giờ</td>
+<td>Được duyệt là bán ngay</td>
+<td></td>
+</tr>
+<tr>
+<td>MN31</td>
+<td>Băng trạng thái tài khoản (chờ duyệt / bị từ chối / bị đình chỉ) kèm lý do</td>
+<td>Nông dân biết mình đang ở đâu</td>
+<td></td>
+</tr>
+<tr>
+<td>MN32</td>
+<td>Tự tra tọa độ từ địa chỉ</td>
+<td>Nông dân không biết vĩ độ / kinh độ</td>
+<td></td>
+</tr>
+<tr>
+<td>MN33</td>
+<td>Kéo ghim chỉnh vị trí, ưu tiên ghim của nông dân</td>
+<td>Nông dân biết vị trí sạp rõ hơn kết quả tra</td>
+<td></td>
+</tr>
+<tr>
+<td>MN34</td>
+<td>Thống kê: doanh thu so với kỳ trước</td>
+<td>Biết đang bán tốt lên hay kém đi</td>
+<td></td>
+</tr>
+<tr>
+<td>MN35</td>
+<td>Thống kê: giá trị trung bình mỗi đơn</td>
+<td>Hiểu thói quen mua của khách</td>
+<td></td>
+</tr>
+<tr>
+<td>MN36</td>
+<td>Thống kê: doanh thu theo chợ</td>
+<td>Biết nên mang hàng tới chợ nào</td>
+<td></td>
+</tr>
+<tr>
+<td>MN37</td>
+<td>Thống kê: thứ nào đông khách nhất</td>
+<td>Biết nên chuẩn bị nhiều hàng hôm nào</td>
+<td></td>
+</tr>
+<tr>
+<td>MN38</td>
+<td>Thống kê: phân bố trạng thái đơn</td>
+<td>Thấy tỉ lệ hủy, không đến</td>
+<td></td>
+</tr>
+<tr>
+<td>MN39</td>
+<td>Chatbot riêng cho nông dân: đơn chờ, hàng sắp hết, cách dùng màn hình</td>
+<td>Hỏi nhanh thay vì mở nhiều trang</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="phần-ii3--tính-năng-mở-rộng-admin">Phần II.3 — Tính năng mở rộng: Admin</h2>
+<h3 id="duyệt-và-ai">Duyệt và AI</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MA1</td>
+<td>Hàng chờ duyệt 4 tab: sạp, sản phẩm, chợ, AI</td>
+<td>Một chỗ xem mọi thứ đang chờ</td>
+<td></td>
+</tr>
+<tr>
+<td>MA2</td>
+<td>Badge số việc chờ trên menu</td>
+<td>Biết ngay có việc mới</td>
+<td></td>
+</tr>
+<tr>
+<td>MA3</td>
+<td>Duyệt tin đăng trước khi lên sàn</td>
+<td>Đề bài chỉ cho gỡ tin sai sau khi khách đã thấy — quá muộn</td>
+<td></td>
+</tr>
+<tr>
+<td>MA4</td>
+<td>Duyệt sạp xin vào chợ</td>
+<td>Kiểm soát sạp ở từng chợ</td>
+<td></td>
+</tr>
+<tr>
+<td>MA5</td>
+<td>AI lớp 1 — luật: giá so với khung giá, lệch xa giá sạp khác, kho bất thường</td>
+<td>AI không biết giá chợ hôm nay; con số để luật kiểm</td>
+<td></td>
+</tr>
+<tr>
+<td>MA6</td>
+<td>AI lớp 2 — Gemini đọc chữ và ảnh: có phải nông sản, đúng danh mục, ngôn từ xấu, liên hệ ngoài, ảnh khớp</td>
+<td>Việc luật cứng làm không được</td>
+<td></td>
+</tr>
+<tr>
+<td>MA7</td>
+<td>AI tự duyệt tin sạch</td>
+<td>Admin đỡ việc</td>
+<td></td>
+</tr>
+<tr>
+<td>MA8</td>
+<td>AI tự giữ tin vi phạm rõ</td>
+<td>Tin xấu không lên sàn</td>
+<td></td>
+</tr>
+<tr>
+<td>MA9</td>
+<td>AI gợi ý danh mục đúng</td>
+<td>Sửa nhanh tin chọn sai danh mục</td>
+<td></td>
+</tr>
+<tr>
+<td>MA10</td>
+<td>Nút chạy lại AI cho một tin</td>
+<td>Khi AI lỗi hoặc tin đã sửa</td>
+<td></td>
+</tr>
+<tr>
+<td>MA11</td>
+<td>Trang AI Decisions: xem / xác nhận / đổi quyết định của AI</td>
+<td>AI tự quyết nhưng Admin luôn xem lại</td>
+<td></td>
+</tr>
+<tr>
+<td>MA12</td>
+<td>Thống kê độ tin cậy AI 30 ngày</td>
+<td>Có số liệu để biết khi nào tin AI</td>
+<td></td>
+</tr>
+<tr>
+<td>MA13</td>
+<td>Khung giá và tồn kho tối đa theo danh mục + đơn vị</td>
+<td>Mốc so sánh cho lớp luật</td>
+<td></td>
+</tr>
+<tr>
+<td>MA14</td>
+<td>AI đọc đánh giá: chắc chắn vi phạm thì tự ẩn</td>
+<td>Lời thô tục không nằm công khai chờ Admin</td>
+<td></td>
+</tr>
+<tr>
+<td>MA15</td>
+<td>AI đọc đánh giá: nghi ngờ thì chỉ gắn cờ</td>
+<td>Không ẩn nhầm lời chê thật</td>
+<td></td>
+</tr>
+<tr>
+<td>MA16</td>
+<td>Nhãn &quot;Hidden by AI&quot; và nút Restore</td>
+<td>Admin biết cái nào AI ẩn, sửa được khi AI sai</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="kiểm-duyệt-và-cờ">Kiểm duyệt và cờ</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MA17</td>
+<td>Hàng đợi cờ</td>
+<td>Ghi nhớ việc còn nợ một quyết định</td>
+<td></td>
+</tr>
+<tr>
+<td>MA18</td>
+<td>Cờ tự động cho sản phẩm có ≥ 3 đánh giá 1–2 sao trong 30 ngày</td>
+<td>Phát hiện hàng kém chất lượng</td>
+<td></td>
+</tr>
+<tr>
+<td>MA19</td>
+<td>Cờ tự động cho khách nhiều lần không đến</td>
+<td>Admin chú ý khách rủi ro</td>
+<td></td>
+</tr>
+<tr>
+<td>MA20</td>
+<td>Ẩn sản phẩm (đang điều tra, giữ đơn)</td>
+<td>Không hủy đơn khi mới nghi ngờ</td>
+<td></td>
+</tr>
+<tr>
+<td>MA21</td>
+<td>Chặn sản phẩm (vi phạm, từ chối đơn liên quan, hoàn kho)</td>
+<td>Xử lý dứt điểm khi đã xác định vi phạm</td>
+<td></td>
+</tr>
+<tr>
+<td>MA22</td>
+<td>Bỏ chặn không hồi các đơn đã từ chối, màn hình nói rõ trước</td>
+<td>Khách đã được báo, có thể đã mua nơi khác</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="can-thiệp-có-xem-trước-tác-động">Can thiệp có xem trước tác động</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MA23</td>
+<td>Xem trước tác động khi đình chỉ sạp</td>
+<td>Biết bao nhiêu đơn, khách bị ảnh hưởng</td>
+<td></td>
+</tr>
+<tr>
+<td>MA24</td>
+<td>Đình chỉ sạp tự từ chối đơn mở, hoàn kho, báo khách</td>
+<td>Không để đơn treo</td>
+<td></td>
+</tr>
+<tr>
+<td>MA25</td>
+<td>Xem trước tác động khi khóa khách</td>
+<td>Biết bao nhiêu đơn, sạp bị ảnh hưởng</td>
+<td></td>
+</tr>
+<tr>
+<td>MA26</td>
+<td>Khóa khách tự hủy đơn mở, đóng kết nối mọi thiết bị</td>
+<td>Khách bị khóa không thao tác tiếp được</td>
+<td></td>
+</tr>
+<tr>
+<td>MA27</td>
+<td>Xem trước tác động khi chặn sản phẩm</td>
+<td>Biết bao nhiêu đơn bị hủy</td>
+<td></td>
+</tr>
+<tr>
+<td>MA28</td>
+<td>Bắt buộc lý do khi đình chỉ / khóa / từ chối</td>
+<td>Minh bạch, ghi nhật ký</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="chợ">Chợ</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MA29</td>
+<td>Đóng chợ khẩn cấp: từ chối đơn mở + hoàn kho + tắt khung giờ</td>
+<td>Chợ ngập, cháy thì báo ngay mọi người có đơn</td>
+<td></td>
+</tr>
+<tr>
+<td>MA30</td>
+<td>Gõ chữ &quot;confirm&quot; mới đóng được chợ</td>
+<td>Chống bấm nhầm</td>
+<td></td>
+</tr>
+<tr>
+<td>MA31</td>
+<td>Mỗi khách bị ảnh hưởng nhận một thông báo gộp + email</td>
+<td>Không bị dội nhiều thông báo</td>
+<td></td>
+</tr>
+<tr>
+<td>MA32</td>
+<td>Đóng chợ không đình chỉ sạp</td>
+<td>Sạp vẫn bán ở chợ khác</td>
+<td></td>
+</tr>
+<tr>
+<td>MA33</td>
+<td>Mở lại chợ tự bật lại đúng các khung giờ đã tắt</td>
+<td>Nông dân không phải bật lại tay</td>
+<td></td>
+</tr>
+<tr>
+<td>MA34</td>
+<td>Lịch đóng cửa chợ tạm thời theo khoảng ngày</td>
+<td>Lễ Tết, mưa bão</td>
+<td></td>
+</tr>
+<tr>
+<td>MA35</td>
+<td>Đổi lịch / giờ chợ có xem trước tác động</td>
+<td>Đổi giờ có thể làm nhiều đơn mất hiệu lực</td>
+<td></td>
+</tr>
+<tr>
+<td>MA36</td>
+<td>Đơn lệch lịch được báo dời giờ, quá hạn mới hủy</td>
+<td>Cho khách cơ hội đổi thay vì hủy ngay</td>
+<td></td>
+</tr>
+<tr>
+<td>MA37</td>
+<td>Tra tọa độ chợ từ địa chỉ</td>
+<td>Không phải tự tìm vĩ độ / kinh độ</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="tài-khoản">Tài khoản</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MA38</td>
+<td>Tự khóa khách không đến lấy 3 lần trong 30 ngày</td>
+<td>Đặt mà không đến là thiệt hại trực tiếp cho nông dân</td>
+<td></td>
+</tr>
+<tr>
+<td>MA39</td>
+<td>Lọc khách &quot;At risk&quot;</td>
+<td>Admin theo dõi khách rủi ro</td>
+<td></td>
+</tr>
+<tr>
+<td>MA40</td>
+<td>Trang khách hiện nhãn &quot;tự khóa&quot; kèm các đơn đã bỏ</td>
+<td>Admin hiểu vì sao bị khóa</td>
+<td></td>
+</tr>
+<tr>
+<td>MA41</td>
+<td>Mở khóa thì bộ đếm tính lại từ đầu</td>
+<td>Cho khách cơ hội mới</td>
+<td></td>
+</tr>
+<tr>
+<td>MA42</td>
+<td>Admin sửa hồ sơ sạp / khách</td>
+<td>Hỗ trợ khi người dùng nhập sai</td>
+<td></td>
+</tr>
+<tr>
+<td>MA43</td>
+<td>Xem vị trí sạp trên bản đồ</td>
+<td>Kiểm tra sạp có thật ở chợ</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="giám-sát-và-báo-cáo">Giám sát và báo cáo</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MA44</td>
+<td>Nhật ký an ninh: ai làm gì, lúc nào, IP nào</td>
+<td>Truy vết khi có sự cố</td>
+<td></td>
+</tr>
+<tr>
+<td>MA45</td>
+<td>Lịch sử thay đổi từng trường của sạp, khách, sản phẩm, chợ</td>
+<td>Biết ai sửa gì, từ gì sang gì</td>
+<td></td>
+</tr>
+<tr>
+<td>MA46</td>
+<td>Trang xem đơn chỉ đọc</td>
+<td>Tra cứu khiếu nại mà không sửa đơn người khác</td>
+<td></td>
+</tr>
+<tr>
+<td>MA47</td>
+<td>Trang Limits: các giới hạn đang áp dụng</td>
+<td>Admin mới biết luật hệ thống</td>
+<td></td>
+</tr>
+<tr>
+<td>MA48</td>
+<td>Khối &quot;Needs attention&quot; trên dashboard</td>
+<td>Việc chờ hôm nay hữu ích hơn con số tổng</td>
+<td></td>
+</tr>
+<tr>
+<td>MA49</td>
+<td>Biểu đồ số đơn theo ngày trong tháng, lùi / tới từng tháng</td>
+<td>Thấy xu hướng</td>
+<td></td>
+</tr>
+<tr>
+<td>MA50</td>
+<td>Xuất báo cáo Excel</td>
+<td>Mang báo cáo đi được</td>
+<td></td>
+</tr>
+<tr>
+<td>MA51</td>
+<td>Excel chặn chèn công thức độc</td>
+<td>Tên do người dùng đặt không thành công thức</td>
+<td></td>
+</tr>
+<tr>
+<td>MA52</td>
+<td>Xuất CSV danh sách nông dân / khách</td>
+<td>Xử lý dữ liệu ngoài hệ thống</td>
+<td></td>
+</tr>
+<tr>
+<td>MA53</td>
+<td>Mỗi lần xuất báo cáo được ghi nhật ký</td>
+<td>Thay cho bảng Reports trong đề bài</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="danh-mục-và-thông-báo">Danh mục và thông báo</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MA54</td>
+<td>Mỗi danh mục một icon, không trùng</td>
+<td>Khách không nhầm danh mục</td>
+<td></td>
+</tr>
+<tr>
+<td>MA55</td>
+<td>Kéo thả sắp thứ tự danh mục</td>
+<td>Admin sắp trực quan</td>
+<td></td>
+</tr>
+<tr>
+<td>MA56</td>
+<td>Danh mục đang có sản phẩm không xóa được, chỉ ẩn</td>
+<td>Không làm hỏng sản phẩm đang bán</td>
+<td></td>
+</tr>
+<tr>
+<td>MA57</td>
+<td>Thông báo toàn sàn theo đối tượng: tất cả / khách / nông dân</td>
+<td>Gửi đúng người</td>
+<td></td>
+</tr>
+<tr>
+<td>MA58</td>
+<td>Thông báo toàn sàn có thời gian bắt đầu – kết thúc</td>
+<td>Tự tắt khi hết hạn</td>
+<td></td>
+</tr>
+<tr>
+<td>MA59</td>
+<td>Lệnh dọn tài khoản không dùng (phải thêm --apply mới xóa)</td>
+<td>Tránh phình dữ liệu, không xóa nhầm</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="phần-ii4--tính-năng-mở-rộng-chung-cho-cả-hệ-thống">Phần II.4 — Tính năng mở rộng: chung cho cả hệ thống</h2>
+<h3 id="đơn-hàng">Đơn hàng</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MC1</td>
+<td>Vòng đời đơn 8 trạng thái</td>
+<td>Đề bài chỉ có 4 trạng thái suôn sẻ; thực tế có hủy, từ chối, không đến, quên duyệt</td>
+<td></td>
+</tr>
+<tr>
+<td>MC2</td>
+<td>13 cạnh chuyển trạng thái, một lõi xử lý duy nhất</td>
+<td>Không màn hình nào đổi trạng thái sai luật</td>
+<td></td>
+</tr>
+<tr>
+<td>MC3</td>
+<td>Lịch sử trạng thái mỗi đơn: ai đổi, lúc nào, lý do</td>
+<td>Tra cứu khi có tranh chấp</td>
+<td></td>
+</tr>
+<tr>
+<td>MC4</td>
+<td>Giờ chốt tính và lưu cứng trên từng đơn</td>
+<td>Sạp đổi giờ chốt không ảnh hưởng đơn cũ</td>
+<td></td>
+</tr>
+<tr>
+<td>MC5</td>
+<td>Đơn quá hạn tự hết hạn bằng quét lười (không cần cron)</td>
+<td>Không treo đơn, không tốn tiền chạy tiến trình nền</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="trợ-lý-ai">Trợ lý AI</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MC6</td>
+<td>Chatbot cho cả 4 vai trò</td>
+<td>Đề bài chỉ gợi ý chatbot cho khách</td>
+<td></td>
+</tr>
+<tr>
+<td>MC7</td>
+<td>7 công cụ chỉ đọc, đúng quyền người hỏi (function calling)</td>
+<td>AI không chạm thẳng CSDL, không xem dữ liệu người khác</td>
+<td></td>
+</tr>
+<tr>
+<td>MC8</td>
+<td>Trả lời theo ngôn ngữ người hỏi</td>
+<td>Khách nước ngoài vẫn dùng được</td>
+<td></td>
+</tr>
+<tr>
+<td>MC9</td>
+<td>Tìm được tiếng Việt không dấu</td>
+<td>Gõ &quot;rau muong&quot; vẫn ra &quot;rau muống&quot;</td>
+<td></td>
+</tr>
+<tr>
+<td>MC10</td>
+<td>Giới hạn 20 câu / phút, 30 câu / ngày (khách vãng lai), 100 câu / ngày (đã đăng nhập)</td>
+<td>Không tốn quota</td>
+<td></td>
+</tr>
+<tr>
+<td>MC11</td>
+<td>Mọi lỗi / hết lượt đều hiện cùng câu &quot;đang bận&quot;</td>
+<td>Người ngoài không dò được giới hạn</td>
+<td></td>
+</tr>
+<tr>
+<td>MC12</td>
+<td>Chống prompt injection</td>
+<td>Người dùng không lừa được AI đổi luật</td>
+<td></td>
+</tr>
+<tr>
+<td>MC13</td>
+<td>Model Gemini dự phòng khi hết quota</td>
+<td>Demo không chết giữa chừng</td>
+<td></td>
+</tr>
+<tr>
+<td>MC14</td>
+<td>Mất AI thì web vẫn chạy bình thường</td>
+<td>Không phụ thuộc hoàn toàn vào dịch vụ ngoài</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="thông-báo">Thông báo</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MC15</td>
+<td>24 loại thông báo</td>
+<td>Đề bài chỉ cần 2 sự kiện</td>
+<td></td>
+</tr>
+<tr>
+<td>MC16</td>
+<td>Realtime cho nông dân qua WebSocket</td>
+<td>Thấy đơn mới ngay</td>
+<td></td>
+</tr>
+<tr>
+<td>MC17</td>
+<td>Vé WebSocket dùng một lần, sống 30 giây</td>
+<td>Không để token trên URL</td>
+<td></td>
+</tr>
+<tr>
+<td>MC18</td>
+<td>Mất kết nối tự nối lại, chuyển sang hỏi định kỳ</td>
+<td>Không mất thông báo</td>
+<td></td>
+</tr>
+<tr>
+<td>MC19</td>
+<td>Email cho 7 sự kiện quan trọng, gửi ở luồng nền</td>
+<td>Không bắt người dùng chờ gửi email</td>
+<td></td>
+</tr>
+<tr>
+<td>MC20</td>
+<td>Thông báo chỉ gửi sau khi thao tác lưu thành công</td>
+<td>Không có thông báo &quot;ma&quot;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="dữ-liệu-và-đồng-thời">Dữ liệu và đồng thời</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MC21</td>
+<td>Transaction cho mọi nghiệp vụ ghi nhiều bảng</td>
+<td>CSDL không bao giờ ở trạng thái làm dở</td>
+<td></td>
+</tr>
+<tr>
+<td>MC22</td>
+<td>Khóa dòng khi trừ / trả kho</td>
+<td>Hai thao tác cùng lúc không làm kho âm</td>
+<td></td>
+</tr>
+<tr>
+<td>MC23</td>
+<td>Khóa lạc quan If-Match cho đơn hàng</td>
+<td>Hai người sửa cùng đơn không đè nhau</td>
+<td></td>
+</tr>
+<tr>
+<td>MC24</td>
+<td>Tự chạy lại khi gặp deadlock</td>
+<td>Người dùng không thấy lỗi nhất thời</td>
+<td></td>
+</tr>
+<tr>
+<td>MC25</td>
+<td>Xóa mềm cho sản phẩm, chợ, tài khoản, đánh giá</td>
+<td>Giữ lịch sử đơn và báo cáo</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="bảo-mật">Bảo mật</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MC26</td>
+<td>Thu hồi phiên từng thiết bị</td>
+<td>Đăng xuất máy bị mất</td>
+<td></td>
+</tr>
+<tr>
+<td>MC27</td>
+<td>Phát hiện refresh token bị dùng lại thì thu hồi phiên</td>
+<td>Hạn chế thiệt hại khi lộ token</td>
+<td></td>
+</tr>
+<tr>
+<td>MC28</td>
+<td>Đổi mật khẩu đăng xuất các máy khác</td>
+<td>Bảo vệ khi lộ mật khẩu</td>
+<td></td>
+</tr>
+<tr>
+<td>MC29</td>
+<td>Chống dò mật khẩu theo IP (5 lần / phút)</td>
+<td>Chống tấn công dò mật khẩu</td>
+<td></td>
+</tr>
+<tr>
+<td>MC30</td>
+<td>Chống dò mật khẩu theo email (20 lần sai / giờ)</td>
+<td>Đổi IP cũng không thoát</td>
+<td></td>
+</tr>
+<tr>
+<td>MC31</td>
+<td>Hai cổng đăng nhập, không lộ email nào là Admin</td>
+<td>Giảm bề mặt tấn công</td>
+<td></td>
+</tr>
+<tr>
+<td>MC32</td>
+<td>Đúng mật khẩu mới thấy lý do khóa</td>
+<td>Người ngoài không biết tài khoản bị khóa</td>
+<td></td>
+</tr>
+<tr>
+<td>MC33</td>
+<td>Một SĐT một tài khoản</td>
+<td>Chống tài khoản ảo</td>
+<td></td>
+</tr>
+<tr>
+<td>MC34</td>
+<td>Tài khoản bị khóa không xóa, không đăng ký lại được</td>
+<td>Khóa có hiệu lực thật</td>
+<td></td>
+</tr>
+<tr>
+<td>MC35</td>
+<td>Upload ảnh: kiểm tra đuôi, MIME, ≤ 2MB, ≤ 36 megapixel, đổi tên ngẫu nhiên</td>
+<td>Chống file độc, bom ảnh</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="giao-diện-và-vận-hành">Giao diện và vận hành</h3>
+<table>
+<thead>
+<tr>
+<th>Mã</th>
+<th>Tính năng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MC36</td>
+<td>Đăng nhập Admin và khách cùng lúc trên một trình duyệt</td>
+<td>Tiện demo, Admin xem như khách</td>
+<td></td>
+</tr>
+<tr>
+<td>MC37</td>
+<td>Tự làm mới token, người dùng không bị đá ra</td>
+<td>Trải nghiệm liền mạch</td>
+<td></td>
+</tr>
+<tr>
+<td>MC38</td>
+<td>Tải trang theo vai trò (lazy route)</td>
+<td>Trang đầu mở nhanh</td>
+<td></td>
+</tr>
+<tr>
+<td>MC39</td>
+<td>Skeleton khi đang tải</td>
+<td>Không nháy trắng</td>
+<td></td>
+</tr>
+<tr>
+<td>MC40</td>
+<td>Lỗi từ server hiện đúng dưới ô nhập</td>
+<td>Biết ngay sửa chỗ nào</td>
+<td></td>
+</tr>
+<tr>
+<td>MC41</td>
+<td>Hỗ trợ bàn phím, trình đọc màn hình</td>
+<td>Dễ tiếp cận</td>
+<td></td>
+</tr>
+<tr>
+<td>MC42</td>
+<td>Tài liệu API tự sinh (Swagger)</td>
+<td>Dễ kiểm tra, mở rộng</td>
+<td></td>
+</tr>
+<tr>
+<td>MC43</td>
+<td>Kiểm tra sống /api/health</td>
+<td>Theo dõi server</td>
+<td></td>
+</tr>
+<tr>
+<td>MC44</td>
+<td>Triển khai 24/7: Vercel, Render, Aiven MySQL, Upstash Redis</td>
+<td>Giám khảo truy cập bất cứ lúc nào</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+</body>
+</html>

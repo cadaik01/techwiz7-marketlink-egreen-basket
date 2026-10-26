@@ -341,3 +341,7 @@
   font-size: var(--text-xs);
   color: var(--color-muted-foreground);
 }
+
+.farmer-detail-page__contact-ow8m {
+  padding-top: 10px;
+}

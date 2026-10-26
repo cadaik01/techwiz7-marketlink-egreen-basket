@@ -7,6 +7,7 @@ from django.utils import timezone
 
 from accounts.models import FarmerStatus
 from catalog.models import Category, Product, ReviewStatus, Unit
+from marketlink_core.exceptions import BusinessValidationError
 from markets.models import Market
 from orders.models import ActorRole, Order, OrderItem, OrderStatus
 from orders.services.fsm import transition_order
@@ -190,7 +191,7 @@ def test_a_phone_number_in_a_review_goes_to_the_queue(customer_user, make_order,
             comment="Great! Call me on 0909 123 456 for a cheaper price.",
         )
 
-    ai.assert_called_once_with("Great! Call me on 0909 123 456 for a cheaper price.")
+    ai.assert_called_once_with("Great! Call me on 0909 123 456 for a cheaper price.", is_reply=False)
 
     assert "contact details" in open_flags(FlagTarget.PRODUCT_REVIEW).get().note
     assert ProductReview.objects.get().is_hidden_by_admin is True
@@ -232,24 +233,68 @@ def test_a_model_outage_never_breaks_the_review(customer_user, make_order, ai, d
     assert not ModerationFlag.objects.exists()
 
 
-@pytest.mark.django_db
-def test_an_abusive_reply_from_the_stall_goes_to_the_queue(customer_user, farmer, make_order, ai, django_capture_on_commit_callbacks):
+@pytest.fixture
+def product_review(customer_user, make_order):
     order = make_order()
-    item = order.items.get()
-    review = create_product_review(
-        customer=customer_user, order_id=order.pk, item_id=item.pk, rating=2, comment="Too small."
+    return create_product_review(
+        customer=customer_user, order_id=order.pk, item_id=order.items.get().pk, rating=2, comment="Too small."
     )
-    ai.side_effect = lambda text: OFFENSIVE if text == "Then buy elsewhere." else CLEAN
+
+
+def _reply(farmer, review, text):
+    return reply_to_review(review_type=TYPE_PRODUCT, review_id=review.pk, farmer_id=farmer.pk, reply=text)
+
+
+@pytest.mark.django_db
+def test_an_abusive_reply_is_refused_before_it_is_posted(farmer, product_review, ai, django_capture_on_commit_callbacks):
+    ai.return_value = OFFENSIVE
+
+    with django_capture_on_commit_callbacks(execute=True), pytest.raises(BusinessValidationError) as refused:
+        _reply(farmer, product_review, "Then buy elsewhere, idiot.")
+
+    assert "reply" in refused.value.errors
+    ai.assert_called_once_with("Then buy elsewhere, idiot.", is_reply=True)
+    product_review.refresh_from_db()
+    assert product_review.reply is None
+    assert not open_flags(FlagTarget.PRODUCT_REVIEW).exists()
+
+
+@pytest.mark.django_db
+def test_a_suspect_reply_is_posted_and_queued_without_asking_twice(
+    farmer, product_review, ai, django_capture_on_commit_callbacks
+):
+    ai.return_value = OFFENSIVE_UNSURE
 
     with django_capture_on_commit_callbacks(execute=True):
-        reply_to_review(
-            review_type=TYPE_PRODUCT, review_id=review.pk, farmer_id=farmer.pk, reply="Then buy elsewhere."
-        )
+        _reply(farmer, product_review, "Some people just like to complain.")
 
-    flag = open_flags(FlagTarget.PRODUCT_REVIEW).get()
-    assert "stall's reply" in flag.note
-    review.refresh_from_db()
-    assert review.is_hidden_by_admin is False
+    product_review.refresh_from_db()
+    assert product_review.reply == "Some people just like to complain."
+    assert product_review.is_hidden_by_admin is False
+    assert "stall's reply" in open_flags(FlagTarget.PRODUCT_REVIEW).get().note
+    assert ai.call_count == 1
+
+
+@pytest.mark.django_db
+def test_when_the_ai_is_down_the_reply_is_posted_and_checked_later(
+    farmer, product_review, ai, django_capture_on_commit_callbacks
+):
+    answers = iter([gemini.AIUnavailable("timeout"), OFFENSIVE])
+
+    def answer(text, **kwargs):
+        result = next(answers)
+        if isinstance(result, Exception):
+            raise result
+        return result
+
+    ai.side_effect = answer
+
+    with django_capture_on_commit_callbacks(execute=True):
+        _reply(farmer, product_review, "Then buy elsewhere.")
+
+    product_review.refresh_from_db()
+    assert product_review.reply == "Then buy elsewhere."
+    assert "stall's reply" in open_flags(FlagTarget.PRODUCT_REVIEW).get().note
 
 
 @pytest.mark.django_db

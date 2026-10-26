@@ -8,8 +8,10 @@ The one exception is a shopper's review the AI is certain breaks the rules (plai
 words, or contact details to trade outside MarketLink): it is hidden at once, the same way the
 AI holds back a listing it thinks breaks the rules, and the flag tells the admin, who restores
 it if the AI was wrong. A review the AI only suspects stays visible and is flagged. Honest
-complaints are not a problem at all. The stall's reply is only flagged: it lives on the same
-row as the shopper's review, and hiding the row would hide the shopper's words too.
+complaints are not a problem at all. The stall's reply is read before it is saved: one the AI
+is certain is abusive is refused (screen_reply), one it only suspects is saved and flagged. It
+is never hidden afterwards: it lives on the same row as the shopper's review, and hiding the
+row would hide the shopper's words too.
 
 The hooks call these after the triggering change has been saved, and a failure here is
 logged and swallowed: a review or a no-show must never fail because the queue could not be
@@ -104,13 +106,17 @@ def _hide_review_for_ai(target_type: str, target_id: int, problems: str) -> bool
 
 
 def _ai_text_check(
-    target_type: str, target_id: int, text: str, who: str, hide_when_certain: bool = False
+    target_type: str, target_id: int, text: str, who: str, hide_when_certain: bool = False, is_reply: bool = False
 ) -> ModerationFlag | None:
     try:
-        verdict = gemini.assess_review(text)
+        verdict = gemini.assess_review(text, is_reply=is_reply)
     except gemini.AIUnavailable as exc:
         logger.info("AI check of %s %s skipped: %s", target_type, target_id, exc)
         return None
+    return _act_on_verdict(target_type, target_id, verdict, who, hide_when_certain)
+
+
+def _act_on_verdict(target_type, target_id, verdict, who, hide_when_certain) -> ModerationFlag | None:
     if not verdict.problems:
         return None
     note = f"{who} contains {'; '.join(verdict.problems)}."
@@ -132,12 +138,13 @@ def _run_ai_text_check(*args) -> None:
 
 
 def schedule_ai_text_check(
-    target_type: str, target_id: int, text: str | None, who: str, hide_when_certain: bool = False
+    target_type: str, target_id: int, text: str | None, who: str, hide_when_certain: bool = False,
+    is_reply: bool = False,
 ) -> None:
     """Ask the AI about the text once the save has committed, off the request."""
     if not text or not gemini.is_configured():
         return
-    args = (target_type, target_id, text, who, hide_when_certain)
+    args = (target_type, target_id, text, who, hide_when_certain, is_reply)
     if settings.AI_MODERATION_RUN_INLINE:
         transaction.on_commit(lambda: safely(_ai_text_check, *args))
     else:
@@ -154,10 +161,27 @@ def check_review_text(review) -> None:
     )
 
 
-def check_reply_text(review) -> None:
-    """The stall's public reply to a review, held to the same check as the review. Flagged only:
-    hiding the row would also hide the shopper's review the reply sits on."""
-    schedule_ai_text_check(_review_target(review), review.pk, review.reply, "the stall's reply")
+def screen_reply(text: str) -> "gemini.ReviewVerdict | None":
+    """The stall's reply, read by the AI before it is saved, so a reply the AI is certain is
+    abusive is refused instead of published. None when the AI is off or did not answer."""
+    if not gemini.is_configured():
+        return None
+    try:
+        return gemini.assess_review(text, is_reply=True)
+    except gemini.AIUnavailable as exc:
+        logger.info("AI check of a reply before saving skipped: %s", exc)
+        return None
+
+
+def check_reply_text(review, verdict: "gemini.ReviewVerdict | None" = None) -> None:
+    """Flag a saved reply the AI only suspects. With the verdict screen_reply already got, no
+    second call is made; without one (the AI did not answer in time) it is checked afterwards.
+    Never hidden: hiding the row would also hide the shopper's review the reply sits on."""
+    target = _review_target(review)
+    if verdict is None:
+        schedule_ai_text_check(target, review.pk, review.reply, "the stall's reply", is_reply=True)
+        return
+    _act_on_verdict(target, review.pk, verdict, "the stall's reply", hide_when_certain=False)
 
 
 def check_product_low_ratings(product_id: int) -> ModerationFlag | None:

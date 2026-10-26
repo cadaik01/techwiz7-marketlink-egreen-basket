@@ -65,7 +65,8 @@ class TestListOrders:
         results = _results(shop.api.get(LIST_URL))
 
         assert [row["id"] for row in results] == [mine.pk]
-        assert set(results[0]) == SUMMARY_KEYS
+        assert set(results[0]) == SUMMARY_KEYS | {"allowed_actions"}
+        assert results[0]["allowed_actions"] == ["MODIFY", "CANCEL"]
         assert results[0]["has_pending_change"] is False
         assert shop.api.get(LIST_URL).json()["data"]["count"] == 1
 
@@ -123,6 +124,16 @@ class TestListOrders:
 
         assert (response.status_code, response.json()["code"]) == (400, "VALIDATION_ERROR")
 
+    def test_rows_offer_review_until_everything_is_reviewed(self, shop):
+        order = _order(shop, status="COMPLETED")
+
+        before = _results(shop.api.get(LIST_URL, {"tab": "history"}))[0]["allowed_actions"]
+        FarmerReview.objects.create(order=order, rating=5)
+        ProductReview.objects.create(order_item=order.items.get(), rating=4)
+        after = _results(shop.api.get(LIST_URL, {"tab": "history"}))[0]["allowed_actions"]
+
+        assert (before, after) == (["REVIEW", "REORDER"], ["REORDER"])
+
     def test_constant_number_of_queries(self, shop, django_assert_max_num_queries):
         for _ in range(5):
             _order(shop)
@@ -159,6 +170,9 @@ class TestOrderDetail:
         [item] = data["items"]
         assert (item["product_id"], item["quantity"], item["unit_price"], item["product_image"]) == (
             shop.product.pk, 3, "2.50", None
+        )
+        assert (item["min_per_order"], item["max_per_order"]) == (
+            shop.product.min_per_order, shop.product.max_per_order
         )
         [placed] = data["status_history"]
         assert (placed["from_status"], placed["to_status"], placed["transition"]) == (None, "PLACED", "T1")

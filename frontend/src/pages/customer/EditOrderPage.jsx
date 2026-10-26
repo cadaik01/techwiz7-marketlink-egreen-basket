@@ -12,22 +12,49 @@ import { useModifyOrder } from '../../hooks/queries/customer/useOrderActions';
 import { usePickupOptions } from '../../hooks/queries/customer/usePickupOptions';
 import { useNow } from '../../hooks/useNow';
 import { ApiError } from '../../lib/ApiError';
-import { MAX_QUANTITY } from '../../stores/cart.store';
+import { lineMax, lineMin } from '../../stores/cart.store';
 import { formatDate, formatMoney } from '../../utils/formatters';
 import { moneyToNumber } from '../../utils/helpers/domain';
 import { cn } from '../../lib/cn';
 import '../../styles/customer/EditOrderPage.css';
 
 
+// The server keys a line's error by product id ("12"), or by its place in the list ("items.0.quantity").
 function readItemErrors(fieldErrors, items) {
   const byProduct = {};
   Object.entries(fieldErrors ?? {}).forEach(([key, messages]) => {
-    const match = /^items\.(\d+)\./.exec(key);
-    if (!match) return;
-    const item = items[Number(match[1])];
+    if (/^\d+$/.test(key)) {
+      const productId = Number(key);
+      if (items.some((item) => item.product_id === productId)) byProduct[productId] = messages[0];
+      return;
+    }
+    const match = /^items\.(\d+)(\.|$)/.exec(key);
+    const item = match ? items[Number(match[1])] : null;
     if (item) byProduct[item.product_id] = messages[0];
   });
   return byProduct;
+}
+
+
+// Limits apply only to a quantity that changes, so the line can always stay at what was ordered.
+function stepperRange(line) {
+  return {
+    min: Math.min(lineMin(line), line.ordered ?? Infinity),
+    max: Math.max(lineMax(line), line.ordered ?? 0),
+  };
+}
+
+
+// Says why + or − stopped working, only while the line sits on a farmer's limit.
+function limitHint(line) {
+  const unit = line.unit.toLowerCase();
+  if (line.max_per_order != null && line.quantity >= lineMax(line)) {
+    return `Maximum ${lineMax(line)} ${unit} per order`;
+  }
+  if (lineMin(line) > 1 && line.quantity <= lineMin(line)) {
+    return `Minimum ${lineMin(line)} ${unit} per order`;
+  }
+  return null;
 }
 
 
@@ -57,6 +84,9 @@ export default function EditOrderPage() {
     unit: item.unit,
     unit_price: item.unit_price,
     quantity: item.quantity,
+    ordered: item.quantity,
+    min_per_order: item.min_per_order,
+    max_per_order: item.max_per_order,
   }));
   const noteValue = note ?? order.note ?? '';
   const isChangeRequest = order.status === 'ACCEPTED';
@@ -92,7 +122,7 @@ export default function EditOrderPage() {
       if (Object.keys(perItem).length === 0) {
         setFormError(apiError.code === 'RESOURCE_MODIFIED'
           ? `${apiError.apiMessage}. Reload the order and try again.`
-          : apiError.friendlyMessage);
+          : apiError.apiMessage || apiError.friendlyMessage);
       }
     }
   }
@@ -121,11 +151,14 @@ export default function EditOrderPage() {
         <ul className="edit-order__lines">
           {current.map((line) => (
             <li className="edit-order__line" key={line.product_id} aria-label={line.product_name}>
-              <span className="edit-order__line-name">{line.product_name}</span>
+              <span className="edit-order__line-name">
+                {line.product_name}
+                {limitHint(line) ? <span className="edit-order__line-hint">{limitHint(line)}</span> : null}
+              </span>
               <span className="edit-order__line-price">{`${formatMoney(line.unit_price)} / ${line.unit}`}</span>
               <QuantityStepper
                 value={line.quantity}
-                max={MAX_QUANTITY}
+                {...stepperRange(line)}
                 onChange={(quantity) => setQuantity(line.product_id, quantity)}
               />
               <span className="edit-order__line-total">

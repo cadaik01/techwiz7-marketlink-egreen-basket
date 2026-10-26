@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from accounts.auth.tokens import SESSION_CLAIM
 from marketlink_core.exceptions import ErrorCode
-from marketlink_core.permissions import IsCustomerOrFarmer
+from marketlink_core.permissions import IsAnyRole
 from marketlink_core.responses import api_response
 from marketlink_core.services.ws_ticket import DEFAULT_TTL, create_ws_ticket
 
@@ -63,9 +63,9 @@ class HealthCheckView(APIView):
 
 
 class WebSocketTicketView(APIView):
-    """AU-08: one-time ticket for /ws/notifications/ (Customer, Farmer only)."""
+    """AU-08: one-time ticket for /ws/notifications/ (every signed-in role)."""
 
-    permission_classes = [IsCustomerOrFarmer]
+    permission_classes = [IsAnyRole]
 
     @extend_schema(
         request=None,

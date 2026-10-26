@@ -4,6 +4,7 @@ import { cn } from '../../../lib/cn';
 import './RatingInput.css';
 
 const SCORES = [1, 2, 3, 4, 5];
+const WORDS = { 1: 'Poor', 2: 'Fair', 3: 'Okay', 4: 'Good', 5: 'Excellent' };
 
 
 export function RatingInput({ name, value, onChange, disabled = false }) {
@@ -28,6 +29,7 @@ export function RatingInput({ name, value, onChange, disabled = false }) {
           />
         </label>
       ))}
+      <span className="rating-input__word" aria-live="polite">{value ? WORDS[value] : ''}</span>
     </fieldset>
   );
 }

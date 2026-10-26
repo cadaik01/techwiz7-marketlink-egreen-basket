@@ -164,6 +164,8 @@ class CustomerOrderItemReadSerializer(serializers.Serializer):
     quantity = serializers.IntegerField()
     line_total = serializers.DecimalField(max_digits=10, decimal_places=2)
     product_image = serializers.SerializerMethodField()
+    min_per_order = serializers.IntegerField(source="product.min_per_order")
+    max_per_order = serializers.IntegerField(source="product.max_per_order", allow_null=True)
 
     def get_product_image(self, item) -> str | None:
         image = item.product.image
@@ -205,6 +207,21 @@ def customer_allowed_actions(order, *, review_state: dict | None, now=None) -> l
     if order.status in FINISHED_STATUSES:
         actions.append("REORDER")
     return actions
+
+
+class CustomerOrderListReadSerializer(OrderSummaryReadSerializer):
+    """CU-05 row: the summary plus what the customer may do, from customer_orders_queryset annotations."""
+
+    allowed_actions = serializers.SerializerMethodField()
+
+    class Meta(OrderSummaryReadSerializer.Meta):
+        fields = OrderSummaryReadSerializer.Meta.fields + ["allowed_actions"]
+
+    def get_allowed_actions(self, order) -> list[str]:
+        review_state = None
+        if order.status == OrderStatus.COMPLETED:
+            review_state = {"farmer_reviewed": order.farmer_reviewed, "items_pending_review": order.has_unreviewed_items}
+        return customer_allowed_actions(order, review_state=review_state)
 
 
 class CustomerOrderDetailReadSerializer(OrderSummaryReadSerializer):

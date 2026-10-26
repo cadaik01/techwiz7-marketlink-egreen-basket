@@ -376,7 +376,7 @@ ol.findings li { margin-bottom: 10px; }
     <div class="jb">
       <dl class="meta">
         <dt>Người dùng</dt><dd>Không bấm gì. Chạy khi mở bất kỳ trang nào trong <code>/farmer/*</code>. Khi có đơn mới, góc màn hình hiện toast có nút "View".</dd>
-        <dt>Thành phần</dt><dd><code>FarmerLayout</code> gọi <code>useNotificationSocket()</code> (<code>hooks/common/useNotificationSocket.js</code>). Đây là layout <strong>duy nhất</strong> mở WebSocket.</dd>
+        <dt>Thành phần</dt><dd><code>FarmerLayout</code> gọi <code>useNotificationSocket()</code> (<code>hooks/common/useNotificationSocket.js</code>). <code>AdminLayout</code> và <code>PublicLayout</code> (khi là khách) cũng gọi hook này.</dd>
       </dl>
       <div class="diagram">
 <pre class="mermaid">

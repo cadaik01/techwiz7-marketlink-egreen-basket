@@ -1,4 +1,4 @@
-import { authKeys, farmerKeys, notificationKeys } from './queryKeys';
+import { QUERY_KEYS, authKeys, farmerKeys, notificationKeys } from './queryKeys';
 
 
 export const NOTIFICATION_TYPES = Object.freeze({
@@ -30,15 +30,26 @@ const farmerOrderFamily = () => [
 
 
 
+// The shopper's orders: list, any open detail page, and the dashboard counts.
+const customerOrderFamily = () => [['orders'], ['order'], QUERY_KEYS.CUSTOMER_DASHBOARD];
+
+
 const INVALIDATIONS = {
+  [T.ORDER_ACCEPTED]: customerOrderFamily,
+  [T.ORDER_READY]: customerOrderFamily,
+  [T.ORDER_DECLINED]: customerOrderFamily,
+  [T.ORDER_EXPIRED]: customerOrderFamily,
+  [T.ORDER_CHANGE_APPROVED]: customerOrderFamily,
+  [T.ORDER_CHANGE_REJECTED]: customerOrderFamily,
+  [T.ORDER_ITEM_SOLD_OUT]: customerOrderFamily,
   [T.ORDER_PLACED]: farmerOrderFamily,
   [T.ORDER_MODIFIED]: farmerOrderFamily,
   [T.ORDER_CANCELLED]: farmerOrderFamily,
   [T.ORDER_CANCELLED_CUSTOMER_LOCKED]: farmerOrderFamily,
   [T.ACCOUNT_STATUS_CHANGED]: () => [authKeys.me(), farmerKeys.profile(), farmerKeys.dashboard.all()],
-  [T.MARKET_SCHEDULE_CHANGED]: () => [farmerKeys.markets(), farmerKeys.closures()],
+  [T.MARKET_SCHEDULE_CHANGED]: () => [farmerKeys.markets(), farmerKeys.closures(), ...customerOrderFamily()],
   
-  [T.MARKET_CLOSED]: () => [farmerKeys.markets(), ...farmerOrderFamily()],
+  [T.MARKET_CLOSED]: () => [farmerKeys.markets(), ...farmerOrderFamily(), ...customerOrderFamily()],
 };
 
 export function queryKeysForNotification(type) {

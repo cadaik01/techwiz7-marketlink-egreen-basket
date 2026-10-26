@@ -523,7 +523,7 @@ sequenceDiagram
 <pre class="code">GET /api/auth/me/
 Authorization: Bearer &lt;access&gt;</pre>
           <code>staleTime: Infinity</code>: có kết quả rồi thì không tự gọi lại trong suốt phiên. Nếu vừa đăng nhập xong, cache đã được ghi sẵn ở X-01 bước 10, nên bước này không gửi request nào.
-          <div class="why"><p>Vai trò và tên hiển thị gần như không đổi trong một phiên; gọi <code>/auth/me/</code> mỗi lần chuyển trang là lãng phí. Khi thật sự có thay đổi (ví dụ admin duyệt nông dân), thông báo <code>ACCOUNT_STATUS_CHANGED</code> đến qua WebSocket sẽ đánh dấu cache này là cũ (<code>constants/notificationEvents.js</code>). Việc này chỉ xảy ra với nông dân, vì chỉ nông dân có WebSocket. Với khách và admin, cache <code>/me</code> chỉ làm mới khi tải lại trang hoặc đăng nhập lại.</p></div></li>
+          <div class="why"><p>Vai trò và tên hiển thị gần như không đổi trong một phiên; gọi <code>/auth/me/</code> mỗi lần chuyển trang là lãng phí. Khi thật sự có thay đổi (ví dụ admin duyệt nông dân), thông báo <code>ACCOUNT_STATUS_CHANGED</code> đến qua WebSocket sẽ đánh dấu cache này là cũ (<code>constants/notificationEvents.js</code>). Việc này chỉ xảy ra với nông dân, vì chỉ nông dân nhận loại thông báo này. Với khách và admin, cache <code>/me</code> chỉ làm mới khi tải lại trang hoặc đăng nhập lại.</p></div></li>
         <li><span class="st"><span class="chip be">BE</span><span class="chip ext">REDIS</span>Xác thực request</span>
           Mọi API (trừ view tự tắt) dùng <code>SessionJWTAuthentication</code> (<code>accounts/auth/authentication.py</code>), mở rộng lớp JWT của SimpleJWT:
           <ol class="sub-steps">
@@ -598,7 +598,7 @@ Authorization: Bearer &lt;access&gt;
               <div class="why"><p>Để không ai dùng một refresh token nhặt được mà đăng xuất phiên của người khác.</p></div></li>
             <li><code>revoke_session(sid)</code>: ghi <code>auth:revoked_sid:&lt;sid&gt;</code> vào Redis, sống <strong>7 ngày</strong>. Lưu Redis lỗi thì hàm <strong>ném lỗi chứ không im lặng</strong>.
               <div class="why"><p>7 ngày bằng thời hạn refresh token: sau đó mọi token của phiên tự hết hạn, không cần nhớ thêm. Ném lỗi vì đăng xuất không được báo thành công nếu phiên thật ra vẫn sống.</p></div></li>
-            <li><code>disconnect_realtime(session_id=sid)</code>: sau commit, gửi lệnh đóng kết nối WebSocket của <strong>phiên này</strong> (nhóm <code>session_&lt;sid&gt;</code>). Hiện chỉ nông dân có WebSocket.</li>
+            <li><code>disconnect_realtime(session_id=sid)</code>: sau commit, gửi lệnh đóng kết nối WebSocket của <strong>phiên này</strong> (nhóm <code>session_&lt;sid&gt;</code>). Khách, nông dân và admin đều có WebSocket.</li>
             <li>Ghi <code>audit_logs</code> với <code>action = LOGOUT</code>.</li>
           </ol>
           Trả <strong>204 No Content</strong>.</li>
@@ -737,8 +737,8 @@ Authorization: Bearer &lt;access&gt;
 
   <div class="concept">
     <h3>Ai nhận thông báo thời gian thực, ai không</h3>
-    <p>Chỉ <code>FarmerLayout</code> gọi <code>useNotificationSocket()</code>. Khách hàng và admin <strong>không có kết nối WebSocket</strong>; họ nhận thông báo mới vì frontend tự hỏi lại server mỗi <strong>30 giây</strong> (polling).</p>
-    <p>Cơ chế: <code>usePollInterval()</code> trong <code>hooks/queries/common/useNotifications.js</code> đọc cờ <code>realtimeConnected</code> trong <code>ui.store.js</code>. Có WebSocket thì tắt polling; không có thì hỏi lại mỗi 30 giây (<code>NOTIFICATION_POLL_INTERVAL</code>). Nông dân mất WebSocket cũng tự rơi về polling.</p>
+    <p>Cả ba vai trò đều mở WebSocket: <code>FarmerLayout</code> và <code>AdminLayout</code> gọi <code>useNotificationSocket()</code>; với khách, <code>PublicLayout</code> gọi <code>useNotificationSocket({ enabled: isCustomer })</code>. Đặt ở <code>PublicLayout</code> vì layout này bọc cả khu <code>/customer</code> lẫn trang chợ / nông sản, nên kết nối không bị ngắt khi khách chuyển trang. <code>POST /api/auth/ws-ticket/</code> dùng quyền <code>IsAnyRole</code>.</p>
+    <p>Cơ chế: <code>usePollInterval()</code> trong <code>hooks/queries/common/useNotifications.js</code> đọc cờ <code>realtimeConnected</code> trong <code>ui.store.js</code>. Có WebSocket thì tắt polling; không có thì hỏi lại mỗi 30 giây (<code>NOTIFICATION_POLL_INTERVAL</code>). Ai mất WebSocket cũng tự rơi về polling 30 giây.</p>
   </div>
 
   <!-- X-06 -->
@@ -1113,7 +1113,6 @@ sequenceDiagram
   <ol class="findings">
     <li><strong>Banner hiện hai lần ở các trang <code>/customer/*</code>.</strong> Route khách nằm bên trong <code>PublicLayout</code> (<code>public.routes.jsx</code> trải <code>...customerRoutes</code> vào danh sách con). <code>PublicLayout</code> có <code>&lt;AnnouncementBanner /&gt;</code>, <code>CustomerLayout</code> cũng có. Hai bản dùng chung một query nên chỉ có một request, nhưng nội dung vẽ hai lần; hai bản giữ state riêng nên đóng ở bản này thì bản kia vẫn còn tới khi trang vẽ lại.</li>
     <li><strong>Nông dân không bao giờ thấy banner</strong>, vì <code>FarmerLayout</code> không đặt <code>AnnouncementBanner</code>. Thông báo với đối tượng <code>FARMER</code> hiện không hiển thị ở đâu.</li>
-    <li><strong>Khách hàng và admin không có thông báo thời gian thực.</strong> Chỉ <code>FarmerLayout</code> mở WebSocket; khách và admin dựa vào polling 30 giây.</li>
     <li><strong>Trang thông báo của khách không làm mới chuông.</strong> <code>useNotificationFeed</code> đánh dấu cũ <code>['notifications-page']</code> và <code>['notifications-list']</code>, còn chuông dùng <code>['notifications', …]</code>; chấm đỏ còn tối đa 30 giây.</li>
     <li><strong>Hai file API thông báo và hai bộ hook cho cùng một việc:</strong> <code>api/common/notificationsApi.js</code> + <code>useNotifications.js</code> (chuông, trang nông dân) và <code>services/common/notificationsApi.js</code> + <code>useNotificationFeed.js</code> (trang khách). Điểm 4 là hệ quả.</li>
     <li><strong>Hai bản form đổi mật khẩu:</strong> <code>components/common/forms/ChangePasswordForm.jsx</code> (khách, admin) và <code>pages/auth/ChangePasswordForm.jsx</code> (nông dân), cách hiện lỗi khác nhau (X-05).</li>

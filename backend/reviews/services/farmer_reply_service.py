@@ -5,6 +5,7 @@ from django.utils import timezone
 
 from accounts.models import FarmerProfile, FarmerStatus
 from marketlink_core.exceptions import (
+    BusinessValidationError,
     ErrorCode,
     ForbiddenActionError,
     ResourceNotFoundError,
@@ -13,13 +14,29 @@ from marketlink_core.exceptions import (
 from orders.services.fsm import run_with_retry_if_top_level
 from reviews.models import FarmerReview, ProductReview
 from reviews.selectors import TYPE_FARMER
-from system.auto_flags import check_reply_text, safely
+from system.auto_flags import check_reply_text, safely, screen_reply
 
 REPLY_MAX_LENGTH = 500
+REPLY_REFUSED = (
+    "Your reply was not posted: it reads as offensive to the shopper or shares contact details. "
+    "Please keep it polite and on MarketLink."
+)
+
+
+def _screen(model, review_id: int, owner_filter: dict, reply: str):
+    """Ask the AI before saving, outside the row lock. Skipped when the reply would be refused
+    anyway (not the farmer's review, or already answered), so a stranger cannot spend AI calls."""
+    if not model.objects.filter(pk=review_id, reply__isnull=True, **owner_filter).exists():
+        return None
+    verdict = screen_reply(reply)
+    if verdict is not None and verdict.certain:
+        raise BusinessValidationError(REPLY_REFUSED, errors={"reply": [REPLY_REFUSED]})
+    return verdict
 
 
 def reply_to_review(*, review_type: str, review_id: int, farmer_id: int, reply: str) -> int:
-    """Lock the review row, then check: ownership (404) -> suspended -> hidden -> already replied.
+    """AI check first (a reply it is certain is abusive is refused), then lock the review row and
+    check: ownership (404) -> suspended -> hidden -> already replied.
 
     Returns the review id; the caller reloads it with the relations the response needs.
     """
@@ -27,6 +44,7 @@ def reply_to_review(*, review_type: str, review_id: int, farmer_id: int, reply: 
         model, owner_filter = FarmerReview, {"order__farmer_id": farmer_id}
     else:
         model, owner_filter = ProductReview, {"order_item__product__farmer_id": farmer_id}
+    verdict = _screen(model, review_id, owner_filter, reply)
 
     def _execute() -> int:
         with transaction.atomic():
@@ -53,5 +71,5 @@ def reply_to_review(*, review_type: str, review_id: int, farmer_id: int, reply: 
             return review.pk
 
     review_pk = run_with_retry_if_top_level(_execute)
-    safely(check_reply_text, model.objects.get(pk=review_pk))
+    safely(check_reply_text, model.objects.get(pk=review_pk), verdict)
     return review_pk

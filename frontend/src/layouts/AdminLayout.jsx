@@ -25,6 +25,7 @@ import {
   SheetTrigger,
 } from '../components/ui/Sheet';
 import { UserMenu } from '../components/common/layout/UserMenu';
+import { useNotificationSocket } from '../hooks/common/useNotificationSocket';
 import { useUiStore } from '../stores/ui.store';
 import { useAIReviewStats } from '../hooks/queries/admin/useAdminAIReview';
 import { useAdminApprovalCounts } from '../hooks/queries/admin/useAdminApprovalCounts';
@@ -120,6 +121,7 @@ function SideNav({ collapsed }                        ) {
 }
 
 export function AdminLayout() {
+  useNotificationSocket();
   const collapsed = useUiStore((s) => s.sidebarCollapsed);
   const setCollapsed = useUiStore((s) => s.setSidebarCollapsed);
 

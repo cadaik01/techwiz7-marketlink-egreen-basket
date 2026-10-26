@@ -244,7 +244,7 @@ flowchart LR
     ZS["Zustand store<br/>token, giỏ hàng"] -.-> AX
   end
   AX -- "HTTP JSON /api/..." --> DJ
-  WS["useNotificationSocket<br/>chỉ trang nông dân"] -- "WebSocket /ws/notifications/" --> CH
+  WS["useNotificationSocket<br/>khách, nông dân, admin"] -- "WebSocket /ws/notifications/" --> CH
   subgraph Server["Server Django (ASGI, Daphne)"]
     DJ["DRF View"] --> SR["Serializer"]
     SR --> SV["Service"]
@@ -272,7 +272,7 @@ flowchart LR
       <tr><td><span class="chip fe">FE</span></td><td>Leaflet, Recharts</td><td>Bản đồ chợ, biểu đồ thống kê.</td></tr>
       <tr><td><span class="chip be">BE</span></td><td>Django + Django REST Framework</td><td>API REST, ORM, kiểm tra quyền, phân trang.</td></tr>
       <tr><td><span class="chip be">BE</span></td><td>SimpleJWT</td><td>Đăng nhập bằng token: access sống 15 phút, refresh sống 7 ngày.</td></tr>
-      <tr><td><span class="chip be">BE</span></td><td>Channels + Daphne</td><td>WebSocket cho thông báo realtime. Hiện chỉ trang nông dân mở kết nối; khách và admin nhận thông báo bằng cách hỏi lại server mỗi 30 giây.</td></tr>
+      <tr><td><span class="chip be">BE</span></td><td>Channels + Daphne</td><td>WebSocket cho thông báo realtime. Khách, nông dân và admin đều mở kết nối; mất kết nối thì tự hỏi lại server mỗi 30 giây.</td></tr>
       <tr><td><span class="chip be">BE</span></td><td>django-simple-history</td><td>Lưu lịch sử mỗi lần sửa sản phẩm, đơn hàng (ai sửa, vì sao).</td></tr>
       <tr><td><span class="chip be">BE</span></td><td>drf-spectacular</td><td>Tự sinh tài liệu API ở <code>/api/docs/</code> (Swagger).</td></tr>
       <tr><td><span class="chip db">DB</span></td><td>MySQL 8</td><td>Lưu toàn bộ dữ liệu nghiệp vụ.</td></tr>
@@ -519,7 +519,7 @@ erDiagram
     </article>
     <article class="app">
       <div class="app-head"><span class="app-name">notifications</span><span class="app-role">Báo cho ai biết?</span><span class="app-order">dịch vụ ngang</span></div>
-      <p>Các app khác gọi một hàm duy nhất là <code>notify()</code>. Hàm này lưu thông báo vào DB, đẩy qua WebSocket (chỉ tới ai đang kết nối, hiện là nông dân) và gửi email nếu loại thông báo có mẫu email. Banner thông báo chung của admin cũng nằm ở app này.</p>
+      <p>Các app khác gọi một hàm duy nhất là <code>notify()</code>. Hàm này lưu thông báo vào DB, đẩy qua WebSocket (tới ai đang kết nối: khách, nông dân hoặc admin) và gửi email nếu loại thông báo có mẫu email. Banner thông báo chung của admin cũng nằm ở app này.</p>
       <dl>
         <dt>Bảng</dt><dd><code>notifications</code> (thông báo cá nhân), <code>announcements</code> (thông báo chung của admin)</dd>
         <dt>File chính</dt><dd><code>services.py → notify()</code>, <code>messages.py</code> (mẫu nội dung), <code>consumers.py</code> (WebSocket), mẫu email ở <code>backend/templates/emails/</code> (thư mục chung của dự án, không nằm trong app)</dd>
@@ -1040,7 +1040,7 @@ stateDiagram-v2
     <div class="ans"><p>Giỏ hàng là dữ liệu tạm. Lưu localStorage thì nhanh và không tốn request. Đổi lại, giá và tồn kho trong giỏ có thể cũ, nên trang giỏ làm mới bằng <code>GET public/products/?ids=</code>, và checkout bỏ qua giá trong giỏ, tự lấy giá từ DB.</p></div></details>
 
   <details class="qa"><summary>Thông báo realtime hoạt động thế nào? Nếu WebSocket rớt thì sao?</summary>
-    <div class="ans"><p>Thông báo luôn được lưu vào bảng <code>notifications</code> trước, WebSocket chỉ là đường đẩy nhanh. Hiện chỉ trang nông dân mở WebSocket, vì nông dân cần biết đơn mới ngay. Khách hàng và admin nhận thông báo bằng cách frontend hỏi lại server mỗi 30 giây (polling). Nông dân rớt kết nối thì frontend tự nối lại với thời gian chờ tăng dần, trong lúc đó tự chuyển sang polling; nối lại xong thì làm mới mọi dữ liệu, nên không mất thông báo nào. Chi tiết ở các hành trình X-06 và F-03.</p></div></details>
+    <div class="ans"><p>Thông báo luôn được lưu vào bảng <code>notifications</code> trước, WebSocket chỉ là đường đẩy nhanh. Khách, nông dân và admin đều mở WebSocket: nông dân biết đơn mới ngay, khách biết đơn được duyệt ngay, admin biết tin AI vừa giữ lại. Ai rớt kết nối thì frontend tự nối lại với thời gian chờ tăng dần, trong lúc đó tự chuyển sang polling; nối lại xong thì làm mới mọi dữ liệu, nên không mất thông báo nào. Chi tiết ở các hành trình X-06 và F-03.</p></div></details>
 
   <details class="qa"><summary>AI có quyền tự phạt người dùng không?</summary>
     <div class="ans"><p>Không. AI chỉ tự <em>duyệt</em> tin rõ ràng sạch và <em>đề xuất</em> với tin nghi ngờ (tạo cờ). Ẩn, chặn, khoá tài khoản luôn do admin. Mọi quyết định tự động hiện ở trang AI decisions để admin xác nhận hoặc đảo lại. Giá cả do luật cố định kiểm tra, không giao cho AI, vì mô hình ngôn ngữ không biết giá thị trường và mỗi lần trả lời mỗi khác.</p></div></details>

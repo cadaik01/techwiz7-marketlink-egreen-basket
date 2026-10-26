@@ -1,20 +1,3 @@
-"""Seed realistic production-like sample data for MarketLink.
-
-Wipes old data cleanly, resets auto-increment IDs to 1 across all business tables,
-and seeds:
-- 1 Superuser Admin
-- 6 Real Wholesale/Traditional Markets in Ho Chi Minh City, plus 1 closed for renovation
-- 5 Produce Categories with unique icons
-- 6 Approved Farmers with Stalls & Pickup Slots across the 6 Markets, plus 2 awaiting approval
-- 20 Customers (English names, Vietnamese phone format), 2 of them with repeated no-shows
-- ~80 Real Products categorized correctly, plus a review queue (pending, rejected, hidden)
-- ~5 months of orders in every status, dated when they were placed, so the admin
-  dashboard, reports and month picker have something to show
-- Realistic Reviews for Farmers and Products
-
-Default password for all seeded users: Pass@123
-"""
-
 import os
 import random
 from collections import defaultdict

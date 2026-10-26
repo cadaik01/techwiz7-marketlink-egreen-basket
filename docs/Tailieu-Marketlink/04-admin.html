@@ -320,7 +320,7 @@ ol.findings li { margin-bottom: 10px; }
       <ol class="steps">
         <li><span class="st"><span class="chip fe">FE</span>Query định kỳ</span><code>AdminLayout</code> gọi <code>useAdminApprovalCounts()</code> với <code>refetchInterval</code> 1 phút → <code>GET /api/admin/approvals/counts/</code>; cùng <code>useAIReviewStats(30)</code> để lấy số quyết định AI chưa xem (<code>unchecked_ai_decisions</code>).</li>
         <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>ApprovalCountsView</span><code>approval_counts()</code> (<code>system/dashboard.py</code>): đếm nông dân PENDING, sản phẩm PENDING, sạp PENDING, và tổng.
-          <div class="why"><p>Admin không có WebSocket. Hỏi lại mỗi phút đủ nhanh để thấy việc mới, đủ chậm để không tạo tải; mọi thao tác duyệt cũng chủ động làm mới số này ngay.</p></div></li>
+          <div class="why"><p>Số này không đi qua WebSocket (WebSocket của admin chỉ làm mới chuông). Hỏi lại mỗi phút đủ nhanh để thấy việc mới, đủ chậm để không tạo tải; mọi thao tác duyệt cũng chủ động làm mới số này ngay.</p></div></li>
         <li><span class="st"><span class="chip fe">FE</span>Hiển thị</span>Một huy hiệu duy nhất trên mục "Approvals" ở thanh bên, bằng tổng số việc chờ duyệt <strong>cộng</strong> số quyết định AI chưa xem; rê chuột thì thấy tách từng loại. Thanh bên không có mục "AI decisions" riêng.</li>
       </ol>
       <div class="files"><p><strong>Frontend:</strong> <code>layouts/AdminLayout.jsx</code>, <code>hooks/queries/admin/useAdminApprovalCounts.js</code>; <strong>Backend:</strong> <code>system/views.py → ApprovalCountsView</code>, <code>system/dashboard.py → approval_counts</code></p></div>

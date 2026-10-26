@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MarketLink — Khung thuyết trình bảo vệ.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="marketlink--khung-thuyết-trình-bảo-vệ">MarketLink — Khung thuyết trình bảo vệ</h1>
+<p>Oct 26, 2026 · @LongNguyen</p>
+<p>30 phút trình bày + 15 phút hỏi đáp, một người trình bày kèm demo web; trọng tâm là <strong>tính năng mở rộng</strong> (chiếm khoảng 40% thời gian). Danh sách tính năng bên dưới là đầy đủ để cả nhóm họp chọn giữ / bỏ ở cột Quyết định.</p>
+<h2 id="thời-lượng-và-thứ-tự">Thời lượng và thứ tự</h2>
+<p>Đề xuất: phần đề bài yêu cầu đi nhanh bằng <strong>một luồng demo xuyên suốt</strong>, dành gần một nửa thời gian cho phần mở rộng. Demo chen vào từng phần, không dồn về cuối.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Phần</th>
+<th>Phút</th>
+<th>Demo trong phần</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Mở đầu: tên đề tài, vấn đề thực tế</td>
+<td>2</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2</td>
+<td>A. Giải pháp, công nghệ, kiến trúc</td>
+<td>3</td>
+<td>Trang chủ, bản đồ chợ</td>
+</tr>
+<tr>
+<td>3</td>
+<td>B. Tính năng đề bài yêu cầu (Khách → Nông dân → Admin)</td>
+<td>8</td>
+<td>Luồng chính: khách đặt → nông dân duyệt → sẵn sàng → hoàn tất → đánh giá; Admin duyệt sạp, quản lý chợ, báo cáo</td>
+</tr>
+<tr>
+<td>4</td>
+<td>C. Tính năng mở rộng (trọng tâm)</td>
+<td>12</td>
+<td>Kho tạm giữ, yêu cầu thay đổi đơn, đóng chợ có xem trước tác động, AI duyệt tin + AI Decisions, chatbot, thông báo realtime</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Bảo mật và triển khai</td>
+<td>1</td>
+<td>—</td>
+</tr>
+<tr>
+<td>6</td>
+<td>D. Phân công công việc</td>
+<td>1</td>
+<td>—</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Hạn chế, hướng phát triển, cảm ơn</td>
+<td>1</td>
+<td>—</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Dự phòng (web chậm, đăng nhập lại)</td>
+<td>2</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Tổng</strong></td>
+<td><strong>30</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Gợi ý chuẩn bị demo: mở sẵn 3 cửa sổ trình duyệt đã đăng nhập (khách, nông dân, Admin) để chuyển vai không mất thời gian; mở web trước giờ bảo vệ để server Render &quot;thức dậy&quot;.</p>
+<h2 id="a-giới-thiệu-dự-án-và-công-nghệ">A. Giới thiệu dự án và công nghệ</h2>
+<p><strong>Vấn đề (1 slide).</strong> Khách đi chợ nông sản không biết trước ai bán hôm nào, còn bao nhiêu, giá bao nhiêu; đến nơi thì hết hàng hoặc nông dân nghỉ. Nông dân không có công cụ công khai hàng tuần, nhận đơn trước, giữ khách quen.</p>
+<p><strong>Giải pháp (1 slide).</strong> MarketLink nối nông dân ở chợ truyền thống với người mua: đặt trước online → nông dân duyệt → đến sạp nhận hàng, trả tiền mặt.</p>
+<ul>
+<li>4 vai trò: Guest, Khách hàng, Nông dân, Admin (cổng đăng nhập riêng).</li>
+<li>Đề bài loại trừ và cách xử lý: không thanh toán online → trả tiền tại sạp; không giao hàng → nhận tại chợ theo khung giờ; không xác minh pháp lý → Admin chỉ duyệt hồ sơ.</li>
+</ul>
+<p><strong>Công nghệ (1 slide).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tầng</th>
+<th>Công nghệ</th>
+<th>Vì sao chọn</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Giao diện</td>
+<td>React 19 + Vite, React Router, TanStack Query, Zustand, CSS3 tự viết</td>
+<td>Nhanh, tách code theo vai trò, không dùng template giao diện</td>
+</tr>
+<tr>
+<td>Máy chủ</td>
+<td>Django 5.2 + Django REST Framework, JWT</td>
+<td>Có sẵn xác thực, phân quyền, kiểm tra dữ liệu, ORM chống SQL injection</td>
+</tr>
+<tr>
+<td>Dữ liệu</td>
+<td>MySQL 8 (InnoDB)</td>
+<td>Transaction và khóa dòng cho trừ kho đồng thời</td>
+</tr>
+<tr>
+<td>Realtime</td>
+<td>Django Channels + Daphne, Redis</td>
+<td>Thông báo đơn mới tức thì, chạy được nhiều tiến trình</td>
+</tr>
+<tr>
+<td>AI</td>
+<td>Google Gemini (function calling, structured output)</td>
+<td>Chatbot đọc dữ liệu thật, kiểm duyệt chữ + ảnh</td>
+</tr>
+<tr>
+<td>Bản đồ</td>
+<td>OpenStreetMap + Leaflet, Nominatim; chỉ đường bằng Google Maps</td>
+<td>Miễn phí, không cần API key</td>
+</tr>
+<tr>
+<td>Triển khai</td>
+<td>Vercel, Render, Aiven MySQL, Upstash Redis</td>
+<td>Chạy 24/7 trên gói miễn phí</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Kiến trúc (1 slide, nên là một hình).</strong> Trình duyệt (React) → API JSON + WebSocket → Django (View → Serializer → Service → Selector) → MySQL; Redis làm kênh realtime, giới hạn tần suất, chống đặt trùng; Gemini và Gmail gọi ở luồng nền.</p>
+<h2 id="b-tính-năng-đề-bài-yêu-cầu-theo-vai-trò">B. Tính năng đề bài yêu cầu (theo vai trò)</h2>
+<p>Toàn bộ yêu cầu chức năng của SRS, xếp theo vai trò. Cột <strong>Quyết định</strong> để nhóm chọn trong buổi họp: Giữ (lên slide), Gộp (gộp với dòng khác), Chỉ nói khi hỏi, Bỏ.</p>
+<h3 id="guest-chưa-đăng-nhập">Guest (chưa đăng nhập)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tính năng (SRS)</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Xem chợ, sạp, sản phẩm và đánh giá của người khác</td>
+<td>/markets, /farmers, /products</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Tìm kiếm, lọc, sắp xếp; xem chợ trên bản đồ</td>
+<td>/products, /markets</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Đăng ký, đăng nhập (khách và nông dân dùng chung trang đăng nhập)</td>
+<td>/register, /register/farmer, /login</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Hỏi trợ lý AI (tùy chọn): giờ chợ, ai bán món gì</td>
+<td>Widget chat</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Trang About Us; Contact Us có bản đồ nhúng</td>
+<td>/about, /contact</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="khách-hàng">Khách hàng</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tính năng (SRS)</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Đăng ký với họ tên, SĐT, email, địa chỉ; đăng nhập; dashboard cá nhân</td>
+<td>/register, /customer</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Dùng chung tài khoản gia đình (tùy chọn)</td>
+<td>Nhiều thiết bị cùng đăng nhập</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Xem chợ gần theo vị trí và ngày họp; bản đồ có marker và chỉ đường</td>
+<td>/markets, /markets/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Xem hồ sơ nông dân: sạp, vị trí, ngày bán, hàng trong tuần</td>
+<td>/farmers/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Danh mục sản phẩm; lọc theo giá, danh mục, chợ, ngày; chi tiết giá, đơn vị, còn bao nhiêu, người bán</td>
+<td>/products, /products/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Giỏ hàng; đặt trước theo tồn kho</td>
+<td>/customer/cart, /customer/checkout</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Chọn ngày nhận và khung giờ nông dân đặt ra</td>
+<td>/customer/checkout</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Theo dõi đơn: Placed → Accepted → Ready for pickup → Completed</td>
+<td>/customer/orders/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Xem, sửa, hủy đơn trước giờ chốt</td>
+<td>/customer/orders, /customer/orders/:id/edit</td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Trả tiền mặt khi nhận hàng</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>Lịch sử đơn và đặt lại nhanh</td>
+<td>/customer/orders</td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>Yêu thích sạp, sản phẩm, chợ; báo khi món yêu thích có hàng lại</td>
+<td>/customer/favorites</td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td>Chấm sao và nhận xét sạp, sản phẩm sau khi nhận hàng</td>
+<td>/customer/orders/:id/review</td>
+<td></td>
+</tr>
+<tr>
+<td>14</td>
+<td>Thông báo email hoặc in-app khi đơn được duyệt và khi sẵn sàng</td>
+<td>Chuông, /customer/notifications</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="nông-dân">Nông dân</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tính năng (SRS)</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Đăng ký với tên sạp, người liên hệ, SĐT, email, địa chỉ</td>
+<td>/register/farmer</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Cập nhật chợ tham gia, ngày bán, vị trí trên bản đồ</td>
+<td>/farmer/profile, /farmer/markets</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Thêm / sửa / xem / xóa sản phẩm: tên, danh mục, giá, đơn vị, số lượng, mô tả, ảnh</td>
+<td>/farmer/products</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Mẫu tồn kho lặp lại hàng tuần</td>
+<td>/farmer/stock-template</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Đánh dấu Sold out / Temporarily unavailable</td>
+<td>/farmer/products</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Xem đơn đến theo thời gian thực</td>
+<td>/farmer/orders</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Accept / Decline đơn; đánh dấu Ready for pickup</td>
+<td>/farmer/orders/:id</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Đặt giờ chốt nhận đơn; quản lý khung giờ nhận hàng</td>
+<td>/farmer/profile, /farmer/markets</td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Dashboard: lịch sử bán, sản phẩm bán chạy, tổng đơn, đơn chờ, doanh thu</td>
+<td>/farmer, /farmer/stats</td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Trả lời công khai đánh giá của khách</td>
+<td>/farmer/reviews</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="admin">Admin</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tính năng (SRS)</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Trang quản trị đăng nhập riêng</td>
+<td>/admin/login</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Thống kê tổng nông dân, khách hàng, chợ, đơn hàng</td>
+<td>/admin</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Duyệt / đình chỉ hồ sơ nông dân (chưa duyệt thì không bán được)</td>
+<td>/admin/farmers, /admin/approvals</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Kích hoạt / khóa tài khoản khách vi phạm</td>
+<td>/admin/customers</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Thêm / sửa / xóa chợ: tên, địa chỉ, ngày họp, giờ mở đóng, tọa độ</td>
+<td>/admin/markets</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Gỡ tin sản phẩm sai sự thật, bình luận thô tục</td>
+<td>/admin/moderation</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Báo cáo: khối lượng đơn, doanh thu ước tính theo chợ, nông dân năng nổ nhất</td>
+<td>/admin/reports</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Quản lý danh mục sản phẩm gốc</td>
+<td>/admin/categories</td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Gửi thông báo toàn sàn</td>
+<td>/admin/announcements</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="chung-cho-cả-hệ-thống">Chung cho cả hệ thống</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tính năng (SRS)</th>
+<th>Màn hình</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Phân quyền theo vai trò</td>
+<td>Mọi trang + mọi API</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Giao diện responsive (máy tính, điện thoại)</td>
+<td>Mọi trang</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Tương thích Chrome, Safari, Edge, Firefox</td>
+<td>—</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="c-tính-năng-mở-rộng-nhóm-làm-thêm-theo-vai-trò">C. Tính năng mở rộng nhóm làm thêm (theo vai trò)</h2>
+<p>Trọng tâm của bài thuyết trình (giáo viên hướng dẫn nhắc phải nêu bật). Mỗi dòng có <strong>vì sao làm</strong> — khi trình bày luôn nói lý do, không chỉ kể tên. Chi tiết từng tính năng: Phần 5 và 7 của file ôn tập.</p>
+<h3 id="khách-hàng-và-guest">Khách hàng (và Guest)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tính năng mở rộng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Đặt hàng thì tạm giữ kho, nông dân duyệt mới trừ kho thật</td>
+<td>Không bán vượt số hàng có; đơn bị từ chối / hết hạn thì hàng tự nhả</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Giỏ nhiều sạp → mỗi sạp một đơn riêng, tối đa 5 sạp, đặt kiểu all-or-nothing</td>
+<td>Mỗi sạp có kho, giờ chốt, khung giờ riêng; không có chuyện chỉ tạo được một nửa số đơn</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Checkout chỉ hiện chợ / khung giờ mà mọi món trong nhóm đều bán; một đơn một chợ</td>
+<td>Sạp bán nhiều chợ nhưng không mang mọi món tới mọi chợ</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Yêu cầu thay đổi cho đơn đã được duyệt (nông dân chấp nhận / từ chối)</td>
+<td>Nông dân có thể đã soạn hàng; sửa thẳng gây lệch kho, tranh cãi</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Bấm đặt 2 lần không ra 2 đơn (Idempotency-Key)</td>
+<td>Mạng điện thoại chập chờn, trình duyệt tự gửi lại</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Giới hạn 10 đơn đang chờ mỗi khách, 10 lần gửi đơn mỗi giờ</td>
+<td>Chống spam, đặt ảo</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Số lượng tối thiểu / tối đa mỗi đơn cho từng sản phẩm</td>
+<td>Có món bán từ 2 kg; có món cần chia đều cho nhiều khách</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Chi tiết đơn: đồng hồ đếm ngược giờ chốt, SĐT nông dân kèm nút gọi, vị trí sạp trong chợ</td>
+<td>Khách biết còn bao lâu để sửa, tìm đúng sạp, liên lạc nhanh</td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Nút chỉ đường mở Google Maps (trang chợ, sạp, đơn, checkout)</td>
+<td>Chỉ đường tốt nhất, quen thuộc, không cần API key</td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Phiên đăng nhập theo thiết bị: mỗi máy một giỏ, đăng xuất máy này không văng máy khác</td>
+<td>Cách làm &quot;dùng chung tài khoản gia đình&quot; mà không cần module thành viên</td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>Thanh tab dưới đáy kiểu app trên điện thoại; bộ lọc lưu trên URL, chia sẻ được</td>
+<td>Dễ dùng trên điện thoại; gửi link là thấy đúng kết quả</td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>Tên người đánh giá rút gọn; trang Privacy, Sitemap, 403 / 404</td>
+<td>Bảo vệ thông tin cá nhân; đủ trang của một web thật</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="nông-dân-1">Nông dân</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tính năng mở rộng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Bỏ từng món hết hàng khỏi đơn (Sold out một món), tính lại tiền, báo khách</td>
+<td>Thực tế thường hết một món; từ chối cả đơn thì khách mất hết</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Bảng so sánh cũ / mới khi khách xin đổi đơn; 3 lựa chọn</td>
+<td>Nông dân quyết định có đáp ứng được không</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Đánh dấu khách không đến (No-show), hoàn kho</td>
+<td>Hàng đã soạn quay lại bán cho người khác</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Danh sách soạn hàng theo ngày; đơn gom theo khách</td>
+<td>Sáng ngày chợ cần biết tổng phải mang bao nhiêu kg mỗi món</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Lịch nghỉ (Time off) theo khoảng ngày</td>
+<td>Đề bài nhắc &quot;nông dân nghỉ tuần đó&quot; là vấn đề thật</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Ngày bán trong tuần; chặn bỏ ngày khi còn đơn mở</td>
+<td>Khách không đến nhầm hôm; không bỏ rơi khách đã đặt</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Bán ở nhiều chợ, mỗi chợ Admin duyệt, có vị trí sạp trong chợ</td>
+<td>Admin kiểm soát sạp nào thật sự có chỗ ở chợ nào</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Chọn chợ bán cho từng sản phẩm; kho dùng chung mọi chợ</td>
+<td>Không phải nhập kho riêng cho từng chợ</td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Sạp chờ duyệt vẫn đăng nhập, chuẩn bị hồ sơ, chợ, khung giờ</td>
+<td>Được duyệt là bán được ngay</td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Tự tra tọa độ từ địa chỉ, kéo ghim chỉnh lại</td>
+<td>Nông dân lớn tuổi không biết vĩ độ / kinh độ</td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>Kiểm tra tin đăng ngay khi gõ (precheck)</td>
+<td>Sửa trước khi gửi, ít bị từ chối</td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>Thao tác hàng loạt: hết hàng, tạm ngừng, mở bán, đổi chợ bán</td>
+<td>Sạp nhiều sản phẩm không phải bấm từng cái</td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td>Thống kê nâng cao: so với kỳ trước, giá trị trung bình mỗi đơn, doanh thu theo chợ, thứ đông khách nhất</td>
+<td>Biết nên mang hàng tới chợ nào, hôm nào</td>
+<td></td>
+</tr>
+<tr>
+<td>14</td>
+<td>Ảnh upload được mã hóa lại, xóa GPS trong ảnh</td>
+<td>Ảnh chụp tại nhà không lộ tọa độ nhà nông dân</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="admin-1">Admin</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tính năng mở rộng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Hàng chờ duyệt 4 tab (sạp, sản phẩm, chợ, AI) + badge số việc chờ</td>
+<td>Một chỗ xem mọi thứ đang chờ mình</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Duyệt tin đăng trước khi lên sàn; sửa tên / ảnh thì duyệt lại, sửa giá / kho thì không</td>
+<td>Đề bài chỉ cho gỡ tin sai sau khi khách đã thấy — quá muộn</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>AI duyệt tin 2 lớp (luật + Gemini đọc chữ và ảnh): tự duyệt tin sạch, giữ tin vi phạm</td>
+<td>Admin không đọc hết được; giá cả để luật kiểm vì AI không biết giá chợ</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Trang AI Decisions + thống kê độ tin cậy AI 30 ngày</td>
+<td>AI tự quyết nhưng Admin luôn xem lại, có số liệu để tin AI</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Khung giá và tồn kho tối đa theo danh mục</td>
+<td>Mốc so sánh cho lớp luật do Admin chỉnh</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>AI đọc đánh giá: chắc chắn vi phạm thì tự ẩn, nghi ngờ thì gắn cờ</td>
+<td>Lời thô tục không nằm công khai chờ Admin; lời chê thật vẫn giữ</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Hàng đợi cờ + cờ tự động (đánh giá xấu, nhiều sao thấp, khách bỏ đơn)</td>
+<td>Ghi nhớ việc còn nợ một quyết định</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Ẩn (đang điều tra) và Chặn (vi phạm, hủy đơn liên quan) là hai thao tác khác nhau</td>
+<td>Không hủy đơn của khách khi mới chỉ nghi ngờ</td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Xem trước tác động trước khi đình chỉ sạp, khóa khách, chặn sản phẩm, đóng chợ</td>
+<td>Biết bao nhiêu đơn và người bị ảnh hưởng trước khi bấm</td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Đóng chợ khẩn cấp: gõ &quot;confirm&quot;, từ chối đơn + hoàn kho, một thông báo gộp; mở lại tự bật khung giờ</td>
+<td>Báo ngay cho mọi người có đơn; chống bấm nhầm</td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>Lịch đóng cửa chợ tạm thời theo khoảng ngày</td>
+<td>Lễ Tết, mưa bão</td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>Đổi lịch / giờ chợ có xem trước tác động, đơn lệch được báo dời giờ</td>
+<td>Đổi giờ có thể làm hàng chục đơn mất hiệu lực</td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td>Tự khóa khách không đến lấy 3 lần trong 30 ngày; cờ At risk</td>
+<td>Đặt mà không đến là thiệt hại trực tiếp cho nông dân</td>
+<td></td>
+</tr>
+<tr>
+<td>14</td>
+<td>Nhật ký an ninh; lịch sử thay đổi từng trường</td>
+<td>Biết ai làm gì, lúc nào, từ đâu khi có sự cố</td>
+<td></td>
+</tr>
+<tr>
+<td>15</td>
+<td>Trang xem đơn chỉ đọc; trang Limits</td>
+<td>Tra cứu khiếu nại mà không sửa đơn người khác; biết hệ thống đang áp giới hạn nào</td>
+<td></td>
+</tr>
+<tr>
+<td>16</td>
+<td>Dashboard &quot;Needs attention&quot; + biểu đồ số đơn theo tháng</td>
+<td>Việc chờ hôm nay hữu ích hơn con số tổng</td>
+<td></td>
+</tr>
+<tr>
+<td>17</td>
+<td>Xuất Excel an toàn (chặn chèn công thức) + xuất CSV</td>
+<td>Báo cáo mang đi được mà không có rủi ro</td>
+<td></td>
+</tr>
+<tr>
+<td>18</td>
+<td>Danh mục: icon không trùng, kéo thả sắp thứ tự</td>
+<td>Khách không nhầm danh mục; Admin sắp trực quan</td>
+<td></td>
+</tr>
+<tr>
+<td>19</td>
+<td>Thông báo toàn sàn theo đối tượng (tất cả / khách / nông dân) và thời gian hiệu lực</td>
+<td>Gửi đúng người, tự tắt khi hết hạn</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="chung-cho-cả-hệ-thống-1">Chung cho cả hệ thống</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tính năng mở rộng</th>
+<th>Vì sao làm</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Vòng đời đơn 8 trạng thái, 13 cạnh chuyển, một lõi xử lý; giờ chốt lưu cứng trên đơn</td>
+<td>Đề bài chỉ có 4 trạng thái suôn sẻ; thực tế có hủy, từ chối, không đến, quên duyệt</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Đơn quá hạn tự hết hạn bằng quét lười (không cần cron)</td>
+<td>Đơn không treo mãi; không tốn tiền chạy tiến trình nền</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Chatbot cho cả 4 vai trò, đọc dữ liệu thật qua 7 công cụ chỉ đọc, đa ngôn ngữ, tìm tiếng Việt không dấu</td>
+<td>Đề bài chỉ gợi ý chatbot cho khách; AI không chạm thẳng CSDL</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Gemini có model dự phòng, giới hạn số câu mỗi ngày; mất AI thì web vẫn chạy</td>
+<td>Demo không chết giữa chừng; không tốn quota</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>24 loại thông báo; realtime cho nông dân (WebSocket, vé dùng 1 lần); email cho 7 sự kiện</td>
+<td>Đề bài chỉ cần một kênh cho 2 sự kiện</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Chống thao tác đồng thời: transaction, khóa dòng, khóa lạc quan (If-Match), tự chạy lại khi deadlock</td>
+<td>Ngày họp chợ nhiều người thao tác cùng lúc</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Bảo mật phiên: thu hồi từng thiết bị, phát hiện refresh token bị dùng lại, đổi mật khẩu đăng xuất máy khác</td>
+<td>Lộ token cũng hạn chế được thiệt hại</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Chống dò mật khẩu theo IP và theo email; hai cổng đăng nhập không lộ tài khoản Admin; một SĐT một tài khoản</td>
+<td>Chống tấn công và tài khoản ảo</td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Giao diện sáng / tối, skeleton khi tải, chặn rời trang khi form chưa lưu, lỗi hiện đúng dưới ô nhập</td>
+<td>Trải nghiệm như web thật</td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Triển khai 24/7: Vercel, Render, Aiven MySQL, Upstash Redis</td>
+<td>Giám khảo truy cập được bất cứ lúc nào</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="d-phân-công-công-việc">D. Phân công công việc</h2>
+<p>Nhóm tự điền trong buổi họp. Gợi ý: ghi theo <strong>phần việc</strong>, không chỉ ghi tên, để khi giám khảo hỏi &quot;ai làm phần này&quot; thì người đại diện trả lời được ngay.</p>
+<table>
+<thead>
+<tr>
+<th>Thành viên</th>
+<th>Vai trò</th>
+<th>Phần việc chính</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>Trưởng nhóm</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>Backend: đơn hàng, kho, vòng đời đơn</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>Backend: tài khoản, chợ, lịch, Admin</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>AI: chatbot, kiểm duyệt</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>Frontend: khách hàng, nông dân</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>Frontend: Admin, giao diện chung</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>Tài liệu, CSDL, triển khai</td>
+</tr>
+</tbody>
+</table>
+<h2 id="e-màn-hình-chính-và-luồng-demo">E. Màn hình chính và luồng demo</h2>
+<p>Màn hình không để thành một phần riêng ở cuối: nói tới tính năng nào thì chiếu ảnh hoặc demo màn hình đó. Slide nên có ảnh chụp sẵn để dùng khi web chậm.</p>
+<p><strong>Luồng demo 1 — tính năng đề bài (khoảng 6 phút)</strong></p>
+<ol>
+<li>Guest: trang chủ → Near me → bản đồ chợ → trang sạp → lọc sản phẩm.</li>
+<li>Khách: thêm hàng của 2 sạp vào giỏ → checkout chọn ngày, khung giờ → đặt được 2 đơn.</li>
+<li>Nông dân: toast &quot;có đơn mới&quot; bật lên → Accept → (sau giờ chốt) Ready → Complete.</li>
+<li>Khách: xem timeline đơn, đánh giá sạp và sản phẩm.</li>
+<li>Admin: dashboard 4 con số, duyệt sạp mới, quản lý chợ, báo cáo + xuất Excel.</li>
+</ol>
+<p><strong>Luồng demo 2 — tính năng mở rộng (khoảng 8 phút)</strong></p>
+<ol>
+<li>Kho tạm giữ: kho 30, khách A đặt 20 → khách B đặt 15 bị báo &quot;Only 10 left&quot;.</li>
+<li>Khách sửa đơn đã được duyệt → nông dân thấy bảng so sánh cũ / mới → chấp nhận.</li>
+<li>Nông dân bỏ một món hết hàng khỏi đơn; danh sách soạn hàng theo ngày.</li>
+<li>Nông dân đăng tin mới → AI tự duyệt tin sạch / giữ tin giá bất thường → Admin xem AI Decisions.</li>
+<li>Khách viết đánh giá thô tục → bị ẩn, Admin thấy nhãn &quot;Hidden by AI&quot;.</li>
+<li>Chatbot: khách hỏi &quot;đơn của tôi tới đâu&quot;, nông dân hỏi &quot;món nào sắp hết&quot;.</li>
+<li>Admin đóng chợ: màn hình xem trước tác động → gõ &quot;confirm&quot; → đơn bị từ chối, khách nhận thông báo.</li>
+<li>Khách không đến lấy 3 lần → tự khóa (dùng sẵn tài khoản <code>customer_19</code>, <code>customer_20</code>).</li>
+</ol>
+<p><strong>Ảnh chụp cần chuẩn bị cho slide</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox0"><label for="checkbox0">Trang chủ và bản đồ chợ</label></li>
+<li><input type="checkbox" id="checkbox1"><label for="checkbox1">Trang sản phẩm có bộ lọc</label></li>
+<li><input type="checkbox" id="checkbox2"><label for="checkbox2">Checkout (chọn ngày, khung giờ, nút chỉ đường)</label></li>
+<li><input type="checkbox" id="checkbox3"><label for="checkbox3">Chi tiết đơn của khách (timeline, đếm ngược)</label></li>
+<li><input type="checkbox" id="checkbox4"><label for="checkbox4">Danh sách đơn và chi tiết đơn của nông dân</label></li>
+<li><input type="checkbox" id="checkbox5"><label for="checkbox5">Form sản phẩm có precheck</label></li>
+<li><input type="checkbox" id="checkbox6"><label for="checkbox6">Dashboard nông dân, trang Stats</label></li>
+<li><input type="checkbox" id="checkbox7"><label for="checkbox7">Dashboard Admin (Needs attention)</label></li>
+<li><input type="checkbox" id="checkbox8"><label for="checkbox8">Approvals và AI Decisions</label></li>
+<li><input type="checkbox" id="checkbox9"><label for="checkbox9">Hộp thoại đóng chợ có xem trước tác động</label></li>
+<li><input type="checkbox" id="checkbox10"><label for="checkbox10">Widget chatbot đang trả lời</label></li>
+<li><input type="checkbox" id="checkbox11"><label for="checkbox11">Giao diện điện thoại (thanh tab dưới đáy)</label></li>
+</ul>
+<h2 id="việc-nhóm-cần-chốt-trong-buổi-họp">Việc nhóm cần chốt trong buổi họp</h2>
+<ul>
+<li><input type="checkbox" id="checkbox12"><label for="checkbox12">Chọn Giữ / Gộp / Chỉ nói khi hỏi / Bỏ cho từng dòng ở phần B và C</label></li>
+<li><input type="checkbox" id="checkbox13"><label for="checkbox13">Chọn 5–6 tính năng mở rộng <strong>nổi bật nhất</strong> để demo kỹ (gợi ý: kho tạm giữ, yêu cầu thay đổi đơn, AI duyệt tin + AI Decisions, chatbot đọc dữ liệu thật, đóng chợ có xem trước tác động, tự khóa khách không đến)</label></li>
+<li><input type="checkbox" id="checkbox14"><label for="checkbox14">Thống nhất cách trả lời câu &quot;nhóm có dùng AI viết code không&quot; (Phần 10 file ôn tập)</label></li>
+<li><input type="checkbox" id="checkbox15"><label for="checkbox15">Điền bảng phân công</label></li>
+<li><input type="checkbox" id="checkbox16"><label for="checkbox16">Chuẩn bị dữ liệu demo: sản phẩm kho 30 kg, đơn sắp tới giờ chốt, tin đăng giá bất thường</label></li>
+<li><input type="checkbox" id="checkbox17"><label for="checkbox17">Thử web trên Opera (bảng chấm điểm có nhắc)</label></li>
+<li><input type="checkbox" id="checkbox18"><label for="checkbox18">Chọn hình thức slide (màu, font) rồi mới dựng slide</label></li>
+</ul>
+
+</body>
+</html>

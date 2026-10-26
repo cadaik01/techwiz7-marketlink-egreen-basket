@@ -7,6 +7,7 @@ import { MiniCartDrawer } from '../components/common/drawer/MiniCartDrawer';
 import { AnnouncementBanner } from '../components/common/announcements/AnnouncementBanner';
 import { NotificationBell } from '../components/common/layout/NotificationBell';
 import { usePrefetchRoutes } from '../hooks/usePrefetchRoutes';
+import { useNotificationSocket } from '../hooks/common/useNotificationSocket';
 import { DASHBOARD_PATH, ROLES } from '../constants';
 import { useAuth } from '../hooks/authentication/useAuth';
 import { cn } from '../lib/cn';
@@ -25,6 +26,8 @@ export function PublicLayout() {
     const prefetch = usePrefetchRoutes();
     const isCustomerApp = location.pathname.startsWith(CUSTOMER_AREA);
     const isCustomer = isAuthenticated && role === ROLES.CUSTOMER;
+    // Opened here, not in CustomerLayout, so it stays connected while a shopper browses markets and produce.
+    useNotificationSocket({ enabled: isCustomer });
     
     const appHome = role === ROLES.CUSTOMER ? CUSTOMER_AREA : (DASHBOARD_PATH[role] ?? '/');
     const navLinkClass = ({ isActive }) => cn('public-layout__nav-link', isActive && 'is-active');

@@ -13,6 +13,7 @@ from orders.customer.serializers_customer import (
     CancelOrderWriteSerializer,
     CheckoutWriteSerializer,
     CustomerOrderDetailReadSerializer,
+    CustomerOrderListReadSerializer,
     CustomerOrderListQuerySerializer,
     CustomerOrderModifySerializer,
     OrderSummaryReadSerializer,
@@ -66,7 +67,7 @@ class CustomerOrdersView(APIView):
         query.is_valid(raise_exception=True)
         paginator = StandardPagination()
         page = paginator.paginate_queryset(customer_orders_queryset(request.user, **query.validated_data), request, view=self)
-        return paginator.get_paginated_response(OrderSummaryReadSerializer(page, many=True).data)
+        return paginator.get_paginated_response(CustomerOrderListReadSerializer(page, many=True).data)
 
 
 def _own_order_detail(request, order_id: int) -> dict:

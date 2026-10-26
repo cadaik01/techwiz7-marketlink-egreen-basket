@@ -1,7 +1,7 @@
 # NỘI DUNG ÔN TẬP ĐỒ ÁN TECHWIZ 7 — MARKETLINK
 
 > **Tài liệu học nội bộ của nhóm**, không phải tài liệu nộp. Mục tiêu: ai đọc xong cũng giải thích được đồ án làm gì, chạy thế nào, vì sao chọn cách đó, và **hiểu thật** các thuật ngữ mình nói ra.
-> **Phiên bản:** v0.7. Mọi con số và hành vi trong file đã được đối chiếu với **code**; README và tài liệu cũ chỉ là tham khảo.
+> **Phiên bản:** v0.8. Mọi con số và hành vi trong file đã được đối chiếu với **code**; README và tài liệu cũ chỉ là tham khảo.
 
 **Cách đọc**
 - 🟢 = yêu cầu có trong đề bài (SRS) · 🔵 = tính năng mở rộng nhóm tự làm thêm.
@@ -116,7 +116,7 @@ Mỗi dòng dưới đây chỉ là **câu hỏi + chỗ có câu trả lời**.
 
 | # | Nghiệp vụ | Ghi những gì trong một khối | Nếu lỗi giữa chừng | Code |
 | :---: | :--- | :--- | :--- | :--- |
-| 1 | **Khách đặt hàng** | Các đơn (mỗi sạp một đơn), các dòng món, lịch sử T1, thông báo cho sạp | Không đơn nào được tạo | `orders/services/checkout_service.py` → `place_orders` |
+| 1 | **Khách đặt hàng** | Các đơn (mỗi sạp + chợ nhận một đơn), các dòng món, lịch sử T1, thông báo cho sạp | Không đơn nào được tạo | `orders/services/checkout_service.py` → `place_orders` |
 | 2 | **Mọi lần đổi trạng thái đơn** (duyệt, từ chối, khách hủy, sẵn sàng, hoàn tất, không đến, hết hạn) | Trạng thái + `version` của đơn, trừ / trả kho từng sản phẩm, đặt kho = 0 cho món khai hết, xóa yêu cầu thay đổi, 1 dòng lịch sử, thông báo | Đơn giữ trạng thái cũ, kho không đổi. Ví dụ duyệt đơn 3 món mà món thứ 3 thiếu kho → 2 món đầu cũng không bị trừ | `orders/services/fsm.py` → `transition_order` |
 | 3 | Nông dân bỏ một món hết hàng khỏi đơn | Xóa dòng món, tính lại tổng tiền, kho món đó = 0, `version` + 1, thông báo khách | Đơn và kho giữ nguyên | `orders/services/farmer_order_items.py` |
 | 4 | Khách sửa đơn | Đơn `PLACED`: các dòng món mới, tổng tiền, khung giờ. Đơn `ACCEPTED`: cột `pending_change` | Đơn giữ nội dung cũ | `orders/services/modify.py` → `modify_order` |
@@ -283,11 +283,11 @@ Mỗi dòng dưới đây chỉ là **câu hỏi + chỗ có câu trả lời**.
 ### 1.5 Realtime
 
 **Polling (hỏi định kỳ)**
-- *Ví dụ trong MarketLink:* chuông của khách gọi `GET /api/notifications/unread-count/` mỗi 30 giây (`frontend/src/hooks/queries/common/useNotifications.js`, `refetchInterval`). Nông dân duyệt đơn lúc 8:00:05 → khách thấy chuông đổi số muộn nhất khoảng 8:00:35.
+- *Ví dụ trong MarketLink:* đây là **đường dự phòng**. Khi WebSocket không kết nối được (mạng chặn, server realtime lỗi), chuông gọi `GET /api/notifications/unread-count/` mỗi 30 giây (`frontend/src/hooks/queries/common/useNotifications.js`, `refetchInterval`). Nông dân duyệt đơn lúc 8:00:05 → khách thấy chuông đổi số muộn nhất khoảng 8:00:35. WebSocket nối lại được thì polling tự tắt.
 
 **WebSocket**
 - *Là gì:* kết nối **luôn mở** giữa trình duyệt và server; server chủ động đẩy tin xuống.
-- *Ví dụ trong MarketLink:* nông dân mở `/farmer/orders`; khách đặt đơn lúc 8:00:05 → toast "Có đơn mới" bật lên trên máy nông dân ngay giây đó và danh sách đơn tự tải lại (`frontend/src/hooks/common/useNotificationSocket.js`). Luồng đầy đủ: 3.6.
+- *Ví dụ trong MarketLink:* nông dân mở `/farmer/orders`; khách đặt đơn lúc 8:00:05 → toast "Có đơn mới" bật lên trên máy nông dân ngay giây đó và danh sách đơn tự tải lại (`frontend/src/hooks/common/useNotificationSocket.js`). Chiều ngược lại cũng vậy: nông dân duyệt đơn → chuông của khách nhảy số ngay, trang đơn của khách tự tải lại. Luồng đầy đủ: 3.6.
 
 **WSGI / ASGI, Gunicorn / Daphne**
 - *Là gì:* WSGI: một request vào, một phản hồi ra rồi đóng. ASGI hỗ trợ cả kết nối mở lâu như WebSocket. Gunicorn là server WSGI; **Daphne** là server ASGI.
@@ -459,7 +459,7 @@ MarketLink tách làm hai chương trình chạy riêng:
 - **Frontend** (thư mục `frontend/`): ứng dụng React kiểu SPA. Chi tiết ở Phần 4.
 - **Backend** (thư mục `backend/`): server Django. Nó không trả giao diện mà chỉ trả JSON qua các địa chỉ `/api/...`.
 
-Hai bên nói chuyện qua HTTP; riêng thông báo realtime của nông dân đi qua một kết nối WebSocket ở `/ws/` (→ 3.6).
+Hai bên nói chuyện qua HTTP; riêng thông báo realtime (khách, nông dân, Admin) đi qua một kết nối WebSocket ở `/ws/` (→ 3.6).
 
 *Vì sao tách đôi:* giao diện và nghiệp vụ độc lập, hai người làm song song được; backend chỉ cần giữ đúng "hợp đồng API"; sau này làm app điện thoại thì dùng lại nguyên backend. Đây cũng là mô hình nhiều tầng (client – web server – application server – database) đề bài yêu cầu.
 
@@ -523,7 +523,7 @@ Phía backend:
 2. Kiểm tra giới hạn đơn chờ (→ 5.5).
 3. Kiểm tra từng khung giờ còn hợp lệ, chưa qua giờ chốt (→ 5.3).
 4. Kiểm tra từng món: đúng của sạp, đang bán, trong min / max, đủ kho khả dụng, có bán ở chợ đã chọn (→ 5.2, 5.4).
-5. Tạo mỗi sạp một đơn; mỗi món chụp lại tên, đơn vị, đơn giá **lấy từ CSDL** (không tin giá trình duyệt gửi).
+5. Tạo mỗi nhóm (sạp + chợ nhận) một đơn; mỗi món chụp lại tên, đơn vị, đơn giá **lấy từ CSDL** (không tin giá trình duyệt gửi).
 6. Ghi lịch sử trạng thái (T1), hẹn gửi thông báo "có đơn mới" cho nông dân sau khi transaction chốt.
 
 Lỗi ở bất kỳ bước nào → cả lần đặt bị hủy. Deadlock → `marketlink_core/services/db_retry.py` chạy lại một lần.
@@ -537,14 +537,14 @@ Các đổi trạng thái sau đó đều đi qua `orders/services/fsm.py` (`tra
    *Vì sao một điểm phát:* mọi thông báo cùng định dạng; thêm kênh mới chỉ sửa một chỗ.
 2. **Chờ chốt:** đẩy realtime và gửi email đều đăng ký bằng `transaction.on_commit` → không có thông báo "ma" khi thao tác bị hủy.
 3. **Đẩy qua channel layer (Redis)** tới phòng `user_<id>`.
-4. **Ai đang nghe:** phía frontend, **chỉ layout nông dân** (`layouts/FarmerLayout.jsx`) gọi hook `hooks/common/useNotificationSocket.js`:
+4. **Ai đang nghe:** phía frontend, **cả ba vai trò** đều gọi hook `hooks/common/useNotificationSocket.js`: `layouts/FarmerLayout.jsx`, `layouts/AdminLayout.jsx`, và `layouts/PublicLayout.jsx` khi người đăng nhập là khách (đặt ở layout này vì nó bọc cả khu `/customer` lẫn trang chợ / nông sản, nên kết nối không bị ngắt khi khách chuyển trang):
    - xin vé: `POST /api/auth/ws-ticket/` → vé ngẫu nhiên dùng 1 lần, sống 30 giây, lưu Redis (`marketlink_core/services/ws_ticket.py`);
    - mở `/ws/notifications/?ticket=...`; `notifications/consumers.py` đổi vé ra người dùng bằng `GETDEL` (đọc xong vé mất luôn), kiểm tra tài khoản còn hoạt động, cho kết nối vào phòng `user_<id>` và `session_<sid>`.
    *Vì sao dùng vé thay vì gửi JWT trên URL:* URL WebSocket hay bị ghi vào log của server / proxy; vé sống 30 giây, dùng một lần nên lộ cũng vô hại.
-5. **Hiện lên:** consumer gửi `NEW_NOTIFICATION`; hook hiện toast có nút "View", đồng thời invalidate đúng các dữ liệu liên quan theo bảng `constants/notificationEvents.js` (ví dụ có đơn mới → tải lại danh sách đơn, sản phẩm, dashboard của nông dân).
+5. **Hiện lên:** consumer gửi `NEW_NOTIFICATION`; hook hiện toast có nút "View", đồng thời invalidate đúng các dữ liệu liên quan theo bảng `constants/notificationEvents.js` (ví dụ có đơn mới → tải lại danh sách đơn, sản phẩm, dashboard của nông dân; đơn được duyệt / từ chối / sẵn sàng → tải lại danh sách đơn, trang chi tiết đơn và dashboard của khách).
 6. **Mất kết nối:** tự nối lại, chờ tăng dần 1 → 2 → 4 … tối đa 30 giây, tối đa 20 lần. Trong lúc mất kết nối, chuông thông báo chuyển sang **hỏi lại mỗi 30 giây**. Nối lại được thì làm mới toàn bộ dữ liệu (có thể đã lỡ tin).
 7. **Đóng có chủ đích:** đăng xuất → đóng socket của đúng thiết bị (phòng `session_<sid>`); Admin khóa tài khoản → đóng mọi thiết bị (phòng `user_<id>`), mã `4401`; frontend thấy `4401` thì không nối lại.
-8. **Khách và Admin** không mở WebSocket: chuông của họ **hỏi lại mỗi 30 giây** (`hooks/queries/common/useNotifications.js`), và dữ liệu tự làm mới khi quay lại tab trình duyệt. Badge số việc chờ duyệt của Admin hỏi lại mỗi phút.
+8. **Dự phòng:** khi WebSocket không kết nối được, chuông của mọi vai trò **hỏi lại mỗi 30 giây** (`hooks/queries/common/useNotifications.js`), và dữ liệu tự làm mới khi quay lại tab trình duyệt. Badge số việc chờ duyệt của Admin vẫn hỏi lại mỗi phút (không đi qua WebSocket).
 9. **Email:** loại thông báo có mẫu email (`backend/templates/emails/`) thì `notify()` dựng HTML + text và gửi qua Gmail SMTP trong luồng nền (2 luồng). Lỗi email không làm hỏng thao tác chính.
 
 Danh sách sự kiện và kênh: → 5.11.
@@ -617,7 +617,7 @@ Danh sách sự kiện và kênh: → 5.11.
 | **Recharts** | Biểu đồ dashboard, báo cáo | Viết biểu đồ bằng component React |
 | **framer-motion** | Hiệu ứng mở widget chat, nút yêu thích | Hiệu ứng mượt, khai báo ngắn |
 | **@dnd-kit** | Kéo thả sắp xếp danh mục (Admin) | Hỗ trợ cả chuột, cảm ứng, bàn phím |
-| **react-use-websocket** | WebSocket của nông dân | Có sẵn tự nối lại, lấy URL bất đồng bộ (để xin vé trước) |
+| **react-use-websocket** | WebSocket thông báo của khách, nông dân, Admin | Có sẵn tự nối lại, lấy URL bất đồng bộ (để xin vé trước) |
 | **sonner** | Toast (thông báo nhỏ bật lên) | Gọn, có nút hành động trong toast |
 | **lucide-react, react-icons** | Icon giao diện; icon danh mục nông sản | — |
 | **date-fns** | Hiển thị "5 phút trước" | — |
@@ -762,10 +762,10 @@ Guard chỉ là **trải nghiệm**; backend vẫn kiểm tra quyền ở mọi 
 `constants/routes.js` giữ tên đường dẫn dùng chung (`ROUTES.FARMER.ORDERS`…) và `homePathForRole(role)`.
 
 **Layouts** (`layouts/`):
-- `PublicLayout.jsx` — header (logo, menu Chợ / Nông sản / Sạp, nút sáng-tối; khách đã đăng nhập thấy chuông, icon giỏ có số lượng, menu tài khoản), banner thông báo toàn sàn, widget chat, footer (ẩn ở khu `/customer`). Có link "Skip to main content" cho người dùng bàn phím.
+- `PublicLayout.jsx` — header (logo, menu Chợ / Nông sản / Sạp, nút sáng-tối; khách đã đăng nhập thấy chuông, icon giỏ có số lượng, menu tài khoản; **mở WebSocket** khi là khách), banner thông báo toàn sàn, widget chat, footer (ẩn ở khu `/customer`). Có link "Skip to main content" cho người dùng bàn phím.
 - `CustomerLayout.jsx` — lời chào + **thanh tab dưới đáy** kiểu app điện thoại: Home, Markets, Cart (có số lượng), Orders, Me.
 - `FarmerLayout.jsx` — sidebar thu gọn được (nhớ trạng thái), trên điện thoại thành menu trượt (`Sheet`); chuông, sáng-tối, menu tài khoản; **mở WebSocket** (`useNotificationSocket`); bọc nội dung bằng `FarmerStatusGate` (→ 4.8); widget chat.
-- `AdminLayout.jsx` — sidebar chia nhóm (Operations, People, Catalog, System), **badge** trên mục Approvals = số sạp + sản phẩm + chợ chờ duyệt + số quyết định AI chưa xem (tự hỏi lại mỗi phút); widget chat.
+- `AdminLayout.jsx` — sidebar chia nhóm (Operations, People, Catalog, System), **badge** trên mục Approvals = số sạp + sản phẩm + chợ chờ duyệt + số quyết định AI chưa xem (tự hỏi lại mỗi phút); **mở WebSocket** (`useNotificationSocket`); widget chat.
 - `AuthLayout.jsx`, `AdminAuthLayout.jsx` — khung trang đăng nhập / đăng ký.
 
 ### 4.7 Stores (Zustand)
@@ -783,8 +783,8 @@ Guard chỉ là **trải nghiệm**; backend vẫn kiểm tra quyền ở mọi 
 - `addItem`: món đã có thì cộng dồn; số lượng luôn bị **kẹp** trong [min, max] của sản phẩm và không quá 999.
 - `refreshLines(products)`: cập nhật giá, tồn kho, trạng thái từ server; món không còn trả về thì đánh dấu `UNAVAILABLE`.
 - `isOrderable(line)`: chỉ món `IN_STOCK` mới được tính tiền và đặt.
-- `cartGroups(lines)`: gom theo **sạp** (mỗi nhóm = một đơn tương lai), có tạm tính.
-- Hằng `MAX_FARMERS_PER_CHECKOUT = 5` khớp giới hạn của backend.
+- `cartGroups(lines)`: gom theo **sạp**, có tạm tính. Đây là nhóm hiển thị; tới checkout mỗi sạp còn được tách tiếp theo **chợ nhận** của từng món (5.4).
+- Hằng `MAX_FARMERS_PER_CHECKOUT = 5` khớp giới hạn của backend: tối đa 5 **đơn** (sạp + chợ) mỗi lần đặt.
 - *Vì sao giỏ ở trình duyệt:* giỏ là nháp, không cần bảng CSDL; mỗi thiết bị một giỏ riêng (hợp với dùng chung tài khoản gia đình, → 5.12).
 
 ### 4.8 Components
@@ -839,7 +839,7 @@ Guard chỉ là **trải nghiệm**; backend vẫn kiểm tra quyền ở mọi 
 | `useUnsavedChangesGuard(isDirty)` | Form chưa lưu mà bấm chuyển trang → hộp hỏi lại (`useBlocker`); đóng tab / F5 → trình duyệt hỏi (`beforeunload`) | Form sản phẩm, hồ sơ nông dân |
 | `useObjectUrl(file)` | Tạo link xem trước cho ảnh vừa chọn, tự giải phóng bộ nhớ | Form có ảnh |
 | `useScrollToHash` | Cuộn tới `#faq`… | About |
-| `useNotificationSocket` | WebSocket của nông dân | `FarmerLayout` |
+| `useNotificationSocket` | WebSocket thông báo | `FarmerLayout`, `AdminLayout`, `PublicLayout` (khi là khách) |
 
 **`hooks/` (gốc):** `useGeolocation` (xin GPS, lưu vào `geo.store`), `useNow` (đồng hồ cập nhật 30 giây / lần để nút hết hạn đúng lúc), `useCsvDownload` (tải CSV của Admin), `usePrefetchRoutes` (hiện để trống, chưa làm gì).
 
@@ -866,7 +866,7 @@ Các kỹ thuật lặp lại trong `hooks/queries`:
 Mỗi trang thường có file CSS riêng cùng tên trong `styles/<vai trò>/`. Chức năng từng trang: Phần 6.
 
 Trang đáng nhớ về kỹ thuật:
-- `CheckoutPage` — mỗi nhóm sạp có `PickupPicker` (gọi `usePickupOptions` lấy ngày / khung hợp lệ), chip chọn chợ, nút chỉ đường; dùng `useNow` để khung vừa qua giờ chốt tự bị khóa mà không cần tải lại.
+- `CheckoutPage` — mỗi món có ảnh và chip chọn chợ nhận (`useProductPickupOptions` lấy các chợ món đó có bán); các món cùng sạp + cùng chợ gộp thành một đơn, mỗi đơn có `PickupPicker` (gọi `usePickupOptions` lấy ngày / khung hợp lệ cho mọi món của đơn), nút chỉ đường; dùng `useNow` để khung vừa qua giờ chốt tự bị khóa mà không cần tải lại.
 - `EditOrderPage` — sửa số lượng, thêm / bớt món, đổi ngày / khung; gửi kèm `version`.
 - `FarmerProductFormPage` — form dài nhất (→ 4.11).
 - `AdminCategoriesPage` — kéo thả bằng dnd-kit: thả xong đổi thứ tự trên màn hình ngay rồi gửi danh sách id mới lên server.
@@ -1074,7 +1074,7 @@ Nếu bị hỏi: "đây là phần còn sót khi chuyển cấu trúc thư mụ
 
 - **Ai đặt được:** phải đăng nhập bằng tài khoản **khách**; nông dân không đặt hàng (bị chặn ở cả frontend và backend).
 - **Giỏ** nằm ở trình duyệt, gom theo **sạp** (4.7). Mở giỏ / checkout thì làm mới giá, kho, trạng thái từ server.
-- **Mỗi sạp một đơn:** bấm đặt thì mỗi sạp trong giỏ thành **một đơn độc lập**, vì mỗi sạp có kho, giờ chốt, khung giờ, chợ riêng và tự duyệt đơn của mình. Tối đa **5 sạp** một lần đặt, tối đa 50 món mỗi sạp.
+- **Mỗi sạp + chợ nhận một đơn:** bấm đặt thì các món **cùng sạp và cùng chợ nhận** thành **một đơn độc lập**, vì mỗi sạp có kho, giờ chốt và tự duyệt đơn của mình, còn mỗi chợ có khung giờ và vị trí sạp riêng. Một sạp có thể ra nhiều đơn trong một lần đặt (mỗi chợ một đơn). Tối đa **5 đơn** một lần đặt, tối đa 50 món mỗi đơn.
 - **All-or-nothing:** một lần đặt hoặc tạo đủ mọi đơn, hoặc không tạo đơn nào (transaction, 1.2). *Vì sao:* tránh khách tưởng đã đặt đủ mà thật ra chỉ một nửa số đơn được tạo.
 - **Giá** luôn lấy từ CSDL lúc đặt và chụp lại trên đơn; nông dân đổi giá sau đó thì đơn cũ không đổi.
 - **Bán ở nhiều chợ:**
@@ -1082,10 +1082,15 @@ Nếu bị hỏi: "đây là phần còn sót khi chuyển cấu trúc thư mụ
   - **Khung giờ nhận đặt riêng cho từng chợ.**
   - Nông dân **chọn sản phẩm nào bán ở chợ nào** (bảng `ProductMarket`; không chọn thì mặc định mọi chợ đang được duyệt).
   - **Một đơn chỉ thuộc một chợ và một khung giờ.**
-- **Tình huống:** giỏ có 2 món của **cùng một sạp**, món A chỉ bán ở chợ Bình Điền, món B chỉ bán ở chợ Bà Chiểu:
-  - Giỏ hiện cả 2 món chung một nhóm dưới tên sạp (giỏ không chia theo chợ).
-  - Checkout chỉ đưa ra chợ / khung giờ mà **mọi món trong nhóm đều bán**. Không có chợ chung → thông báo "No pickup window fits all of these items… remove an item, or order it separately", không cho đặt nhóm đó.
-  - Khách bỏ một món, đặt món còn lại, lần sau đặt món kia → **2 đơn**, mỗi đơn một chợ. Nếu 2 món cùng bán ở ít nhất một chợ chung → chọn chợ đó → **1 đơn**.
+- **Chọn chợ nhận theo từng món** (checkout):
+  - Giỏ vẫn hiện các món chung một nhóm dưới tên sạp (giỏ không chia theo chợ).
+  - Ở checkout, mỗi món hiện ảnh, tên, số lượng và các chợ **món đó có bán**. Món chỉ bán ở một chợ thì hiện sẵn "Pickup at <chợ>".
+  - Mặc định: nếu mọi món của sạp có ít nhất một chợ chung thì chọn sẵn chợ chung đầu tiên → **1 đơn**, như cách đặt cũ.
+  - Các món cùng sạp và cùng chợ gộp thành một đơn; mỗi đơn chọn **ngày, khung giờ, ghi chú riêng**.
+  - **Một món chỉ nhận ở một chợ** trong một lần đặt; không chia số lượng (ví dụ 2 kg chợ này, 3 kg chợ kia). Muốn nhận ở chợ khác thì đặt thêm đơn mới. Backend cũng chặn: một món xuất hiện ở 2 đơn trong cùng lần đặt → lỗi 400.
+- **Tình huống 1:** sạp bán Quýt và Đu đủ ở cả chợ Thủ Đức và chợ Hóc Môn. Khách chọn Quýt nhận ở Thủ Đức, Đu đủ nhận ở Hóc Môn → **2 đơn**, mỗi đơn một chợ, một khung giờ. Chọn cả hai ở Thủ Đức → **1 đơn**.
+- **Tình huống 2:** món A chỉ bán ở chợ Bình Điền, món B chỉ bán ở chợ Bà Chiểu (cùng sạp) → mỗi món tự nhận chợ của mình → **2 đơn** trong một lần đặt, không phải bỏ bớt món.
+- **Tình huống 3:** khách muốn 4 kg Đu đủ, 2 kg nhận ở Thủ Đức và 2 kg ở Hóc Môn → **không** tách được trong một lần đặt; đặt 2 kg ở một chợ, rồi đặt thêm đơn mới cho chợ kia.
 - Chợ A đóng thì chỉ đơn ở chợ A bị ảnh hưởng; sạp vẫn bán bình thường ở chợ B.
 - Bấm đặt 2 lần không ra 2 đơn (Idempotency-Key, 1.2).
 
@@ -1093,7 +1098,7 @@ Nếu bị hỏi: "đây là phần còn sót khi chuyển cấu trúc thư mụ
 
 1. **Phải đăng nhập tài khoản khách** mới đặt được.
 2. **Một số điện thoại chỉ một tài khoản** (số được chuẩn hóa trước khi so: `+84 90 123 4567` → `0901234567`). Đăng ký tối đa **10 lần / giờ** mỗi IP.
-3. Mỗi khách tối đa **10 đơn đang chờ duyệt** (`PLACED`) cùng lúc trên toàn hệ thống (`MAX_PLACED_ORDERS_PER_CUSTOMER`). Đơn đã duyệt và đơn đã tới giờ nhận không tính. Ví dụ đang có 8 đơn chờ, giỏ có 4 sạp → 8 + 4 = 12 > 10 → bị chặn: "đợi nông dân xác nhận bớt rồi đặt tiếp". Không giới hạn số đơn với cùng một sạp.
+3. Mỗi khách tối đa **10 đơn đang chờ duyệt** (`PLACED`) cùng lúc trên toàn hệ thống (`MAX_PLACED_ORDERS_PER_CUSTOMER`). Đơn đã duyệt và đơn đã tới giờ nhận không tính. Ví dụ đang có 8 đơn chờ, lần đặt tạo 4 đơn (sạp + chợ) → 8 + 4 = 12 > 10 → bị chặn: "đợi nông dân xác nhận bớt rồi đặt tiếp". Không giới hạn số đơn với cùng một sạp.
 4. Gửi đơn tối đa **10 lần / giờ** (throttle `orders`).
 5. Hàng của đơn chưa duyệt chỉ được **tạm giữ**: tự nhả khi nông dân từ chối hoặc khi đơn hết hạn lúc tới giờ nhận (5.2), nên đặt ảo không giữ hàng lâu được.
 6. Không đến lấy nhiều lần → tự khóa (5.6).
@@ -1225,7 +1230,7 @@ Admin **không sửa / hủy từng đơn** (đơn là thỏa thuận giữa kh�
 
 - **24 loại sự kiện** (`NotificationType` trong `notifications/models.py`): đơn được duyệt / sẵn sàng / bị từ chối / hết hạn / bị bỏ món hết hàng; yêu cầu thay đổi được chấp nhận / từ chối; có hàng lại; có đơn mới / khách sửa đơn / khách hủy / đơn hủy do khách bị khóa; trạng thái tài khoản; chợ đóng / đổi lịch / cập nhật; bị khóa do không đến lấy; lỡ hạn dời giờ; sản phẩm được duyệt / bị từ chối / bị chặn; AI gắn cờ / AI tự duyệt; sạp được duyệt / từ chối vào chợ.
 - **Kênh in-app:** mọi loại. Chuông có số chưa đọc + 5 tin mới nhất; trang danh sách đầy đủ; đánh dấu đã đọc từng tin / tất cả.
-- **Realtime:** **chỉ nông dân** nhận qua WebSocket (toast bật ngay khi có đơn mới). Khách và Admin: chuông tự hỏi lại **mỗi 30 giây** và làm mới khi quay lại tab (3.6).
+- **Realtime:** **khách, nông dân và Admin** đều nhận qua WebSocket: chuông nhảy số và toast bật ngay khi có thông báo. Mất kết nối thì chuông tự hỏi lại **mỗi 30 giây** và làm mới khi quay lại tab (3.6).
 - **Email** (7 loại có mẫu): đơn được duyệt, sẵn sàng lấy, bị từ chối, hết hạn, khách hủy (gửi nông dân), đơn hủy do khách bị khóa (gửi nông dân), chợ đóng cửa.
 - **Thông báo toàn sàn** (Admin soạn): tiêu đề, nội dung, đối tượng (tất cả / khách / nông dân), thời gian bắt đầu – kết thúc (CSDL ràng buộc kết thúc sau bắt đầu), bật / tắt; hiện thành banner, người dùng đóng được.
 - Đề bài chỉ yêu cầu một kênh cho 2 sự kiện (đơn được duyệt, đơn sẵn sàng).
@@ -1257,7 +1262,7 @@ Toàn bộ trang công khai nằm trong `PublicLayout` (4.6). Guest xem được
 - **C-03 Hồ sơ nông dân 🟢** — `/farmers/:id`: chợ sạp bán và vị trí sạp trong chợ, ngày bán, khung giờ, hàng đang bán, đánh giá, nút yêu thích.
 - **C-04 Tìm, lọc, xem chi tiết sản phẩm 🟢** — `/products`: tìm theo tên hàng hoặc tên sạp, lọc danh mục / khoảng giá / chợ / thứ / còn hàng, sắp xếp, phân trang; bộ lọc nằm trên URL, ô tìm có debounce (4.9). Số lượng hiển thị là số **còn đặt được**. Chi tiết sản phẩm: giá, đơn vị, còn bao nhiêu, sạp, chợ bán, đánh giá.
 - **C-05 Giỏ hàng nhiều sạp 🟢 (+🔵)** — "Add to cart" ở mọi nơi; icon giỏ trên header có số lượng; `/customer/cart` chia theo sạp, món hết hàng bị đánh dấu. Luật: 5.4. *File:* `stores/cart.store.js`, `hooks/queries/customer/useCartRefresh.js`, `pages/customer/CartPage.jsx`, `components/customer/cart/`.
-- **C-06 Đặt hàng: chọn ngày & khung giờ 🟢 (+🔵)** — `/customer/checkout`: mỗi sạp chọn chợ (chip), ngày, khung giờ (chỉ hiện cái hợp lệ), ghi chú → trang thành công liệt kê các đơn vừa tạo. Luật: 5.3, 5.4, 5.5. Code: 3.5. *File:* `pages/customer/CheckoutPage.jsx`, `hooks/queries/customer/useCheckout.js`, `services/customer/ordersApi.js`.
+- **C-06 Đặt hàng: chọn ngày & khung giờ 🟢 (+🔵)** — `/customer/checkout`: mỗi món chọn chợ nhận (chip, kèm ảnh món); các món cùng sạp + chợ thành một đơn, mỗi đơn chọn ngày, khung giờ (chỉ hiện cái hợp lệ), ghi chú → trang thành công liệt kê các đơn vừa tạo. Luật: 5.3, 5.4, 5.5. Code: 3.5. *File:* `pages/customer/CheckoutPage.jsx`, `hooks/queries/customer/useCheckout.js`, `services/customer/ordersApi.js`.
 - **C-07 Theo dõi đơn 🟢 (+🔵)** — `/customer/orders` (tab đang mở / đã xong), `/customer/orders/:id`: timeline trạng thái, sạp và vị trí sạp, **số điện thoại nông dân kèm nút gọi**, giờ nhận, đồng hồ đếm ngược tới giờ chốt, nút chỉ đường. Trạng thái: 5.1. Trang tự làm mới khi quay lại tab; thông báo tới qua chuông (5.11).
 - **C-08 Sửa đơn & yêu cầu thay đổi 🟢 (+🔵)** — `/customer/orders/:id/edit`. Luật: 5.3 (mục "Sửa đơn"). *File:* `pages/customer/EditOrderPage.jsx`, `components/customer/orders/ChangeRequestPanel.jsx`, `backend/orders/services/modify.py`, `pending_change.py`.
 - **C-09 Hủy đơn 🟢** — nút Cancel có hộp xác nhận; chỉ trước giờ chốt, chỉ đơn `PLACED` / `ACCEPTED` (T5 / T6). *File:* `orders/services/customer_order_service.py`.
@@ -1486,7 +1491,7 @@ Mỗi thiết bị một phiên và một giỏ riêng, dùng chung lịch sử 
 ### B. Đơn hàng và kho
 
 **6. Giỏ nhiều sạp thì đặt thế nào?**
-Mỗi sạp một đơn riêng vì mỗi sạp có kho, giờ chốt, khung giờ riêng và tự duyệt đơn của mình. Một lần đặt là all-or-nothing. (5.4)
+Mỗi sạp + chợ nhận một đơn riêng vì mỗi sạp có kho, giờ chốt và tự duyệt đơn của mình, mỗi chợ có khung giờ riêng. Cùng một sạp, khách chọn được món này nhận ở chợ này, món kia ở chợ kia (thành 2 đơn); nhưng một món không chia số lượng ra 2 chợ. Một lần đặt là all-or-nothing. (5.4)
 
 **7. Sao đặt hàng không trừ kho ngay?**
 Đặt hàng chỉ **tạm giữ**: người sau chỉ đặt được phần còn lại. Nông dân duyệt mới trừ thật. Đơn bị từ chối hoặc hết hạn thì phần tạm giữ tự nhả, không phải cộng trả. Ví dụ kho 30 kg, A đặt 20 thì B chỉ đặt được tối đa 10. (5.2)
@@ -1539,7 +1544,7 @@ React (Vercel) gọi API JSON của Django (Render). Backend chia View → Seria
 Dữ liệu ngắn hạn cần chung giữa nhiều tiến trình: channel layer, vé WebSocket, phiên bị thu hồi, bộ đếm giới hạn, kết quả chống đặt trùng, số câu chatbot. (3.9)
 
 **23. Thông báo realtime hoạt động thế nào?**
-`notify()` ghi bảng → sau khi transaction chốt thì đẩy qua Redis → consumer gửi xuống trình duyệt nông dân → toast + cập nhật dữ liệu. Khách và Admin hỏi lại mỗi 30 giây. (3.6)
+`notify()` ghi bảng → sau khi transaction chốt thì đẩy qua Redis → consumer gửi xuống trình duyệt người nhận (khách, nông dân hoặc Admin) → toast + cập nhật dữ liệu. Mất WebSocket thì tự rơi về hỏi lại mỗi 30 giây. (3.6)
 
 **24. Sao WebSocket dùng "vé" mà không gửi token?**
 URL WebSocket hay bị ghi vào log; vé sống 30 giây, dùng một lần. (3.6)
@@ -1636,7 +1641,7 @@ Trả lời thống nhất theo điều nhóm đã khai; nhấn mạnh mọi quy
 Thành thật: không có OTP nên SĐT vẫn nhập bừa được (chỉ nâng rào cản); token ở localStorage; quét lười phụ thuộc có người dùng; khách chưa có realtime (hỏi lại 30 giây); các lệnh AI định kỳ chưa đặt lịch; Render miễn phí ngủ khi không có truy cập; frontend còn code trùng / thừa (4.17).
 
 **52. Có thêm thời gian sẽ làm gì?**
-Refresh token vào cookie HttpOnly; OTP xác thực SĐT; WebSocket cho cả khách; đặt lịch cho các lệnh định kỳ; nút "Đồng ý / Không đồng ý" cho khách khi nông dân bỏ món; cột ẩn riêng cho câu trả lời của sạp; gộp lớp `api/` và `services/` ở frontend.
+Refresh token vào cookie HttpOnly; OTP xác thực SĐT; đặt lịch cho các lệnh định kỳ; nút "Đồng ý / Không đồng ý" cho khách khi nông dân bỏ món; cột ẩn riêng cho câu trả lời của sạp; gộp lớp `api/` và `services/` ở frontend.
 
 ---
 ## PHẦN 10 — CHỖ CODE KHÁC TÀI LIỆU VÀ ĐIỂM CẦN THỐNG NHẤT
@@ -1656,7 +1661,7 @@ Refresh token vào cookie HttpOnly; OTP xác thực SĐT; WebSocket cho cả kh�
 | 7 | Tài liệu phân tích D-028: "Admin quyết định khóa" khách không đến lấy | Hệ thống **tự khóa** khi đủ ngưỡng | `backend/accounts/services/no_show_lock.py`, gọi từ `orders/services/fsm.py` | Trả lời theo code (5.6) |
 | 8 | Bản ôn tập cũ: chỉ tính lỗi không đến khi đơn đã Ready | Đếm **mọi** lần chuyển sang `NO_SHOW`, cả T14 (đơn mới Accepted) | `orders/services/fsm.py` (dòng `if rule.code in (Transition.T11, Transition.T14)`), `no_show_lock.py` (đếm `to_status=NO_SHOW`) | Trả lời theo code. Nếu nhóm muốn chỉ đếm T11 thì phải sửa code |
 | 9 | Tài liệu phân tích D-037: backend kiểm tra chữ "Confirm"; nông dân tự bật lại khung giờ sau khi mở chợ | Chỉ **frontend** bắt gõ `confirm` (backend kiểm tra lý do 5–500 ký tự); mở lại chợ thì **hệ thống tự bật lại** khung giờ đã tắt do đóng chợ | `frontend/src/pages/admin/AdminMarketsPage.jsx` (`CONFIRM_WORD`), `markets/admin_portal/serializers_admin.py` | Trả lời theo code (5.7) |
-| 10 | README ghi chung chung "WebSocket Real-Time Notifications"; bản ôn tập cũ ghi realtime cho mọi người dùng | Chỉ **nông dân** mở WebSocket; khách và Admin hỏi lại mỗi 30 giây | `layouts/FarmerLayout.jsx` là nơi duy nhất gọi `useNotificationSocket`; `hooks/queries/common/useNotifications.js` | Trả lời theo code; có thể mở rộng sau (Phần 9 câu 52) |
+| 10 | README ghi chung chung "WebSocket Real-Time Notifications"; bản ôn tập cũ ghi realtime cho mọi người dùng | **Khách, nông dân, Admin** đều mở WebSocket; hỏi lại mỗi 30 giây chỉ là dự phòng khi mất kết nối | `layouts/FarmerLayout.jsx`, `AdminLayout.jsx`, `PublicLayout.jsx` gọi `useNotificationSocket`; `marketlink_core/views.py` (`WebSocketTicketView`, quyền `IsAnyRole`) | Đã sửa (3.6) |
 | 11 | Bản ôn tập cũ: "AI tự thử lại sau 10 phút", "quét ảnh hàng tuần" | Là **lệnh chạy tay** (`ai_review_pending`, `ai_scan_product_images`); không có lịch chạy tự động | `backend/build.sh` không đặt lịch; không có Celery / cron | Trả lời theo code (5.9, 8.3) |
 | 12 | Bản ôn tập cũ: widget chat kéo đi được | Widget đứng cố định ở góc; hook kéo thả có nhưng chưa gắn | `hooks/useDraggableDock.js` không được import ở đâu | Không nhắc tới khi demo |
 | 13 | Bản ôn tập cũ: "hơn 25 loại thông báo" | **24** loại | `notifications/models.py` (`NotificationType`) | Đã sửa (5.11) |

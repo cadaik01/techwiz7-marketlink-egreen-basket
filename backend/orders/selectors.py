@@ -1,8 +1,9 @@
-from django.db.models import Count, Prefetch
+from django.db.models import Count, Exists, OuterRef, Prefetch
 
 from catalog.selectors import public_products
 from catalog.services.stock import get_held_quantities
 from orders.models import Order, OrderItem, OrderStatus, OrderStatusHistory
+from reviews.models import FarmerReview
 
 OPEN_TAB = (OrderStatus.PLACED, OrderStatus.ACCEPTED, OrderStatus.READY_FOR_PICKUP)
 
@@ -23,7 +24,13 @@ def customer_orders_queryset(customer, *, tab=None, status=None, farmer_id=None,
     orders = (
         Order.objects.filter(customer=customer)
         .select_related("customer__customer_profile", "farmer", "market")
-        .annotate(item_count=Count("items"))
+        .annotate(
+            item_count=Count("items"),
+            farmer_reviewed=Exists(FarmerReview.objects.filter(order=OuterRef("pk"))),
+            has_unreviewed_items=Exists(
+                OrderItem.objects.filter(order=OuterRef("pk"), product_review__isnull=True)
+            ),
+        )
     )
     if tab == "open":
         orders = orders.filter(status__in=OPEN_TAB)

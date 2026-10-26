@@ -3,11 +3,12 @@ import { ordersApi } from '../../../services/customer/ordersApi';
 import { QUERY_KEYS } from '../../../constants';
 
 
-function useOrderMutation(orderId, mutationFn) {
+function useOrderMutation(orderId, mutationFn, meta) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn,
+    meta,
     onSuccess: (order) => {
       queryClient.setQueryData(QUERY_KEYS.ORDER(orderId), order);
       queryClient.invalidateQueries({ queryKey: ['orders'] });
@@ -24,6 +25,7 @@ export function useCancelOrder(orderId) {
 
 
 export function useModifyOrder(orderId) {
+  // The edit page shows the server's message itself, on the line it is about.
   return useOrderMutation(orderId, ({ version, body }) =>
-    ordersApi.modify({ orderId, version, body }));
+    ordersApi.modify({ orderId, version, body }), { silent: true });
 }

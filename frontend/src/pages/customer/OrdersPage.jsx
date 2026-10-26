@@ -1,11 +1,12 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { ChevronRight } from 'lucide-react';
 import { Countdown } from '../../components/common/Countdown';
 import { DataTable } from '../../components/common/table/DataTable';
 import { PageHeader } from '../../components/common/PageHeader';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { Badge } from '../../components/ui/Badge';
+import { Button } from '../../components/ui/Button';
 import { Tabs, TabsList, TabsTrigger } from '../../components/ui/Tabs';
-import { OrderActions } from '../../components/customer/orders/OrderActions';
 import { useCustomerOrders } from '../../hooks/queries/customer/useCustomerOrders';
 import { useReorder } from '../../hooks/queries/customer/useReorder';
 import { formatDate, formatMoney, formatTime } from '../../utils/formatters';
@@ -28,7 +29,24 @@ const STATUSES = {
 };
 
 
+// One shortcut per row keeps the table narrow on phones; cancelling lives on the detail page only.
+function primaryAction(order) {
+  const allowed = order.allowed_actions ?? [];
+  const base = `/customer/orders/${order.id}`;
+  if (allowed.includes('REVIEW')) return { label: 'Review', to: `${base}/review` };
+  if (allowed.includes('MODIFY')) return { label: 'Edit', to: `${base}/edit` };
+  if (allowed.includes('REQUEST_CHANGE')) return { label: 'Change', to: `${base}/edit` };
+  if (allowed.includes('REORDER')) return { label: 'Reorder' };
+  return null;
+}
+
+function stop(event) {
+  event.stopPropagation();
+}
+
+
 export default function OrdersPage() {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const reorder = useReorder();
 
@@ -58,7 +76,7 @@ export default function OrdersPage() {
       key: 'id',
       header: 'Order',
       render: (order) => (
-        <Link to={`/customer/orders/${order.id}`} className="orders-page__id">{`#${order.id}`}</Link>
+        <Link to={`/customer/orders/${order.id}`} className="orders-page__id" onClick={stop}>{`#${order.id}`}</Link>
       ),
     },
     { key: 'farmer', header: 'Stall', render: (order) => order.farmer.stall_name },
@@ -105,13 +123,36 @@ export default function OrdersPage() {
     {
       key: 'actions',
       header: 'Actions',
-      render: (order) => (
-        <OrderActions
-          order={order}
-          onReorder={(row) => reorder.mutate(row.id)}
-          reorderPending={reorder.isPending}
-        />
-      ),
+      align: 'end',
+      render: (order) => {
+        const action = primaryAction(order);
+        return (
+          <div className="orders-page__actions" onClick={stop} onKeyDown={stop} role="presentation">
+            {action?.to ? (
+              <Button asChild variant="outline" size="sm">
+                <Link to={action.to}>{action.label}</Link>
+              </Button>
+            ) : null}
+            {action && !action.to ? (
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                loading={reorder.isPending && reorder.variables === order.id}
+                onClick={() => reorder.mutate(order.id)}
+              >
+                {action.label}
+              </Button>
+            ) : null}
+            <Button asChild variant="ghost" size="sm">
+              <Link to={`/customer/orders/${order.id}`} aria-label={`View order #${order.id}`}>
+                View
+                <ChevronRight className="orders-page__chevron" aria-hidden />
+              </Link>
+            </Button>
+          </div>
+        );
+      },
     },
   ];
 
@@ -159,6 +200,7 @@ export default function OrdersPage() {
         columns={columns}
         rows={data?.results ?? []}
         rowKey={(order) => order.id}
+        onRowClick={(order) => navigate(`/customer/orders/${order.id}`)}
         caption="My orders"
         isLoading={isLoading}
         emptyMessage="No orders here yet."

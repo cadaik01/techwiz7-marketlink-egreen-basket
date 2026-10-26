@@ -345,25 +345,30 @@ ol.findings li { margin-bottom: 10px; }
 
   <details class="j" id="c-04" open>
     <summary>
-      <span class="jid">C-04</span><span class="jt">Chọn ngày và khung giờ nhận cho từng nông dân</span><span class="jk"><span class="chip read">ĐỌC</span></span>
+      <span class="jid">C-04</span><span class="jt">Chọn chợ nhận cho từng món, ngày và khung giờ cho từng đơn</span><span class="jk"><span class="chip read">ĐỌC</span></span>
       <span class="jtoggle"><span class="open-t">Bấm để mở</span><span class="close-t">Bấm để thu gọn</span></span>
     </summary>
     <div class="jb">
       <dl class="meta">
-        <dt>Người dùng</dt><dd>Ở <code>/customer/checkout</code>, với mỗi nông dân: chọn chợ (nếu có nhiều), chọn ngày, chọn khung giờ, ghi chú.</dd>
-        <dt>Component</dt><dd><code>pages/customer/CheckoutPage.jsx → PickupPicker</code></dd>
+        <dt>Người dùng</dt><dd>Ở <code>/customer/checkout</code>: mỗi món chọn chợ nhận (nếu món bán ở nhiều chợ). Các món cùng nông dân và cùng chợ thành một đơn; mỗi đơn chọn ngày, khung giờ, ghi chú.</dd>
+        <dt>Component</dt><dd><code>pages/customer/CheckoutPage.jsx → LineAssignment, PickupPicker</code></dd>
       </dl>
       <ol class="steps">
         <li><span class="st"><span class="chip fe">FE</span>Chỉ lấy dòng đặt được</span>
           Trang dựng lại các nhóm từ giỏ, bỏ dòng không đặt được; nhóm nào hết dòng thì bỏ. Không còn nhóm: "There is nothing to order".</li>
-        <li><span class="st"><span class="chip fe">FE</span><span class="chip be">BE</span>Lịch nhận theo đúng các món trong nhóm</span>
-          Mỗi nhóm gọi <code>usePickupOptions(farmer_id, product_ids)</code>:
+        <li><span class="st"><span class="chip fe">FE</span><span class="chip be">BE</span>Chợ nhận của từng món</span>
+          <code>useProductPickupOptions(lines)</code> gọi lịch nhận cho <strong>từng món</strong> (<code>?products=&lt;id&gt;</code>) để biết món đó bán ở chợ nào. Mỗi món hiện ảnh, tên, số lượng và chip chọn chợ; món chỉ bán ở một chợ thì hiện "Pickup at &lt;chợ&gt;". Món không có chợ nào nhận được: báo lỗi trên dòng, khoá nút đặt.
+          <br>Mặc định: nếu mọi món của nông dân có chợ chung thì chọn sẵn chợ chung đầu tiên (ra 1 đơn); không thì mỗi món lấy chợ đầu tiên của nó. Lựa chọn lưu ở state <code>chosenMarkets[product_id]</code>.
+          <br><code>buildStalls()</code> gộp các món <strong>cùng nông dân + cùng chợ</strong> thành một đơn (khoá <code>farmer_id-market_id</code>). Một món chỉ thuộc một đơn: không chia số lượng ra nhiều chợ.
+          <div class="why"><p>Nông dân bán Quýt và Đu đủ ở cả Thủ Đức và Hóc Môn: khách nhận Quýt ở Thủ Đức, Đu đủ ở Hóc Môn được (2 đơn). Trước đây cả nhóm bị ép về những chợ bán <em>tất cả</em> các món, nên không chọn được như vậy.</p></div></li>
+        <li><span class="st"><span class="chip fe">FE</span><span class="chip be">BE</span>Lịch nhận theo đúng các món trong đơn</span>
+          Mỗi đơn gọi <code>usePickupOptions(farmer_id, product_ids)</code> và lấy phần của chợ đã chọn:
 <pre class="code">GET /api/public/farmers/7/pickup-options/?products=3,12</pre>
-          Backend dùng cùng <code>list_pickup_options</code> như G-12, cộng thêm: với mỗi sản phẩm, chỉ giữ khung giờ ở <strong>sạp có đăng sản phẩm đó</strong> (<code>farmer_market__product_links__product_id</code>). Kết quả là những chợ, ngày, giờ mà <strong>tất cả</strong> món trong nhóm đều nhận được.
+          Backend dùng cùng <code>list_pickup_options</code> như G-12, cộng thêm: với mỗi sản phẩm, chỉ giữ khung giờ ở <strong>sạp có đăng sản phẩm đó</strong> (<code>farmer_market__product_links__product_id</code>). Kết quả là những ngày, giờ ở chợ đó mà <strong>tất cả</strong> món trong đơn đều nhận được.
           <div class="why"><p>Nông dân có thể chỉ mang dâu tây tới chợ A, còn rau tới cả A và B. Nếu khách đặt cả hai món mà chọn chợ B, nông dân không có dâu ở đó. Lọc theo món ngay khi hiện lịch thì khách không chọn được giờ sai.</p></div></li>
         <li><span class="st"><span class="chip fe">FE</span>Chọn</span>
-          Không có lịch phù hợp: câu báo "No pickup window fits all of these items…" (gợi ý bỏ bớt món). Có: chọn chợ (nếu &gt; 1) → chọn ngày → chọn khung giờ. Khung giờ đã qua giờ chốt (so với đồng hồ <code>useNow</code>) bị khoá. Chọn xong hiện "Edit or cancel until: &lt;giờ chốt&gt;", nút chỉ đường, ô ghi chú (tối đa 300 ký tự).
-          <br>Lựa chọn lưu trong state <code>selections[farmer_id]</code> = <code>{ market_id, date, pickup_slot_id, cutoff_at, note }</code>. Nút "Confirm N orders" chỉ bật khi mọi nhóm đã có <code>pickup_slot_id</code> và <code>date</code>.</li>
+          Không có lịch phù hợp ở chợ đó: câu báo "No pickup window at &lt;chợ&gt; fits all of these items…" (gợi ý chọn chợ khác cho một món). Có: chọn ngày → chọn khung giờ. Khung giờ đã qua giờ chốt (so với đồng hồ <code>useNow</code>) bị khoá. Chọn xong hiện "Edit or cancel until: &lt;giờ chốt&gt;", nút chỉ đường, ô ghi chú (tối đa 300 ký tự).
+          <br>Lựa chọn lưu trong state <code>selections["farmer_id-market_id"]</code> = <code>{ date, pickup_slot_id, cutoff_at, note }</code>. Nút "Confirm N orders" chỉ bật khi mọi món đã có chợ, mọi đơn đã có <code>pickup_slot_id</code> và <code>date</code>, và không quá 5 đơn.</li>
       </ol>
       <div class="files">
         <p><strong>Frontend:</strong> <code>pages/customer/CheckoutPage.jsx → PickupPicker</code>, <code>hooks/queries/customer/usePickupOptions.js</code>, <code>services/customer/pickupApi.js</code>, <code>hooks/useNow.js</code></p>
@@ -439,7 +444,7 @@ sequenceDiagram
           Chạy xong thì lưu kết quả 24 giờ. Chạy lỗi thì xoá khoá để khách thử lại được.
           <div class="why"><p>Khoá gồm cả <code>user_id</code> nên người khác không dùng lại được key của mình. Lỗi thì xoá khoá vì lỗi (ví dụ hết hàng) không phải là "đã đặt"; khách sửa giỏ rồi đặt lại phải được.</p></div></li>
         <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Serializer</span>
-          <code>CheckoutWriteSerializer</code>: 1–5 nhóm, mỗi <code>farmer_id</code> một lần; mỗi nhóm có <code>farmer_id</code>, <code>pickup_slot_id</code>, <code>pickup_date</code>, <code>note</code> ≤ 300 ký tự, 1–50 món, mỗi món một lần, số lượng 1–999.</li>
+          <code>CheckoutWriteSerializer</code>: 1–5 nhóm (mỗi nhóm = một đơn); không trùng bộ ba (<code>farmer_id</code>, <code>pickup_slot_id</code>, <code>pickup_date</code>), nên một nông dân có thể có nhiều nhóm ở các chợ khác nhau; một <code>product_id</code> chỉ xuất hiện ở <strong>một</strong> nhóm trong cả lần đặt (không chia món ra nhiều chợ); mỗi nhóm có <code>farmer_id</code>, <code>pickup_slot_id</code>, <code>pickup_date</code>, <code>note</code> ≤ 300 ký tự, 1–50 món, mỗi món một lần, số lượng 1–999.</li>
         <li><span class="st"><span class="chip be">BE</span><span class="chip db">DB</span>Dọn đơn quá hạn trước</span>
           <code>expire_overdue_before_checkout</code>: với các nông dân trong giỏ, chuyển những đơn <code>PLACED</code> đã tới giờ nhận mà chưa được nhận sang <code>EXPIRED</code> (T8).
           <div class="why"><p>Đơn quá hạn mà còn PLACED thì vẫn bị tính là "đang giữ hàng" và "đang chờ". Dọn trước để khách không bị chặn oan bởi hàng giữ ảo. Lệnh định kỳ <code>expire_orders</code> cũng làm việc này, nhưng không chờ nó.</p></div></li>

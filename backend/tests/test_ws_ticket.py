@@ -9,13 +9,11 @@ from redis.exceptions import ConnectionError as RedisConnectionError
 from rest_framework.test import APIClient
 
 from accounts.models import CustomUser, CustomerProfile, FarmerProfile, Role, RoleCode
-from marketlink_core.exceptions import ErrorCode
 from marketlink_core.asgi import application
 from marketlink_core.services import ws_ticket
 from marketlink_core.services.ws_ticket import create_ws_ticket, verify_and_consume_ws_ticket
 from notifications.models import NotificationType
 from notifications.services import notify
-from system.models import AuditAction, AuditLog
 
 
 class WebSocketTicketTestCase(TransactionTestCase):
@@ -62,18 +60,15 @@ class WebSocketTicketTestCase(TransactionTestCase):
         self.assertIsNotNone(payload)
         self.assertEqual(payload["user_id"], self.user.pk)
 
-    def test_ws_ticket_admin_forbidden(self):
+    def test_ws_ticket_admin_allowed(self):
         admin_role, _ = Role.objects.get_or_create(code=RoleCode.ADMIN, defaults={"name": "Admin"})
         admin = CustomUser.objects.create(email="ws_admin@marketlink.local", role=admin_role)
         self.client.force_authenticate(user=admin)
 
         res = self.client.post("/api/auth/ws-ticket/")
-        self.assertEqual(res.status_code, 403)
-        self.assertEqual(res.data["code"], ErrorCode.PERMISSION_DENIED)
-        self.assertNotIn("ticket", res.data.get("data") or {})
-        self.assertEqual(
-            AuditLog.objects.filter(user=admin, action=AuditAction.ACCESS_DENIED).count(), 1
-        )
+        self.assertEqual(res.status_code, 200)
+        payload = verify_and_consume_ws_ticket(ticket=res.data["data"]["ticket"])
+        self.assertEqual((payload["user_id"], payload["role"]), (admin.pk, RoleCode.ADMIN))
 
     def test_ws_ticket_farmer_allowed(self):
         farmer_role, _ = Role.objects.get_or_create(code=RoleCode.FARMER, defaults={"name": "Farmer"})
