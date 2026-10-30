@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>trinh_bay_slide.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="kịch-bản-thuyết-trình-bảo-vệ-đồ-án-marketlink-dưới-10-phút">KỊCH BẢN THUYẾT TRÌNH BẢO VỆ ĐỒ ÁN MARKETLINK (DƯỚI 10 PHÚT)</h1>
+<blockquote>
+<p><strong>Slide tham chiếu:</strong> <code>MarketLink_Slides_Project_Defense_VI.pptx</code> (9 slide)<br>
+<strong>Nhóm thực hiện:</strong> FPT BitForge (Đức Long, Tuấn Tú, Minh Anh, Khánh Danh, Kim Nghi)<br>
+<strong>Thời lượng phân bổ:</strong> ~8 – 9 phút trình bày; dành 5 – 6 phút cho Hội đồng phản biện.</p>
+</blockquote>
+<hr>
+<h3 id="slide-1-mở-đầu--giới-thiệu-đề-tài">SLIDE 1: MỞ ĐẦU &amp; GIỚI THIỆU ĐỀ TÀI</h3>
+<ul>
+<li><strong>Thời lượng:</strong> ~30–35 giây</li>
+</ul>
+<h4 id="lời-thoại-trình-bày">Lời thoại trình bày:</h4>
+<p>Kính chào Hội đồng giám khảo!</p>
+<p>Chúng em là nhóm <strong>FPT BitForge</strong>, gồm 5 thành viên: Đức Long, Tuấn Tú, Minh Anh, Khánh Danh và Kim Nghi. Hôm nay, chúng em xin trình bày đề tài <strong>MarketLink</strong> tại cuộc thi TechWiz 7.</p>
+<hr>
+<h3 id="slide-2-bài-toán-thực-tế--mục-tiêu">SLIDE 2: BÀI TOÁN THỰC TẾ &amp; MỤC TIÊU</h3>
+<ul>
+<li><strong>Thời lượng:</strong> ~35–40 giây</li>
+</ul>
+<h4 id="lời-thoại-trình-bày-1">Lời thoại trình bày:</h4>
+<p>Về bài toán thực tế, mô hình chợ truyền thống hiện nay gặp rào cản lớn về kênh thông tin giữa hai phía:</p>
+<ul>
+<li><strong>Người mua:</strong> Thường khó biết trước nông dân nào sẽ tham gia chợ, sản phẩm còn hay hết, và giá bán như thế nào. Vì vậy, họ có thể mất công đi lại nhưng vẫn không mua được mặt hàng mong muốn.</li>
+<li><strong>Về phía nông dân:</strong> Thiếu công cụ thuận tiện để công khai hàng hóa, không tiếp nhận được đơn đặt trước và khó giữ chân khách quen.</li>
+</ul>
+<p>Do đó, <strong>MarketLink</strong> ra đời để kết nối trực tiếp hai bên: Nông dân chủ động công bố hàng hóa và quản lý đơn đặt trước; người mua dễ dàng định vị gian hàng qua bản đồ và đặt chỗ lấy hàng.</p>
+<hr>
+<h3 id="slide-3-giải-pháp--kiến-trúc-hệ-thống">SLIDE 3: GIẢI PHÁP &amp; KIẾN TRÚC HỆ THỐNG</h3>
+<ul>
+<li><strong>Thời lượng:</strong> ~40–45 giây</li>
+</ul>
+<h4 id="lời-thoại-trình-bày-2">Lời thoại trình bày:</h4>
+<p>MarketLink được xây dựng theo kiến trúc phân tầng, gồm ba thành phần chính:</p>
+<ul>
+<li><strong>Frontend:</strong> React 19 và Vite, xây dựng giao diện tương tác trên trình duyệt web.</li>
+<li><strong>Backend:</strong> Django REST Framework, áp dụng mô hình Service/Selector để tách biệt xử lý nghiệp vụ và truy vấn dữ liệu.</li>
+<li><strong>Database:</strong> MySQL 8 với InnoDB, sử dụng Transaction và khóa dòng để bảo đảm tính nhất quán khi nhiều giao dịch diễn ra đồng thời.</li>
+</ul>
+<p>Ngoài ra, hệ thống tích hợp Redis và WebSocket để hỗ trợ thông báo theo thời gian thực, cùng Google Gemini cho các tính năng AI.</p>
+<hr>
+<h3 id="slide-4-bốn-vai-trò-một-luồng-đặt-trước">SLIDE 4: BỐN VAI TRÒ, MỘT LUỒNG ĐẶT TRƯỚC</h3>
+<ul>
+<li><strong>Thời lượng:</strong> ~45–50 giây</li>
+</ul>
+<h4 id="lời-thoại-trình-bày-3">Lời thoại trình bày:</h4>
+<p>Trên nền tảng kiến trúc đó, MarketLink phân chia quyền hạn cho bốn nhóm người dùng:</p>
+<ul>
+<li><strong>Khách vãng lai:</strong> Tìm kiếm chợ, xem sản phẩm và định vị gian hàng trên bản đồ.</li>
+<li><strong>Khách hàng:</strong> Đặt trước, theo dõi đơn hàng và đánh giá sản phẩm.</li>
+<li><strong>Nông dân:</strong> Quản lý gian hàng, nông sản, lượng hàng trong kho và xác nhận đơn.</li>
+<li><strong>Admin:</strong> Duyệt hồ sơ nông dân đăng ký, quản lý chợ và giám sát hệ thống.</li>
+</ul>
+<p>Quy trình đặt trước gồm năm bước: <strong>Tìm chợ và nông sản – Đặt hàng – Xác nhận – Nhận hàng và thanh toán tại sạp – Đánh giá.</strong> Trong quá trình này, nông dân nhận thông báo khi có đơn mới, còn khách hàng được thông báo khi đặt hàng thành công. <strong>Cả hai thông báo đều được gửi theo thời gian thực.</strong></p>
+<hr>
+<h3 id="slide-5-ai-kiểm-duyệt-tin-đăng--đánh-giá">SLIDE 5: AI KIỂM DUYỆT TIN ĐĂNG &amp; ĐÁNH GIÁ</h3>
+<ul>
+<li><strong>Thời lượng:</strong> ~45–50 giây</li>
+</ul>
+<h4 id="lời-thoại-trình-bày-4">Lời thoại trình bày:</h4>
+<p>Trong thời đại AI phát triển mạnh mẽ hiện nay, MarketLink cũng đã ứng dụng trí tuệ nhân tạo vào hệ thống để hỗ trợ người dùng.</p>
+<p>Ứng dụng đầu tiên của AI trong MarketLink là kiểm duyệt nội dung, hoạt động qua cơ chế hai lớp:</p>
+<ul>
+<li><strong>Lớp luật:</strong> Kiểm tra trước các thông số định lượng như khung giá danh mục, độ lệch so với mặt bằng giá chung và tính hợp lý của tồn kho. Nếu phát hiện giá sai lệch quá xa, hệ thống giữ tin lại ngay mà không cần gọi AI để tối ưu tài nguyên.</li>
+<li><strong>Lớp model AI:</strong> Đọc cả văn bản và hình ảnh để phát hiện mặt hàng không phải nông sản, đăng sai danh mục, ngôn từ phản cảm hoặc chứa thông tin nhằm giao dịch ngoài nền tảng.</li>
+</ul>
+<p>Với tin đăng sản phẩm: tin hợp lệ được tự động duyệt ngay; tin có dấu hiệu vi phạm sẽ được giữ lại để Admin xử lý. Với đánh giá: AI tự động ẩn khi chắc chắn vi phạm (ví dụ ngôn từ không phù hợp), nhưng vẫn bảo đảm giữ nguyên những lời chê, phản hồi thực tế của khách hàng.</p>
+<p>Mọi hành động của AI đều được lưu vết tại AI Decisions để Admin hậu kiểm và khôi phục khi cần. Trường hợp dịch vụ AI gặp sự cố hoặc gián đoạn kết nối, hệ thống sẽ tự động chuyển sang model dự phòng; nếu vẫn không phản hồi, tin đăng sẽ chuyển sang hàng chờ Admin duyệt thủ công để hệ thống luôn vận hành liên tục.</p>
+<hr>
+<h3 id="slide-6-trợ-lý-ai-theo-vai-trò">SLIDE 6: TRỢ LÝ AI THEO VAI TRÒ</h3>
+<ul>
+<li><strong>Thời lượng:</strong> ~55–60 giây</li>
+</ul>
+<h4 id="lời-thoại-trình-bày-5">Lời thoại trình bày:</h4>
+<p>Bên cạnh kiểm duyệt, AI còn đóng vai trò là một trợ lý trực tiếp cho từng nhóm người dùng. Khác với chatbot thông thường chỉ tư vấn chung chung, trợ lý của MarketLink truy vấn trực tiếp dữ liệu thực tế qua cơ chế Function Calling với 7 công cụ chỉ đọc, được phân quyền chặt chẽ cho 4 nhóm người dùng:</p>
+<ul>
+<li><strong>Khách vãng lai:</strong> Hỗ trợ tìm nông sản đang bán, thông tin chợ, giờ mở cửa và khung giờ nhận của các sạp. Hệ thống không cho phép truy cập bất kỳ dữ liệu cá nhân nào; nếu hỏi về đơn hàng hay tài khoản, bot sẽ yêu cầu đăng nhập.</li>
+<li><strong>Khách hàng:</strong> Bên cạnh tra cứu công khai, khách có thể kiểm tra chính xác đơn hàng của mình gồm ngày giờ nhận, vị trí sạp, danh sách món, tổng tiền và trạng thái đơn; tuyệt đối không thể xem đơn của người khác hay dữ liệu nội bộ của sạp.</li>
+<li><strong>Nông dân:</strong> Trợ lý giúp chủ sạp quản lý nhanh tình hình kinh doanh: tổng hợp đơn chờ duyệt, đơn đã nhận, đơn quá hạn; đồng thời cảnh báo các mặt hàng sắp hết, hết kho, hoặc sản phẩm bị Admin từ chối kèm lý do. Nông dân được cách ly hoàn toàn, không thể xem thông tin của sạp khác hay dữ liệu khách hàng ngoài sạp mình.</li>
+<li><strong>Và với Admin:</strong> Trợ lý cung cấp bức tranh vận hành tổng quan: số sạp và sản phẩm chờ duyệt, số cờ vi phạm, khách hàng rủi ro đặt nhưng không lấy, lượng đơn 7 ngày qua và thống kê độ chính xác của AI kiểm duyệt trong 30 ngày. Đáng chú ý, bot chỉ báo cáo số lượng đếm chứ tuyệt đối không xuất danh sách cá nhân chi tiết qua chat, và AI không có quyền thay Admin ra quyết định duyệt hay khóa tài khoản.</li>
+</ul>
+<p>Về bảo mật và an toàn tài nguyên, toàn bộ 7 công cụ đều là chỉ đọc (Read-only). Trong bản demo này, hệ thống thiết lập hạn mức an toàn là tối đa 20 câu/phút; hạn mức theo ngày cho phép 30 câu với khách vãng lai và 100 câu với tài khoản đã đăng nhập (trong thực tế có thể mở rộng linh hoạt theo quy mô kinh doanh).</p>
+<hr>
+<h3 id="slide-7-bảo-vệ-tồn-kho---chống-đặt-trùng---lịch-sử-thay-đổi">SLIDE 7: BẢO VỆ TỒN KHO - CHỐNG ĐẶT TRÙNG - LỊCH SỬ THAY ĐỔI</h3>
+<ul>
+<li><strong>Thời lượng:</strong> ~55–60 giây</li>
+</ul>
+<h4 id="lời-thoại-trình-bày-6">Lời thoại trình bày:</h4>
+<p>Để bảo đảm hệ thống vận hành tin cậy và không xảy ra sai sót dữ liệu, MarketLink xử lý triệt để 4 bài toán kỹ thuật cốt lõi:</p>
+<ul>
+<li><strong>Thứ nhất là tạm giữ hàng (Stock Hold):</strong> Khi khách đặt hàng, hệ thống tạm giữ số lượng tương ứng trong một khoảng thời gian để người mua và người bán có thời gian chốt đơn. Trong thời gian này, số hàng đã giữ sẽ không khả dụng cho các khách khác đặt mua. Ví dụ, sạp có 30 kg, khách A đặt 20 kg thì khách B chỉ có thể đặt tối đa 10 kg. Khi đến thời gian chốt và người bán xác nhận, đơn được chốt - hàng trừ kho; nếu đơn bị từ chối hoặc hết hạn, số hàng tạm giữ sẽ được giải phóng để tiếp tục đặt mua.</li>
+<li><strong>Thứ hai là chống tạo đơn trùng lặp:</strong> Khi mạng chập chờn hoặc khách bấm nút đặt hàng nhiều lần, cơ chế Idempotency-Key kết hợp Redis giúp nhận diện yêu cầu đã xử lý và trả lại kết quả tương ứng, tránh tạo đơn trùng và xử lý trừ kho nhiều lần.</li>
+<li><strong>Thứ ba là xử lý đồng thời:</strong> Transaction và cơ chế khóa dòng (Row-level Locking) giúp kiểm soát giao dịch đồng thời, hạn chế nguy cơ bán vượt tồn kho. Đồng thời, việc thống nhất thứ tự khóa giúp giảm nguy cơ deadlock.</li>
+<li><strong>Thứ tư là Audit Log &amp; Lịch sử thay đổi:</strong> Hệ thống ghi nhật ký quản trị nhạy cảm kèm IP và lý do (kể cả khi AI tự ẩn đánh giá); đồng thời lưu vết chi tiết từng trường dữ liệu thay đổi từ giá trị Cũ sang Mới phục vụ truy vết khi có tranh chấp.</li>
+</ul>
+<hr>
+<h3 id="slide-8-bảo-vệ-giao-dịch---chống-đặt-ảo--khóa-khách-bom-hàng">SLIDE 8: BẢO VỆ GIAO DỊCH - CHỐNG ĐẶT ẢO &amp; KHÓA KHÁCH BOM HÀNG</h3>
+<ul>
+<li><strong>Thời lượng:</strong> ~50–55 giây</li>
+</ul>
+<h4 id="lời-thoại-trình-bày-7">Lời thoại trình bày:</h4>
+<p>Do MarketLink áp dụng mô hình nhận hàng và trả tiền mặt trực tiếp tại sạp mà không bắt buộc đặt cọc trước, rủi ro lớn nhất đối với người nông dân là bị đặt ảo hoặc bị &quot;bom hàng&quot;. Để bảo vệ người bán, hệ thống xây dựng cơ chế bảo vệ giao dịch qua 3 lớp:</p>
+<ul>
+<li><strong>Thứ nhất – Chặn đặt ảo từ đầu:</strong> Mỗi số điện thoại chỉ được đăng ký một tài khoản duy nhất. Mỗi khách hàng bị giới hạn tối đa 10 đơn chờ duyệt cùng lúc và không quá 10 lần đặt hàng trong một giờ, ngăn chặn các hành vi tạo đơn ảo hàng loạt.</li>
+<li><strong>Thứ hai – Cơ chế No-show hoàn kho tức thì:</strong> Khi hết khung giờ nhận hàng mà khách không đến, nông dân chỉ cần bấm xác nhận &quot;No-show&quot; trên ứng dụng. Toàn bộ lượng nông sản trong đơn sẽ tự động quay trở lại kho ngay lập tức để nông dân kịp bán cho khách vãng lai khác tại chợ.</li>
+<li><strong>Thứ ba – Thuật toán tự động khóa tài khoản:</strong> Nếu một tài khoản vi phạm No-show 3 lần trong vòng 30 ngày, hệ thống sẽ tự động khóa tài khoản và hủy toàn bộ các đơn hàng đang mở khác của người này nhằm giải phóng hàng cho các sạp. Khi Admin xem xét mở lại tài khoản, bộ đếm vi phạm sẽ được làm mới từ đầu.</li>
+</ul>
+<p>Sau khi đi qua kiến trúc hệ thống, các ứng dụng AI và cơ chế bảo vệ giao dịch, MarketLink mang lại giá trị tổng thể như thế nào? Xin mời Hội đồng cùng chuyển sang slide tổng kết cuối cùng.</p>
+<blockquote>
+<p>[!TIP]
+<strong>Ghi chú chuẩn bị cho phần chất vấn (Q&amp;A):</strong><br>
+<em>Nếu Hội đồng hỏi: &quot;Nếu người bán đã giao hàng, nhận tiền mặt rồi nhưng vẫn cố tình bấm No-show thì sao?&quot;</em><br>
+Trả lời:</p>
+<ol>
+<li>Hiện tại: Nông dân không có động cơ làm vậy vì không mất phí hoa hồng, bấm No-show chỉ làm kho hàng của chính họ bị ảo (thừa trên web); khách hàng nhận thông báo ngay và có quyền khiếu nại lên Admin để mở khóa và reset bộ đếm vi phạm; sạp gian lận sẽ bị Admin gắn cờ hoặc đình chỉ.</li>
+<li>Hướng phát triển tiếp theo: Nhóm sẽ bổ sung <strong>Mã xác thực nhận hàng (Pickup OTP) hoặc Quét mã QR hai chiều</strong>. Khi khách đến sạp trả tiền mặt, người bán phải quét mã QR trên ứng dụng của người mua thì hệ thống mới xác nhận hoàn tất đơn hàng (<code>COMPLETED</code>), khi đó người bán sẽ không thể tự ý bấm No-show được nữa.</li>
+</ol>
+</blockquote>
+<hr>
+<h3 id="slide-9-tổng-kết--mở-rộng">SLIDE 9: TỔNG KẾT &amp; MỞ RỘNG</h3>
+<ul>
+<li><strong>Thời lượng:</strong> ~45–50 giây</li>
+</ul>
+<h4 id="lời-thoại-trình-bày-8">Lời thoại trình bày:</h4>
+<p>Để tổng kết lại, MarketLink mang đến một giải pháp số hóa toàn diện cho chợ truyền thống dựa trên 3 giá trị cốt lõi:</p>
+<ul>
+<li><strong>Thứ nhất – Vận hành thực tế:</strong> Kết nối chặt chẽ Người mua, Nông dân và Ban quản lý chợ trong quy trình đặt trước – nhận hàng và trả tiền mặt trực tiếp tại sạp, vừa tiện lợi vừa giữ trọn nét đặc trưng của chợ truyền thống.</li>
+<li><strong>Thứ hai – Ứng dụng AI có kiểm soát:</strong> Kết hợp nhịp nhàng giữa Lớp luật và mô hình Gemini để kiểm duyệt nội dung tự động, cùng Trợ lý ảo truy vấn dữ liệu thực tế theo đúng thẩm quyền mà không xâm phạm dữ liệu riêng tư.</li>
+<li><strong>Thứ ba – Kiến trúc tin cậy và bền vững:</strong> Bảo đảm không bán vượt tồn kho, loại trừ đặt trùng đơn, ngăn chặn đặt ảo và tự động khóa tài khoản bùng hàng.</li>
+</ul>
+<p>Ngoài ra, hệ thống đã hoàn thiện các tính năng thực tế như: cho phép khách gửi yêu cầu đổi đơn, nông dân linh hoạt bỏ riêng món hết hàng, và Admin đóng chợ khẩn cấp kèm xem trước tác động để xử lý các sự cố thiên tai hay dịch bệnh.</p>
+<p>Trên đây là phần trình bày đề tài MarketLink của nhóm <strong>FPT BitForge</strong>. Chúng em xin chân thành cảm ơn quý Thầy Cô trong Hội đồng giám khảo đã chú ý lắng nghe, và chúng em rất mong nhận được những câu hỏi chất vấn cũng như ý kiến đóng góp từ Hội đồng!</p>
+
+</body>
+</html>

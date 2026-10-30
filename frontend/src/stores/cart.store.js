@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { moneyToNumber } from '../utils/helpers/domain';
+import { useMarketAuthStore } from './auth.store';
 
 
 export const MAX_QUANTITY = 999;
@@ -22,7 +23,12 @@ function clamp(quantity, line = {}) {
 export const useCartStore = create(
   persist(
     (set) => ({
+      // The cart on screen, for the account signed in now (or the guest).
       lines: [],
+      // Saved carts of the accounts used on this browser, by user id.
+      carts: {},
+      // Whose cart `lines` is: a user id, 'guest', or null before the first sign-in check.
+      ownerKey: null,
 
       addItem: (product, quantity = 1) =>
         set((state) => {
@@ -82,10 +88,38 @@ export const useCartStore = create(
     }),
     {
       name: 'marketlink-cart',
-      partialize: (state) => ({ lines: state.lines }),
+      partialize: (state) => ({ lines: state.lines, carts: state.carts, ownerKey: state.ownerKey }),
     },
   ),
 );
+
+
+const GUEST = 'guest';
+
+// Each account keeps its own cart on this browser: signing out hides it, signing back in
+// brings it back. A guest cart is dropped when someone signs in.
+function switchCartOwner(userId) {
+  const nextKey = userId ? String(userId) : GUEST;
+  const { lines, carts, ownerKey } = useCartStore.getState();
+  if (nextKey === ownerKey) return;
+  if (ownerKey === null) {
+    // Cart saved before per-account carts existed: it belongs to whoever is signed in now.
+    useCartStore.setState({ ownerKey: nextKey, lines: nextKey === GUEST ? [] : lines });
+    return;
+  }
+  const saved = { ...carts };
+  if (ownerKey !== GUEST) saved[ownerKey] = lines;
+  useCartStore.setState({
+    carts: saved,
+    ownerKey: nextKey,
+    lines: nextKey === GUEST ? [] : (saved[nextKey] ?? []),
+  });
+}
+
+switchCartOwner(useMarketAuthStore.getState().userId);
+useMarketAuthStore.subscribe((state, previous) => {
+  if (state.userId !== previous.userId) switchCartOwner(state.userId);
+});
 
 
 export function isOrderable(line) {

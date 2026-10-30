@@ -7,6 +7,7 @@ from decimal import Decimal
 
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
+from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.db import connection, transaction
 from django.utils import timezone
@@ -520,6 +521,13 @@ def keep_given_timestamps(*models):
 class Command(BaseCommand):
     help = "Wipes old sample data cleanly, resets auto-increment IDs to 1, and seeds real production-grade data."
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--with-ai",
+            action="store_true",
+            help="After seeding, run ai_review_pending so the AI Decisions page has results (needs a Gemini key).",
+        )
+
     def handle(self, *args, **options):
         self.stdout.write(self.style.WARNING("Starting complete cleanup and database reset..."))
 
@@ -560,9 +568,17 @@ class Command(BaseCommand):
             f"  Follow-up queue   : "
             f"{follow_up['products']} product(s), {follow_up['customers']} shopper(s) flagged automatically"
         )
-        self.stdout.write("  AI listing review : run `python manage.py ai_review_pending` to review the pending listings")
+        if options.get("with_ai"):
+            self.stdout.write("  AI listing review : running ai_review_pending now...")
+        else:
+            self.stdout.write("  AI listing review : run `python manage.py ai_review_pending` (or seed with --with-ai)")
         self.stdout.write(f"  All Passwords     : '{DEFAULT_PASSWORD}'")
         self.stdout.write(self.style.SUCCESS("========================================================\n"))
+
+        if options.get("with_ai"):
+            # Runs after the seed transaction has committed, so a slow or failed AI call
+            # never undoes the seeded data.
+            call_command("ai_review_pending")
 
     def _wipe_and_reset_database(self):
         """Truncate all application business tables in MySQL with foreign key checks disabled.
@@ -978,6 +994,53 @@ class Command(BaseCommand):
                     ]
                 )
             ],
+            # --- Live demo: customer_01 + farmer_01 (Thu Duc Fresh Organics) ---
+            # Accepted and past the cutoff, so the farmer can press Ready -> Completed right away,
+            # then customer_01 writes a review to show the AI review check.
+            {
+                "customer": customers[0],
+                "farmer": farmers[0],
+                "status": OrderStatus.ACCEPTED,
+                "note": "Demo: mark me ready.",
+                "days_ago": 1,
+                "lines": [(products[1], 3)],
+            },
+            {
+                "customer": customers[0],
+                "farmer": farmers[0],
+                "status": OrderStatus.ACCEPTED,
+                "note": None,
+                "days_ago": 0,
+                "slot_index": 1,
+                "lines": [(products[2], 2), (products[3], 1)],
+            },
+            # --- Live demo: customer_02 is one no-show away from the automatic lock ---
+            # Two no-shows in the last 30 days, plus one Ready order whose pickup window ended
+            # yesterday: farmer_01 presses No-show and the account locks itself.
+            {
+                "customer": customers[1],
+                "farmer": farmers[0],
+                "status": OrderStatus.NO_SHOW,
+                "note": None,
+                "days_ago": 13,
+                "lines": [(products[0], 2)],
+            },
+            {
+                "customer": customers[1],
+                "farmer": farmers[0],
+                "status": OrderStatus.NO_SHOW,
+                "note": None,
+                "days_ago": 6,
+                "lines": [(products[3], 2)],
+            },
+            {
+                "customer": customers[1],
+                "farmer": farmers[0],
+                "status": OrderStatus.READY_FOR_PICKUP,
+                "note": "Demo: mark me as no-show.",
+                "days_ago": 1,
+                "lines": [(products[1], 2)],
+            },
         ]
         return [
             self._spec(
@@ -997,6 +1060,8 @@ class Command(BaseCommand):
     def _history_specs(self, customers, farmers, by_farmer, today):
         """Past pickups, growing from about one a day to four as the platform catches on."""
         specs = []
+        # customer_02 is the no-show demo account: random history must not add no-shows to it.
+        history_customers = [customer for customer in customers if customer is not customers[1]]
         for offset in range(HISTORY_DAYS, 0, -1):
             pickup_d = today - timedelta(days=offset)
             grown = 1 + (HISTORY_DAYS - offset) * 3 // HISTORY_DAYS
@@ -1005,7 +1070,7 @@ class Command(BaseCommand):
                 farmer = self.rng.choice(farmers)
                 specs.append(
                     self._spec(
-                        customer=self.rng.choice(customers),
+                        customer=self.rng.choice(history_customers),
                         farmer=farmer,
                         pickup_d=pickup_d,
                         status=self._pick(PAST_OUTCOMES),
